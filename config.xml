@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<widget xmlns   = "http://www.w3.org/ns/widgets"
+    xmlns:gap   = "http://phonegap.com/ns/1.0"
+    id          = "com.shoployal.app"
+    versionCode = "10"
+    version     = "1.0.0" >
+
+<!-- versionCode is optional and Android only -->
+
+  <name>ShopLoyal</name>
+
+  <description>
+      Shop Loyal app.
+  </description>
+
+  <author href="https://wantify.com" email="support@wantify.com">
+      ShopLoyal
+  </author>
+
+</widget>
