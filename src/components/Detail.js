@@ -1,5 +1,6 @@
 import React from "react";
 import Card from "./Card";
+import Page from './Page'
 
 const About = () => (
     
@@ -16,12 +17,14 @@ const Promotions = () => (
 );
 
 const Detail = () => (
+    <Page>
     <div className="detail">
     <i class="ico-times"></i>
     <Card />
     <About />
     <Promotions />
     </div>
+    </Page>
 );
 
 export default Detail;

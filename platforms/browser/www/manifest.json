@@ -1,0 +1,11 @@
+{
+  "background_color": "#FFF",
+  "display": "standalone",
+  "name": "ShopLoyal",
+  "short_name": "ShopLoyal",
+  "version": "com.shoployal.app",
+  "description": "Test Description",
+  "author": "Apache Cordova Team",
+  "icons": [],
+  "start_url": "index.html"
+}

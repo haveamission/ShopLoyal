@@ -2,13 +2,14 @@ import React, {Component} from 'react';
 import {GiftedChat, Bubble} from 'react-web-gifted-chat';
 import Background from "../img/fake_background_card.png";
 //import { GiftedChat } from 'react-native-gifted-chat';
+import Page from './Page'
 
 const loremIpsum ='Lorem ipsum dolor sit amet, consectetur adipiscing elit';
 
 
 const messages = [];
-messages.push(generateMessage('Idylla 2', 3,  {}));
-messages.push(generateMessage('Goood 1', 2, {}));
+messages.push(generateMessage('Test Message 2', 3,  {}));
+messages.push(generateMessage('Test Message 1', 2, {}));
 messages.push(generateMessage('This is a great example of system message', 2, {system: true}));
 
 for (let i = 0; i < 3; i++) {
@@ -49,7 +50,7 @@ class Chat extends Component {
 
   render() {
     return (
-
+<Page>
       <div className="chat" style={styles.container}>
             
         <div style={styles.chat}>
@@ -60,6 +61,7 @@ class Chat extends Component {
                       onSend={this.onSend}/>
           </div>
       </div>
+      </Page>
     );
   }
 }

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
 import Business from './Business';
 import SwipeToDismiss from 'react-swipe-to-dismiss';
+import Page from './Page'
 
 const mapStyles = {
   width: "100%",
@@ -38,6 +39,7 @@ export class MapContainer extends Component {
 
   render() {
     return (
+      <Page>
       <div className="gmaps">
       <Map
         google={this.props.google}
@@ -80,6 +82,7 @@ export class MapContainer extends Component {
       { this.state.showResults ? <Results /> : null }
       </h3>
       </div>
+      </Page>
     );
   }
 }

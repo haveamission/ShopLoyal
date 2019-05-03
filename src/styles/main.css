@@ -74,25 +74,26 @@ header {
 */
 .card {
 width: 34rem;
-height: 20rem;
+height: 19rem;
 margin: 0 auto;
 overflow: hidden;
 position: relative;
-margin-bottom: 4rem;
+margin-bottom: 3rem;
 }
 .card .card-right {
-    width: 60%;
+    width: 25rem;
     float: right;
 }
 .card .card-left {
     float: left;
     position: relative;
-    top: 10rem;
-    left: 1rem;
+    top: 12rem;
+    left: 2rem;
 }
 .card .card-title {
     font-size: 2rem;
     margin-bottom: 0px;
+    font-weight: bold;
 }
 .card hr {
     width: 100%;
@@ -107,8 +108,9 @@ margin-bottom: 4rem;
     margin-left: 1rem;
 }
 .card .card-logo-img {
-    width: 8rem;
-    height: 7rem;
+    width: 6rem;
+    height: 6rem;
+    border-radius: 50%;
 }
 .card .card-favorite {
     width: 3rem;
@@ -116,7 +118,7 @@ margin-bottom: 4rem;
     margin-right: 1rem;
     margin-top: 1rem;
     position: absolute;
-    margin-left: 16rem;
+    margin-left: 20rem;
 }
 .card .card-right-bottom {
     top: 10rem;
@@ -148,7 +150,7 @@ margin-bottom: 4rem;
     opacity: .5;
 }
 .card-nav {
-    margin-top: 1rem;
+    margin-top: .25rem;
 }
 .card-nav img {
 width: 1rem;
@@ -261,6 +263,7 @@ top: 38rem;
     height: 6.5rem;
     border-radius: 5px;
     width: 95%;
+    margin-top: 4rem;
 }
 .gmaps .business .card .card-left {
     top: 1rem;
