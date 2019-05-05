@@ -7,6 +7,7 @@ import Call from "../img/call.png";
 import Map from "../img/map.png";
 import withFetching from "./API";
 import {Link} from 'react-router-dom';
+import Background from "../img/fake_background_card.png";
 
 
 const API = 'http://localhost:3000/merchants';
@@ -53,8 +54,6 @@ fetch(addressAPI + this.props.merchant.merchant.address_id)
 .then(
   data => this.setState({ data, isLoading: false }
   ))
-  console.log("sparta");
-  console.log(this.state);
 
 
   }

@@ -1,29 +1,13 @@
 import React, { Component } from 'react'
-import { combineReducers } from 'redux'
 import { render } from 'react-dom'
 import { ConnectedRouter } from 'connected-react-router'
-import { Provider } from 'react-redux'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-//import 'bootstrap/dist/css/bootstrap.css';
-import './bootstrap2-toggle.min.css';
-import './index.css';
-import './styles/main.css';
 import registerServiceWorker from './registerServiceWorker';
 //import appsFlyer from 'cordova-plugin-appsflyer-sdk';
 
-import Toggle from 'react-bootstrap-toggle';
-
-import { 
-  CSSTransition, 
-  TransitionGroup 
-} from 'react-transition-group';
-
-
-
-import createHistory from 'history/createBrowserHistory'
+// Import Components
 //import App from './App';
 import Layout from './components/Layout'
-import routes from './routes';
 import configureStore, { history } from './store'
 import Login from './containers/Login';
 import Map from './components/Map';
@@ -33,12 +17,22 @@ import PrivateRoute from './containers/PrivateRoute';
 import Chat from './components/Chat';
 import Detail from './components/Detail';
 
+// Import Styles
+import './bootstrap2-toggle.min.css';
+import './index.css';
+import './styles/main.css';
+import Toggle from 'react-bootstrap-toggle';
+import { 
+  CSSTransition, 
+  TransitionGroup 
+} from 'react-transition-group';
+//import 'bootstrap/dist/css/bootstrap.css';
 
-// Not ideal - figure out why node_modules isn't working
-
+// Redux
+//import { combineReducers } from 'redux'
+import { Provider } from 'react-redux'
+//import createHistory from 'history/createBrowserHistory'
 const store = configureStore(history)
-
-
 
 const startApp = () => {
     

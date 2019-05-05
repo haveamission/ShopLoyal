@@ -1,6 +1,6 @@
 body {
-background-color: #000;
-color: #FFF;
+    background-color: #FFF;
+    color: #000;
 /*font-family: 'Raleway', sans-serif;*/
 font-family: 'Montserrat', sans-serif;
 }
@@ -37,9 +37,10 @@ nav .profile {
 .hr-header {
     margin-top: 0px;
     margin-bottom: 10px;
+    border-top: 1px solid #979797;
 }
 .search-text input {
-    background-color: #000;
+    background-color: #FFF;
     border: #000;
     /*width: 75px;*/ /* non-optimal */
 }
@@ -79,6 +80,7 @@ margin: 0 auto;
 overflow: hidden;
 position: relative;
 margin-bottom: 3rem;
+color: #FFF;
 }
 .card .card-right {
     width: 25rem;
@@ -102,7 +104,7 @@ margin-bottom: 3rem;
     opacity: 50%;
 }
 .card .card-address {
-    color: #8094a4;
+    color: #DDD;
 }
 .card .card-title, .card .card-address, .card .card-nav {
     margin-left: 1rem;
@@ -182,7 +184,7 @@ vertical-align: top;
 * Card-specific styles
 */
 .titlecard .layer {
-    background-color: rgba(6, 86, 165, 0.9);  
+    background-color: rgba(6, 86, 165, 0.9);
 }
 .promocard .layer {
     background-color: #FFF;
@@ -329,12 +331,8 @@ top: 38rem;
     position: absolute;
     padding: 10px;
     margin: 2.5em 1rem 3em;
-    color: #fff;
-    background: #5500ff;
-    background: #5500ff;
-    background: #5500ff;
-    background: #5500ff;
-    background: #5500ff;
+    color: #536DFE;
+    background: #FFF;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 15px;
@@ -343,7 +341,12 @@ top: 38rem;
     overflow:hidden;
     white-space: normal;
     font-size:1.5rem;
+    border: 1px solid #536DFE;
+    border-bottom-width: medium;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
 }
+
+
 /*
 * Business detail page
 */
