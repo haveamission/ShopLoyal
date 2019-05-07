@@ -11,6 +11,11 @@ import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 
 export const history = createBrowserHistory()
 
+const persistConfig = {
+  key: 'root',
+  storage,
+}
+
 export default function configureStore(preloadedState) {
   const store = createStore(
     createRootReducer(history),

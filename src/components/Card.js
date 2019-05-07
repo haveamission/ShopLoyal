@@ -8,6 +8,9 @@ import Map from "../img/map.png";
 import withFetching from "./API";
 import {Link} from 'react-router-dom';
 import Background from "../img/fake_background_card.png";
+import { connect } from 'react-redux'
+import {bindActionCreators} from 'redux'
+import * as generalActions from '../actions/general'
 
 
 const API = 'http://localhost:3000/merchants';
@@ -25,6 +28,8 @@ class Card extends Component {
     data: []
   }
 
+  
+
   //console.log("Works?");
   //console.log(data);
   //console.log(isLoading);
@@ -39,6 +44,8 @@ class Card extends Component {
   }
 
   componentWillMount() {
+    console.log(this.props);
+    
 console.log(this.props.merchant.merchant);
 
 console.log(addressAPI + this.props.merchant.merchant.address_id);
@@ -56,6 +63,10 @@ fetch(addressAPI + this.props.merchant.merchant.address_id)
   ))
 
 
+  }
+
+  componentDidMount() {
+    this.props.general.levelUp();
   }
 
   render() {
@@ -91,7 +102,19 @@ fetch(addressAPI + this.props.merchant.merchant.address_id)
 }
 }
 
-export default Card;
+const mapStateToProps = (state) => {
+  return {
+    general: state.general
+  };
+};
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({General: generalActions}, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Card)
+
+//export default Card;
 
 class Swatch extends Component {
   componentWillMount() {

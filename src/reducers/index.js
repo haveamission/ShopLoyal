@@ -1,9 +1,11 @@
 import { combineReducers } from 'redux'
 import { connectRouter } from 'connected-react-router'
 import auth, * as fromAuth from './auth.js'
+import levelReducer from './general.js'
 export default (history) => combineReducers({
         auth: auth,
   router: connectRouter(history),
+  general: levelReducer,
 })
 export const isAuthenticated =
  state => fromAuth.isAuthenticated(state.auth)
