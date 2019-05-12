@@ -3,6 +3,7 @@ import {GiftedChat, Bubble} from 'react-web-gifted-chat';
 import Background from "../img/fake_background_card.png";
 //import { GiftedChat } from 'react-native-gifted-chat';
 import Page from './Page'
+import Bubble2 from './Card'
 
 const loremIpsum ='Lorem ipsum dolor sit amet, consectetur adipiscing elit';
 
@@ -58,7 +59,9 @@ class Chat extends Component {
         <div className="chatlinkback"><div className="triangle"></div><div className="chatlinktitle">Adventures in Toys</div></div>
           <GiftedChat user={{id: 1,}}
                       messages={this.state.messages}
-                      onSend={this.onSend}/>
+                      onSend={this.onSend}
+                      renderBubble={<Bubble2 />}
+                      />
           </div>
       </div>
       </Page>

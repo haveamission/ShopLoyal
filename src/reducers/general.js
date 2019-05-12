@@ -1,9 +1,30 @@
-export default levelReducer = (state = 1, action) => {
+import Actions from '../actions/general.js'
+
+/*export default (state = 1, action) => {
+  //console.log(state);
     switch (action.type) {
-      case Actions.LEVEL_UP:
+      case 'LEVEL_UP':
+      //console.log(action.type);
         return state + 1;
-      case Actions.LEVEL_DOWN:
+      case 'LEVEL_DOWN':
           return state - 1;
+      case 'SAVE_COLOR':
+      return {color: action.payload}
     }
+    //console.log("final state");
+    //console.log(state);
     return state;
-  };
+  };*/
+
+  export default (state = 1, action) => {
+    //console.log(state);
+      switch (action.type) {
+        case 'SAVE_COLOR':
+        return {color: action.payload}
+      }
+      //console.log("final state");
+      //console.log(state);
+      return state;
+    };
+
+  //export {color};

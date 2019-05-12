@@ -6,7 +6,7 @@ import Message from "../img/message.png";
 import Call from "../img/call.png";
 import Map from "../img/map.png";
 import ScrollMenu from 'react-horizontal-scrolling-menu';
-import Card, {Swatch} from "./Card";
+import Card from "./Card";
 import PromoCard from "./PromoCard";
 import withFetching from "./API";
 
@@ -22,7 +22,7 @@ const merchantAPI = 'http://localhost:3000/merchants?count=3';
 ]*/
 
 const promoIter = ({ data, isLoading, error }) => {
-console.log("test");
+//console.log("test");
 return null;
 }
 
@@ -55,7 +55,7 @@ export { XYZ };
 list = []
 
 componentWillMount() {
-  console.log("will mount");
+  //console.log("will mount");
   const test = withFetching(noticeAPI)(promoIter);
   this.setState({testval: test})
   console.log(this.props.merchant);
@@ -63,14 +63,14 @@ componentWillMount() {
 }
 
 componentDidMount() {
-  console.log("did mount");
-  console.log(this.props.merchant);
+  //console.log("did mount");
+  //console.log(this.props.merchant);
 }
     render() {
    
       return (
         <div className="App">
-                <Swatch merchant={this.props.merchant}/>
+           
           <ScrollMenu
             data={this.list}
           />

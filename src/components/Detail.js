@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from 'react';
 import Card from "./Card";
 import Page from './Page'
 
@@ -16,15 +16,58 @@ const Promotions = () => (
 </div>
 );
 
-const Detail = () => (
+class Detail extends Component {
+
+    state = {
+        data: {
+        },
+      }
+
+      componentWillMount() {
+        var merchant_id = this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1);
+        console.log(merchant_id);
+        
+        var merchantAPIDetail = 'http://localhost:3000/merchants/' + merchant_id;
+        fetch(merchantAPIDetail)
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Something went wrong ...');
+          }
+        })
+        .then(
+          data => this.setState({ data, isLoading: false }, () => console.log(this.state))
+        )
+        }
+
+        if (error) {
+            return <p>{error.message}</p>;
+          }
+        
+          if (isLoading) {
+            return <p>Loading ...</p>;
+          }
+
+    render() {
+console.log(this.state.data);
+        if (Object.keys(this.state.data).length == 0) {
+            return <div />
+        }
+        console.log("not empty");
+        console.log(this.state.data);
+   
+        return (
     <Page>
     <div className="detail">
-    <i class="ico-times"></i>
-    <Card />
+    <i className="ico-times"></i>
+    <Card merchant={this.state.data}/>
     <About />
     <Promotions />
     </div>
     </Page>
-);
+)
+    }
+}
 
 export default Detail;

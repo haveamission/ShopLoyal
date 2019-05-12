@@ -10,7 +10,8 @@ import {Link} from 'react-router-dom';
 import Background from "../img/fake_background_card.png";
 import { connect } from 'react-redux'
 import {bindActionCreators} from 'redux'
-import * as generalActions from '../actions/general'
+import saveColor from '../actions/general'
+const getColors = require('get-image-colors')
 
 
 const API = 'http://localhost:3000/merchants';
@@ -18,22 +19,45 @@ const merchantAPI = 'http://localhost:3000/merchants?count=3';
 const addressAPI = 'http://localhost:3000/address/';
 
 
-const Bubble = () => (
+const Bubble2 = () => (
 <Link to="/chat/"><div className="bubble">Sample text Merchant Text</div></Link>
 );
 
+export {Bubble2};
+
 class Card extends Component {
 
-  state = {
-    data: []
+  static getDerivedStateFromProps(props, state) {
+    console.log("drived props");
+    console.log(props);
+    // Normalizing the data, as react adds an object wrapper sometimes
+    var merchant = {};
+
+    if(typeof props.merchant.merchant !== 'undefined') {
+      merchant = props.merchant.merchant;
+    }
+    else {
+      merchant = props.merchant;
+    }
+    return {"merchant": merchant};
   }
 
-  
+  state = {
+    data: {},
+  }
 
-  //console.log("Works?");
-  //console.log(data);
-  //console.log(isLoading);
-  //console.log(error);
+  lightestColor(colors) {
+    var highestColor;
+    var hspHighest = 0;
+    colors.forEach(function(color) {
+        var lightness = lightOrDark(color);
+        if (lightness > hspHighest) {
+            hspHighest = lightness;
+            highestColor = color;
+        }
+    });
+    this.setState({cardColor: hexToRgbA(highestColor)});
+  }
 
   if (error) {
     return <p>{error.message}</p>;
@@ -43,49 +67,56 @@ class Card extends Component {
     return <p>Loading ...</p>;
   }
 
-  componentWillMount() {
+  componentDidMount() {
     console.log(this.props);
-    
-console.log(this.props.merchant.merchant);
 
-console.log(addressAPI + this.props.merchant.merchant.address_id);
+    // Not ideal - deal with how react does this later
 
-fetch(addressAPI + this.props.merchant.merchant.address_id)
+    if (typeof this.merchant !== 'undefined') {
+    getColors(this.merchant).then(colors => {
+      var colorsHex = colors.map(color => color.hex());
+      this.lightestColor(colorsHex);
+    })
+  }
+
+fetch(addressAPI + this.state.merchant.address_id)
 .then(response => {
   if (response.ok) {
     return response.json();
   } else {
-    throw new Error('Something went wrong ...');
+    throw new Error('Something wenta wrong ...');
   }
 })
 .then(
   data => this.setState({ data, isLoading: false }
   ))
 
-
-  }
-
-  componentDidMount() {
-    this.props.general.levelUp();
-  }
-
+}
   render() {
-   
-    return (
-    <div className="card titlecard" style={{backgroundImage: `url(${this.props.merchant.merchant.coverPhoto})`}}>
+    if (!this.state.data) {
+      return <div />
+  }
+  console.log("further bad days");
+  console.log(this.props);
+  console.log(this.state);
 
-    <div className="layer"></div>
+    return (
+      <Link to={{
+        pathname: `/detail/${this.state.merchant.id}`
+      }}>
+    <div className="card titlecard" style={{backgroundImage: `url(${this.state.merchant.coverPhoto})`}}>
+    <div className="layer" style={{backgroundColor : this.state.cardColor}}></div>
     {/* Split off into another component */}
-    <Bubble />
+    <Bubble2 />
       <div className="card-left">
         <div className="card-logo">
-          <img className="card-logo-img" src={this.props.merchant.merchant.logo} />
+          <img className="card-logo-img" src={this.state.merchant.logo} />
         </div>
       </div>
       <div className="card-right">
         <img className="card-favorite" src={Favorite} />
         <div className="card-right-bottom">
-          <h2 className="card-title">{this.props.merchant.merchant.name}</h2>
+          <h2 className="card-title">{this.state.merchant.name}</h2>
           <div className="card-address">{this.state.data.address1}</div>
           <hr />
           <div className="card-nav">
@@ -98,107 +129,70 @@ fetch(addressAPI + this.props.merchant.merchant.address_id)
         </div>
       </div>
     </div>
+    </Link>
 );
 }
 }
 
 const mapStateToProps = (state) => {
   return {
-    general: state.general
+    //general: state.general,
+    color: state.saveColor
   };
 };
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({General: generalActions}, dispatch);
+  return bindActionCreators({saveColor}, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Card)
 
 //export default Card;
 
-class Swatch extends Component {
-  componentWillMount() {
-  console.log("test value here");
+function lightOrDark(color) {
+  // Variables for red, green, blue values
+  var r, g, b, hsp;
+
+  // Check the format of the color, HEX or RGB?
+  if (color.match(/^rgb/)) {
+
+      // If HEX --> store the red, green, blue values in separate variables
+      color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
+
+      r = color[1];
+      g = color[2];
+      b = color[3];
+  } else {
+
+      // If RGB --> Convert it to HEX: http://gist.github.com/983661
+      color = +("0x" + color.slice(1).replace(
+          color.length < 5 && /./g, '$&$&'));
+
+      r = color >> 16;
+      g = color >> 8 & 255;
+      b = color & 255;
   }
 
-  render() {
-   
-    return (
+  // HSP (Highly Sensitive P) equation from http://alienryderflex.com/hsp.html
+  hsp = Math.sqrt(
+      0.299 * (r * r) +
+      0.587 * (g * g) +
+      0.114 * (b * b)
+  );
 
-  <ColorExtractor
-    src={this.props.merchant.merchant.coverPhoto}
-    getColors={colors => lightestColor(colors)}
-  />
-
-);
-}
+  // Return HSP value
+  return hsp;
 }
 
-export { Swatch };
-
-  function lightestColor(colors) {
-    console.log("lightest colors");
-    var hspHighest = 0;
-colors.forEach(function(color){
-  //console.log(color);
-  var lightness = lightOrDark(color);
-  if (lightness > hspHighest) {
-    hspHighest = lightness;
-    lightestColor = color;
+function hexToRgbA(hex) {
+  var c;
+  if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+      c = hex.substring(1).split('');
+      if (c.length == 3) {
+          c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+      }
+      c = '0x' + c.join('');
+      return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',.8)';
   }
-
-});
-console.log(hspHighest);
-console.log(lightestColor);
-console.log(hexToRgbA(lightestColor));
-  }
-
-  function hexToRgbA(hex){
-    var c;
-    if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
-        c= hex.substring(1).split('');
-        if(c.length== 3){
-            c= [c[0], c[0], c[1], c[1], c[2], c[2]];
-        }
-        c= '0x'+c.join('');
-        return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+',1)';
-    }
-    throw new Error('Bad Hex');
-}
-
-  function lightOrDark(color) {
-
-    // Variables for red, green, blue values
-    var r, g, b, hsp;
-    
-    // Check the format of the color, HEX or RGB?
-    if (color.match(/^rgb/)) {
-
-        // If HEX --> store the red, green, blue values in separate variables
-        color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
-        
-        r = color[1];
-        g = color[2];
-        b = color[3];
-    } 
-    else {
-        
-        // If RGB --> Convert it to HEX: http://gist.github.com/983661
-        color = +("0x" + color.slice(1).replace( 
-        color.length < 5 && /./g, '$&$&'));
-
-        r = color >> 16;
-        g = color >> 8 & 255;
-        b = color & 255;
-    }
-    
-    // HSP (Highly Sensitive P) equation from http://alienryderflex.com/hsp.html
-    hsp = Math.sqrt(
-    0.299 * (r * r) +
-    0.587 * (g * g) +
-    0.114 * (b * b)
-    );
-
-    // Return HSP value
-return hsp;
+  throw new Error('Bad Hex');
 }

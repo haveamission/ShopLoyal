@@ -16,6 +16,7 @@ import CardRow from './components/CardRow';
 import PrivateRoute from './containers/PrivateRoute';
 import Chat from './components/Chat';
 import Detail from './components/Detail';
+import Loading from './components/Loading';
 
 // Import Styles
 import './bootstrap2-toggle.min.css';
@@ -31,8 +32,9 @@ import {
 // Redux
 //import { combineReducers } from 'redux'
 import { Provider } from 'react-redux'
+import { PersistGate } from 'redux-persist/es/integration/react'
 //import createHistory from 'history/createBrowserHistory'
-const store = configureStore(history)
+const {store, persistor} = configureStore(history)
 
 const startApp = () => {
     
@@ -42,6 +44,7 @@ appsflyerInit();
     
 render((
     <Provider store={store}>
+    <PersistGate loading={<Loading />} persistor={persistor}>
     <ConnectedRouter history={history}>
     <Layout>
     <Route
@@ -68,7 +71,7 @@ render((
         <Route exact path="/cards/" component={Cards} />
         <Route exact path="/cardrow/" component={CardRow} />
         <Route exact path="/chat/" component={Chat} />
-        <Route exact path="/detail/" component={Detail} />
+        <Route path="/detail/" component={Detail} />
       </Switch>
     )}
     />
@@ -79,6 +82,7 @@ render((
           />
       </Layout>
     </ConnectedRouter>
+    </PersistGate>
   </Provider>
  
 ), document.getElementById('root'));

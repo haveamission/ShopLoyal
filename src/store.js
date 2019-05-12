@@ -16,9 +16,11 @@ const persistConfig = {
   storage,
 }
 
-export default function configureStore(preloadedState) {
+const persistedReducer = persistReducer(persistConfig, createRootReducer(history))
+
+function configureStore(preloadedState) {
   const store = createStore(
-    createRootReducer(history),
+    persistedReducer,
     preloadedState,
     compose(
       applyMiddleware(
@@ -29,4 +31,10 @@ export default function configureStore(preloadedState) {
   )
 
   return store
+}
+
+export default (history) => {
+  let store = configureStore(history);
+  let persistor = persistStore(store)
+  return { store, persistor }
 }

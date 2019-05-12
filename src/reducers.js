@@ -1,10 +1,14 @@
 import { combineReducers } from 'redux'
 import { connectRouter } from 'connected-react-router'
 import auth, * as fromAuth from './reducers/auth.js'
+//import general from './reducers/general.js'
+import saveColor from './reducers/general.js'
 
 export default (history) => combineReducers({
         auth: auth,
-  router: connectRouter(history)
+  router: connectRouter(history),
+  //general: general,
+  saveColor: saveColor,
 })
 
 export const isAuthenticated =

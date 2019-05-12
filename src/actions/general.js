@@ -4,14 +4,22 @@
 const Actions = {
     LEVEL_UP: 'LEVEL_UP',
     LEVEL_DOWN: 'LEVEL_DOWN',
+    SAVE_COLOR: 'SAVE_COLOR'
   };
   //
   //  Action Creators
   //
-  const levelUp = () => ({
+  export const levelUp = () => ({
     type: Actions.LEVEL_UP
   });
   
-  const levelDown = () => ({
+  export const levelDown = () => ({
     type: Actions.LEVEL_DOWN
   });
+
+  export default (color) => ({
+    type: Actions.SAVE_COLOR,
+    payload: color
+  });
+
+ 
