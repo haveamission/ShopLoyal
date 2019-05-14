@@ -11,7 +11,11 @@ import Background from "../img/fake_background_card.png";
 import { connect } from 'react-redux'
 import {bindActionCreators} from 'redux'
 import saveColor from '../actions/general'
+import SLBubble from './SLBubble'
+
+
 const getColors = require('get-image-colors')
+
 
 
 const API = 'http://localhost:3000/merchants';
@@ -19,11 +23,7 @@ const merchantAPI = 'http://localhost:3000/merchants?count=3';
 const addressAPI = 'http://localhost:3000/address/';
 
 
-const Bubble2 = () => (
-<Link to="/chat/"><div className="bubble">Sample text Merchant Text</div></Link>
-);
 
-export {Bubble2};
 
 class Card extends Component {
 
@@ -107,7 +107,7 @@ fetch(addressAPI + this.state.merchant.address_id)
     <div className="card titlecard" style={{backgroundImage: `url(${this.state.merchant.coverPhoto})`}}>
     <div className="layer" style={{backgroundColor : this.state.cardColor}}></div>
     {/* Split off into another component */}
-    <Bubble2 />
+    <SLBubble />
       <div className="card-left">
         <div className="card-logo">
           <img className="card-logo-img" src={this.state.merchant.logo} />

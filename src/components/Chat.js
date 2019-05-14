@@ -1,9 +1,15 @@
 import React, {Component} from 'react';
 import {GiftedChat, Bubble} from 'react-web-gifted-chat';
 import Background from "../img/fake_background_card.png";
-//import { GiftedChat } from 'react-native-gifted-chat';
-import Page from './Page'
-import Bubble2 from './Card'
+import Page from './Page';
+import ChatMessage from './ChatMessage.js';
+import emojiUtils from 'emoji-utils';
+import { Platform } from 'react-native';
+import Send from './Send';
+import Composer from './Composer';
+import InputToolbar from './InputToolbar';
+import SLBubble from './SLBubble'
+import { isSameUser, isSameDay } from './utils'
 
 const loremIpsum ='Lorem ipsum dolor sit amet, consectetur adipiscing elit';
 
@@ -49,18 +55,63 @@ class Chat extends Component {
     }
   }
 
+  renderMessage(props) {
+    const { currentMessage: { text: currText } } = props;
+
+    let messageTextStyle;
+
+    // Make "pure emoji" messages much bigger than plain text.
+    if (currText && emojiUtils.isPureEmojiString(currText)) {
+      messageTextStyle = {
+        fontSize: 28,
+        // Emoji get clipped if lineHeight isn't increased; make it consistent across platforms.
+        lineHeight: Platform.OS === 'android' ? 34 : 30,
+      };
+    }
+
+    return (
+      <ChatMessage {...props} messageTextStyle={messageTextStyle} />
+    );
+  }
+
+  renderInputToolbar(props){
+    // Here you will return your custom InputToolbar.js file you copied before and include with your stylings, edits.
+    return (
+         <InputToolbar {...props} />
+    )
+}
+
+renderBubble() {
+  const bubbleProps = this.getInnerComponentProps();
+  if (this.props.renderBubble) {
+    return this.props.renderBubble(bubbleProps);
+  }
+  return <SLBubble {...bubbleProps} />;
+}
+
+  renderComposer() {
+    return <Composer {...this.props} />;
+  }
+
+  renderSend = props => {
+    return <Send/>;
+  }
+
   render() {
     return (
 <Page>
       <div className="chat" style={styles.container}>
             
-        <div style={styles.chat}>
+        <div style={styles.chat} className="full-chat">
         {/* Make this into a link ultimately when routing method is decided on */}
         <div className="chatlinkback"><div className="triangle"></div><div className="chatlinktitle">Adventures in Toys</div></div>
           <GiftedChat user={{id: 1,}}
                       messages={this.state.messages}
                       onSend={this.onSend}
-                      renderBubble={<Bubble2 />}
+renderInputToolbar={this.renderInputToolbar}
+renderMessage={this.renderMessage}
+style={{alignItems: "flex-start"}}
+className="gift-chat-start"
                       />
           </div>
       </div>
@@ -71,8 +122,9 @@ class Chat extends Component {
 const styles = {
   container: {
     display:'flex',
-    flexDirection: 'row',
-    height: '100vh'
+    height: '80vh',
+    width: '95%',
+    margin: '0 auto'
   },
   conversationList: {
     display:'flex',
@@ -81,9 +133,6 @@ const styles = {
   chat: {
     display:'flex',
     flex: 3,
-    borderWidth: '1px',
-    borderColor: '#ccc',
-    borderStyle: 'solid',
     /*backgroundImage: `url(${Background})`*/
   },
   converationDetails: {
