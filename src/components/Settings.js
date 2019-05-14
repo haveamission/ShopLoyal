@@ -2,6 +2,15 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import Iframe from 'react-iframe'
 import Page from './Page'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBowlingBall } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faImages, faImage } from '@fortawesome/free-solid-svg-icons'
+
+
+
 
 const Settings  = () => {
     return (
@@ -63,3 +72,41 @@ const WebPage = (props) => (
     scrolling="no"
     />
 );
+
+const spinner () => (
+  <div className='spinner fadein'>
+    <FontAwesomeIcon icon={faBowlingBall} size='5x' color='#3B5998' />
+  </div>
+  );
+  
+const images (props) => ( 
+  props.images.map((image, i) =>
+    <div key={i} className='fadein'>
+      <div 
+        onClick={() => props.removeImage(image.public_id)} 
+        className='delete'
+      >
+        <FontAwesomeIcon icon={faTimesCircle} size='2x' />
+      </div>
+      <img src={image.secure_url} alt='' />
+    </div>
+  )
+  );
+  
+const buttons (props) => (
+  <div className='buttons fadein'>
+    <div className='button'>
+      <label htmlFor='single'>
+        <FontAwesomeIcon icon={faImage} color='#3B5998' size='10x' />
+      </label>
+      <input type='file' id='single' onChange={props.onChange} /> 
+    </div>
+    
+    <div className='button'>
+      <label htmlFor='multi'>
+        <FontAwesomeIcon icon={faImages} color='#6d84b4' size='10x' />
+      </label>
+      <input type='file' id='multi' onChange={props.onChange} multiple />
+    </div>
+  </div>
+  );
