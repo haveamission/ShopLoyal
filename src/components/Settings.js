@@ -1,16 +1,12 @@
-import React from 'react'
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import Iframe from 'react-iframe'
 import Page from './Page'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBowlingBall } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faImages, faImage } from '@fortawesome/free-solid-svg-icons'
-
-
-
+import { ClipLoader } from 'react-spinners';
 
 const Settings  = () => {
     return (
@@ -28,7 +24,7 @@ export default Settings;
 
 const ProfileSettings = () => (
     <ul className="profile-settings">
-<li className="list-top">Picture</li>
+<li className="list-top">Picture<UploadImage /></li>
 <li className="list-top">Name</li>
 <li className="list-top">Email</li>
     </ul>
@@ -73,13 +69,28 @@ const WebPage = (props) => (
     />
 );
 
-const spinner () => (
-  <div className='spinner fadein'>
-    <FontAwesomeIcon icon={faBowlingBall} size='5x' color='#3B5998' />
-  </div>
-  );
+class Spinner extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        loading: true
+      }
+    }
+    render() {
+      return (
+        <div className='sweet-loading'>
+          <ClipLoader
+            sizeUnit={"px"}
+            size={50}
+            color={'#123abc'}
+            loading={this.state.loading}
+          />
+        </div> 
+      )
+    }
+  }
   
-const images (props) => ( 
+const Images = (props) => ( 
   props.images.map((image, i) =>
     <div key={i} className='fadein'>
       <div 
@@ -93,7 +104,7 @@ const images (props) => (
   )
   );
   
-const buttons (props) => (
+const Buttons = (props) => (
   <div className='buttons fadein'>
     <div className='button'>
       <label htmlFor='single'>
@@ -103,3 +114,63 @@ const buttons (props) => (
     </div>
   </div>
   );
+
+ class UploadImage extends Component {
+  
+    state = {
+      uploading: false,
+      images: []
+    }
+  
+    onChange = e => {
+      const files = Array.from(e.target.files)
+      this.setState({ uploading: true })
+  
+      const formData = new FormData()
+  
+      files.forEach((file, i) => {
+        formData.append(i, file)
+      })
+  
+      /*fetch(`${API_URL}/image-upload`, {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => res.json())
+      .then(images => {
+        this.setState({ 
+          uploading: false,
+          images
+        })
+      })*/
+    }
+  
+    removeImage = id => {
+      this.setState({
+        images: this.state.images.filter(image => image.public_id !== id)
+      })
+    }
+    
+    render() {
+      const { uploading, images } = this.state
+  
+      const content = () => {
+        switch(true) {
+          case uploading:
+            return <Spinner />
+          case images.length > 0:
+            return <Images images={images} removeImage={this.removeImage} />
+          default:
+            return <Buttons onChange={this.onChange} />
+        }
+      }
+  
+      return (
+        <div>
+          <div className='buttons'>
+            {content()}
+          </div>
+        </div>
+      )
+    }
+  }
