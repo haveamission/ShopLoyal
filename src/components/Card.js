@@ -107,7 +107,7 @@ fetch(addressAPI + this.state.merchant.address_id)
     <div className="card titlecard" style={{backgroundImage: `url(${this.state.merchant.coverPhoto})`}}>
     <div className="layer" style={{backgroundColor : this.state.cardColor}}></div>
     {/* Split off into another component */}
-    <SLBubble />
+    {/*<SLBubble />*/}
       <div className="card-left">
         <div className="card-logo">
           <img className="card-logo-img" src={this.state.merchant.logo} />

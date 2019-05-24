@@ -3,6 +3,7 @@ import { render } from 'react-dom'
 import { ConnectedRouter } from 'connected-react-router'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import registerServiceWorker from './registerServiceWorker';
+import "@babel/polyfill";
 //import appsFlyer from 'cordova-plugin-appsflyer-sdk';
 
 // Import Components
@@ -17,6 +18,11 @@ import PrivateRoute from './containers/PrivateRoute';
 import Chat from './components/Chat';
 import Detail from './components/Detail';
 import Loading from './components/Loading';
+import LoginPage from './components/LoginPage';
+import Settings from './components/Settings';
+import Callback from './components/Callback';
+import Support from './components/Support';
+import Privacy from './components/Privacy';
 
 // Import Styles
 import './bootstrap2-toggle.min.css';
@@ -29,6 +35,11 @@ import {
 } from 'react-transition-group';
 //import 'bootstrap/dist/css/bootstrap.css';
 
+// Import Config
+
+import { OidcProvider } from 'redux-oidc';
+import userManager from './config/OIDC';
+
 // Redux
 //import { combineReducers } from 'redux'
 import { Provider } from 'react-redux'
@@ -36,14 +47,22 @@ import { PersistGate } from 'redux-persist/es/integration/react'
 //import createHistory from 'history/createBrowserHistory'
 const {store, persistor} = configureStore(history)
 
+console.log(userManager);
+
+
+
+//userManager.signinRedirect();
+
 const startApp = () => {
     
 // Initialize
 
 appsflyerInit();
+//oneSignal();
     
 render((
     <Provider store={store}>
+    <OidcProvider store={store} userManager={userManager}>
     <PersistGate loading={<Loading />} persistor={persistor}>
     <ConnectedRouter history={history}>
     <Layout>
@@ -64,14 +83,17 @@ render((
                     location={location}
                     render={() => (
       <Switch>
-        {/*<Route exact path="/login/" component={Login} />
-        <PrivateRoute path="/" component={App}/>*/}
-        <Route exact path="/" component={Cards} />
-        <Route exact path="/map/" component={Map} />
-        <Route exact path="/cards/" component={Cards} />
-        <Route exact path="/cardrow/" component={CardRow} />
-        <Route exact path="/chat/" component={Chat} />
-        <Route path="/detail/" component={Detail} />
+        <Route exact path="/login" component={LoginPage} />
+        <Route path="/callback/" component={Callback} />
+        <PrivateRoute exact path="/settings" component={Settings} />
+        <PrivateRoute exact path="/" component={Cards} />
+        <PrivateRoute exact path="/map/" component={Map} />
+        <PrivateRoute exact path="/cards/" component={Cards} />
+        <PrivateRoute exact path="/cardrow/" component={CardRow} />
+        <PrivateRoute exact path="/chat/" component={Chat} />
+        <PrivateRoute path="/detail/" component={Detail} />
+        <PrivateRoute path="/support/" component={Support} />
+        <PrivateRoute path="/privacy/" component={Privacy} />
       </Switch>
     )}
     />
@@ -83,6 +105,7 @@ render((
       </Layout>
     </ConnectedRouter>
     </PersistGate>
+    </OidcProvider>
   </Provider>
  
 ), document.getElementById('root'));
@@ -108,9 +131,24 @@ function appsflyerInit() {
     console.log(err);
   }
 
-  console.log(window.plugins);
+  //console.log(window.plugins);
   
   //window.plugins.appsFlyer.initSdk(options, onSuccess, onError);
+}
+
+function oneSignal() {
+    // Enable to debug issues.
+    // window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
+    
+    var notificationOpenedCallback = function(jsonData) {
+      console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
+    };
+  
+    window.plugins.OneSignal
+      .startInit("2f19cafc-d4ab-4b01-aecd-dd7961b3b8e3")
+      .handleNotificationOpened(notificationOpenedCallback)
+      .endInit();
+
 }
 
 if(!window.cordova) {

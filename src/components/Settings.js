@@ -7,67 +7,122 @@ import { faBowlingBall } from '@fortawesome/free-solid-svg-icons'
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import { faImages, faImage } from '@fortawesome/free-solid-svg-icons'
 import { ClipLoader } from 'react-spinners';
+import userManager from '../config/OIDC';
+import { connect } from "react-redux";
+import API from './API'
+import axios from 'axios';
+import { push } from 'connected-react-router'
 
-const Settings  = () => {
+class Settings extends Component {
+
+  state = {
+    profile: {},
+  }
+
+  configuration(data) {
+this.setState({profile: data});
+  }
+
+
+  componentDidMount() {
+
+    if(this.props.oidc.user) {
+
+let config = {
+  headers: {
+    Authorization: "Bearer " + this.props.oidc.user.access_token,
+  }
+}
+    
+
+axios.get(API.localBaseUrlString + API.userProfileAPI, config).then(
+  response => this.configuration(response.data)
+);
+  }
+  else {
+   // this.props.dispatch(push("/login"));
+  }
+}
+
+  render() {
+    console.log(this.state);
+    if (Object.keys(this.state.profile).length === 0) {
+      console.log("gets triggered");
+      return (
+        <Page>
+        <div />
+        </Page>
+      )
+  }
+
     return (
         <Page>
   <div className="settings">
-      <ProfileSettings />
-      <MainSettings />
+      <ProfileSettings profile={this.state.profile}/>
+      <MainSettings profile={this.state.profile} />
       <LogoutSettings />
   </div>
   </Page>
 )
+  }
 }
 
-export default Settings;
+const mapStateToProps = (state) => {
+  return {
+    oidc: state.oidc
+  };
+};
 
-const ProfileSettings = () => (
-    <ul className="profile-settings">
-<li className="list-top">Picture<UploadImage /></li>
-<li className="list-top">Name</li>
-<li className="list-top">Email</li>
-    </ul>
+function mapDispatchToProps(dispatch) {
+  return { dispatch };
+}
+
+export default connect(mapStateToProps)(Settings);
+
+class ProfileSettings extends React.Component {
+  onLoginButtonClick(event) {
+    event.preventDefault();
+    userManager.signinRedirect();
+  }
+
+
+
+  render() {
+
+    console.log(this.props);
+    return (
+<div>
+<button onClick={this.onLoginButtonClick}>Login with Google</button>
+<h3 className="profile-name">{this.props.profile.name}</h3>
+<div className="profile-email">{this.props.profile.email}</div>
+</div>
   )
+}
+}
 
-  const MainSettings = () => (
+class MainSettings extends React.Component {
+  render() {
+    return(
     <ul className="main-settings">
+    <div className="fav-merchants">
+    <span className="merchant-number">{this.props.profile.merchantCount}</span>
+    <div className="fav-merchants-text">Favorite Merchants</div>
+    </div>
 <Link to="/support/"><li>Support</li></Link>
-<Link to="/terms/"><li>Terms of Use</li></Link>
-<Link to="/privacy/"><li className="list-bottom">Privacy Policy</li></Link>
+<li>Waitlist</li>
+<li>Notifications</li>
+<li>Email Notifications</li>
+
     </ul>
   )
+}
+}
 
   const LogoutSettings = () => (
     <ul className="logout-settings">
-<li className="list-bottom">Logout</li>
+<li className="list-bottom">Log Out</li>
     </ul>
   )
-
-export const Support  = () => (
-         <WebPage url="https://www.shoployal.com/support" />
-        );
-
-        export const Terms  = () => (
-            <WebPage url="https://www.shoployal.com/terms" />
-           );
-
-           export const Privacy  = () => (
-            <WebPage url="https://www.shoployal.com/privacy" />
-           );
-
-const WebPage = (props) => (
-    <Iframe url={props.url}
-    width="100%"
-    height="1000em"
-    id="support"
-    className="webpage"
-    display="initial"
-    frameBorder="0"
-    overflow="hidden"
-    scrolling="no"
-    />
-);
 
 class Spinner extends React.Component {
     constructor(props) {

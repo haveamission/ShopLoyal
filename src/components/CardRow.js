@@ -8,7 +8,11 @@ import Map from "../img/map.png";
 import ScrollMenu from 'react-horizontal-scrolling-menu';
 import Card from "./Card";
 import PromoCard from "./PromoCard";
-import withFetching from "./API";
+//import withFetching from "./API";
+import axios from 'axios';
+import API from './API'
+import { connect } from "react-redux";
+
 
 const noticeAPI = 'http://localhost:3000/notice?count=3';
 const merchantAPI = 'http://localhost:3000/merchants?count=3';
@@ -30,15 +34,6 @@ return null;
 function rnd(min,max){
     return Math.floor(Math.random()*(max-min+1)+min );
 }
-/*var i = 0;
-for (i = 0; i < rnd(2, 4); i++) { 
-list.push(<PromoCard />);
-}*/
-
-//const XYZ = withFetching(noticeAPI)(promoIter)
-
-const XYZ = "XYZ";
-export { XYZ };
    
   class CardRow extends Component {
     constructor() {
@@ -47,24 +42,27 @@ export { XYZ };
       //console.log(withFetching);
       //console.log(noticeAPI);
       //console.log(promoIter);
-    const test = withFetching(noticeAPI)(promoIter);
+    //const test = withFetching(noticeAPI)(promoIter);
     //console.log("BEFORE TEST");
     //console.log(test);
 }
+
+
 
 list = []
 
 componentWillMount() {
   //console.log("will mount");
-  const test = withFetching(noticeAPI)(promoIter);
-  this.setState({testval: test})
-  console.log(this.props.merchant);
+  //const test = withFetching(noticeAPI)(promoIter);
+  //this.setState({testval: test})
+  //console.log(this.props.merchant);
   this.list.push(<Card merchant={this.props.merchant} />)
 }
 
 componentDidMount() {
   //console.log("did mount");
   //console.log(this.props.merchant);
+
 }
     render() {
    
@@ -79,4 +77,11 @@ componentDidMount() {
     }
   }
 
-  export default CardRow;
+  const mapStateToProps = (state) => {
+    return {
+      oidc: state.oidc
+    };
+  };
+  
+
+  export default connect(mapStateToProps)(CardRow);

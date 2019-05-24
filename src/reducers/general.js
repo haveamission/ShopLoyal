@@ -16,12 +16,30 @@ import Actions from '../actions/general.js'
     return state;
   };*/
 
+ export const author = (state = 1, action) => {
+    //console.log(state);
+    console.log("tu cuerpo");
+      switch (action.type) {
+        case 'AUTHOR':
+        console.log("test author");
+        return {author: action.payload}
+      }
+      //console.log("final state");
+      //console.log(state);
+      return state;
+    };
+
   export default (state = 1, action) => {
     //console.log(state);
+    console.log("tu cuerpo 2");
       switch (action.type) {
         case 'SAVE_COLOR':
         return {color: action.payload}
+        case 'AUTHOR':
+        console.log("test author");
+        return {author: action.payload}
       }
+
       //console.log("final state");
       //console.log(state);
       return state;

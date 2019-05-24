@@ -299,6 +299,11 @@ top: 38rem;
 */
 .chat textarea {
     color: #000;
+    box-sizing: border-box;
+    height: 100%;
+    width: 70%;
+    float: left;
+
 }
 .chatlinkback {
    font-size:12px;
@@ -323,6 +328,15 @@ top: 38rem;
     margin-top: 1rem;
     margin-right: 3rem;
 }
+::-webkit-input-placeholder {
+    transform:translate3d(0,1em,0)
+ }
+ /*
+ * A bit messy, clean up later on when there is time to do so
+ */
+ .full-chat > div:nth-of-type(2) > div:first-of-type {
+     align-items: flex-start;
+ }
 
 /*
 * Notification Bubble - this possibly should possibly be refactored to take advantage of SOLID with chat application
@@ -392,6 +406,145 @@ font-size: 2rem;
   .ico-times:before{ content: "\2715"; }
   .ico-check:before{ content: "\2714"; }
 
+/*
+* Login page and related styles
+*/
+.login-header {
+    text-align: center;
+    width: 60%;
+    margin: 0 auto;
+    margin-top: 6em;
+    /*line-height: 25px;*/
+}
+.facebookblue {
+    background-color: #3b5998;
+    color: #FFF;
+}
+.googlered {
+    background-color: #db3236;
+    color: #FFF;
+}
+.loginbutton {
+    text-align: center;
+    width: 70%;
+    margin: 0 auto;
+    padding-left: .5em;
+    padding-right: .5em;
+    padding-top: .75em;
+    padding-bottom: .5em;
+    font-size: 14px;
+    margin-top: .5em;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    display: flex;
+}
+.loginbuttongroup {
+    margin-top: 10rem;
+}
+.login-img {
+    width: 2em;
+    height: 2em;
+    align-self:flex-end;
+    vertical-align: middle;
+    margin-top: -1.5em;
+}
+.bottomtext {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 25%;
+    bottom: 1em;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*
+* Settings pages
+*/
+.settings {
+    margin-top: 5rem;
+}
+.settings ul {
+    background-color: #FFF;
+    padding-top: 0em;
+    padding-bottom: 0em;
+    color: #989ea2;
+    margin-bottom: 2em;
+    border-top: 1px solid #e4e3e6;
+    border-bottom: 1px solid #e4e3e6;
+}
+.settings ul li {
+    border-bottom: 1px solid #e4e3e6;
+    padding-top:1em;
+    padding-bottom:1em;
+    margin-left:1em;
+}
+.settings ul a {
+    text-decoration: none;
+    color: #989ea2;
+}
+.settings ul a li:active, .settings ul a li:target {
+    background-color: #d9d9d9;
+    margin-left:0em;
+    padding-left: 1em;
+    border-bottom: 0px;
+    border-top: 0px;
+}
+.settings ul .list-bottom {
+    border-bottom: none;
+    padding-top:1em;
+    padding-bottom:1em;
+    margin-left:1em;
+}
+::-webkit-scrollbar {
+    width: 0px;  /* Remove scrollbar space */
+    background: transparent;  /* Optional: just make scrollbar invisible */
+}
+::-webkit-scrollbar { 
+    display: none; 
+}
+html {
+    overflow: scroll;
+    overflow-x: hidden;
+}
+.settings #single {
+    display: none;
+}
+.setting-left {
+    font-weight: 900;
+    color: #000;
+}
+.setting-right {
+    float: right;
+    margin-right: 5%;
+}
+.profile-name {
+    color: #536DFE;
+    text-align: center;
+    margin: 0 auto;
+    font-size: 18px;
+}
+.profile-email {
+    color: #ACACAC;
+    text-align: center;
+    margin: 0 auto;
+    font-size: 12px;
+}
+.fav-merchants {
+    margin: 0 auto;
+    text-align: center;
+}
+.merchant-number {
+    color: #000;
+    font-size: 18px;
+}
+.fav-merchants-text {
+    color: #000;
+    font-size: 10px;
+}
 
 
   /*

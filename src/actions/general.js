@@ -4,7 +4,8 @@
 const Actions = {
     LEVEL_UP: 'LEVEL_UP',
     LEVEL_DOWN: 'LEVEL_DOWN',
-    SAVE_COLOR: 'SAVE_COLOR'
+    SAVE_COLOR: 'SAVE_COLOR',
+    AUTHOR: 'AUTHOR'
   };
   //
   //  Action Creators
@@ -15,6 +16,11 @@ const Actions = {
   
   export const levelDown = () => ({
     type: Actions.LEVEL_DOWN
+  });
+
+  export const author = (bearer) => ({
+    type: Actions.AUTHOR,
+    payload: bearer
   });
 
   export default (color) => ({
