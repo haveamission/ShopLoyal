@@ -56,12 +56,16 @@ componentWillMount() {
   //const test = withFetching(noticeAPI)(promoIter);
   //this.setState({testval: test})
   //console.log(this.props.merchant);
-  this.list.push(<Card merchant={this.props.merchant} />)
+  console.log("props merchant");
+  console.log(this.props.merchant);
+  this.list.push(<Card merchant={this.props.merchant.merchant} />)
 }
 
 componentDidMount() {
   //console.log("did mount");
   //console.log(this.props.merchant);
+  console.log("will mount merchant");
+  console.log(this.props.merchant);
 
 }
     render() {

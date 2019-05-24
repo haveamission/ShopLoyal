@@ -21,9 +21,9 @@ const persistConfig = {
 const oidcMiddleware = createOidcMiddleware(userManager);
 
 const loggerMiddleware = store => next => action => {
-  console.log("Action type:", action.type);
-  console.log("Action payload:", action.payload);
-  console.log("State before:", store.getState());
+  //console.log("Action type:", action.type);
+  //console.log("Action payload:", action.payload);
+  //console.log("State before:", store.getState());
   next(action);
   console.log("State after:", store.getState());
 };

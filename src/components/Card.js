@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { ColorExtractor } from 'react-color-extractor';
 import FakeLogo from "../img/fake_test_logo.png";
-import Favorite from "../img/full_heart_white.png";
+import UnFavorite from "../img/full_heart_white.png";
+import Favorite from "../img/full_heart_purple.png";
 import MessageText from "../img/message.png";
 import Call from "../img/call.png";
 import Map from "../img/map.png";
@@ -12,26 +13,56 @@ import { connect } from 'react-redux'
 import {bindActionCreators} from 'redux'
 import saveColor from '../actions/general'
 import SLBubble from './SLBubble'
+import axios from 'axios'
+import API from './API'
+import { push } from 'connected-react-router'
 
 
 const getColors = require('get-image-colors')
 
-
-
-const API = 'http://localhost:3000/merchants';
-const merchantAPI = 'http://localhost:3000/merchants?count=3';
-const addressAPI = 'http://localhost:3000/address/';
-
-
-
-
 class Card extends Component {
 
+  routeChange =() => {
+    console.log(this.state);
+    let path = "detail/" + this.state.merchant.id;
+    this.props.dispatch(push(path));
+    }
+  
+  handleFavorite(e) {
+    e.stopPropagation();
+    console.log("child");
+    if(this.props.oidc) {
+      let config = {
+        headers: {
+          Authorization: "Bearer " + this.props.oidc.user.access_token,
+          //Origin: "App",
+        }
+      }
+      //this.state.merchant.isFavorite
+      console.log("Before favorite send");
+      axios.post(API.localBaseUrlString + API.favoriteMerchantAPI, {"merchantId": this.state.merchant.id, "status": "true"}, config).then(
+        response => this.configuration(response.data)
+      ).catch(function(error) {
+        console.log(error);
+      })
+    
+    }
+  }
+
+  constructor() {
+    super();
+    this.state = {
+      data: {},
+      color: "purple",
+    }
+    this.routeChange = this.routeChange.bind(this);
+    this.handleFavorite = this.handleFavorite.bind(this);
+  }
+
   static getDerivedStateFromProps(props, state) {
-    console.log("drived props");
-    console.log(props);
     // Normalizing the data, as react adds an object wrapper sometimes
-    var merchant = {};
+
+    var merchant = {}
 
     if(typeof props.merchant.merchant !== 'undefined') {
       merchant = props.merchant.merchant;
@@ -42,9 +73,7 @@ class Card extends Component {
     return {"merchant": merchant};
   }
 
-  state = {
-    data: {},
-  }
+
 
   lightestColor(colors) {
     var highestColor;
@@ -60,6 +89,7 @@ class Card extends Component {
   }
 
   if (error) {
+    console.log(error);
     return <p>{error.message}</p>;
   }
 
@@ -72,26 +102,19 @@ class Card extends Component {
 
     // Not ideal - deal with how react does this later
 
-    if (typeof this.merchant !== 'undefined') {
-    getColors(this.merchant).then(colors => {
+    console.log("THIS MERCHANT!!");
+    console.log(this.props.merchant);
+
+    if (typeof this.props.merchant !== 'undefined') {
+    getColors(API.corsString + this.props.merchant.coverPhoto).then(colors => {
       var colorsHex = colors.map(color => color.hex());
       this.lightestColor(colorsHex);
     })
   }
-
-fetch(addressAPI + this.state.merchant.address_id)
-.then(response => {
-  if (response.ok) {
-    return response.json();
-  } else {
-    throw new Error('Something wenta wrong ...');
-  }
-})
-.then(
-  data => this.setState({ data, isLoading: false }
-  ))
-
 }
+
+
+
   render() {
     if (!this.state.data) {
       return <div />
@@ -101,10 +124,7 @@ fetch(addressAPI + this.state.merchant.address_id)
   console.log(this.state);
 
     return (
-      <Link to={{
-        pathname: `/detail/${this.state.merchant.id}`
-      }}>
-    <div className="card titlecard" style={{backgroundImage: `url(${this.state.merchant.coverPhoto})`}}>
+    <div className="card titlecard" onClick={this.routeChange}style={{backgroundImage: `url(${this.state.merchant.coverPhoto})`}}>
     <div className="layer" style={{backgroundColor : this.state.cardColor}}></div>
     {/* Split off into another component */}
     {/*<SLBubble />*/}
@@ -114,7 +134,12 @@ fetch(addressAPI + this.state.merchant.address_id)
         </div>
       </div>
       <div className="card-right">
-        <img className="card-favorite" src={Favorite} />
+      {this.state.merchant.isFavorite ? (
+        <img className={`card-favorite`} onClick={this.handleFavorite} src={Favorite} />
+      ) : (
+        <img className={`card-favorite`} onClick={this.handleFavorite} src={UnFavorite} />
+      )}
+        
         <div className="card-right-bottom">
           <h2 className="card-title">{this.state.merchant.name}</h2>
           <div className="card-address">{this.state.data.address1}</div>
@@ -129,7 +154,6 @@ fetch(addressAPI + this.state.merchant.address_id)
         </div>
       </div>
     </div>
-    </Link>
 );
 }
 }
@@ -137,12 +161,15 @@ fetch(addressAPI + this.state.merchant.address_id)
 const mapStateToProps = (state) => {
   return {
     //general: state.general,
+    oidc: state.oidc,
     color: state.saveColor
   };
 };
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({saveColor}, dispatch);
+  //return bindActionCreators({saveColor}, dispatch);
+  let actions = bindActionCreators({ saveColor });
+  return { ...actions, dispatch };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Card)
@@ -192,7 +219,7 @@ function hexToRgbA(hex) {
           c = [c[0], c[0], c[1], c[1], c[2], c[2]];
       }
       c = '0x' + c.join('');
-      return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',.8)';
+      return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',.7)';
   }
   throw new Error('Bad Hex');
 }

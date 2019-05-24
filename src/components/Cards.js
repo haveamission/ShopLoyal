@@ -5,7 +5,7 @@ import Background from "../img/fake_background_card.png";
 import Message from "../img/message.png";
 import Call from "../img/call.png";
 import Map from "../img/map.png";
-import CardRow, {XYZ} from "./CardRow";
+import CardRow from "./CardRow";
 import Page from './Page'
 import axios from 'axios';
 import API from './API'
@@ -17,13 +17,14 @@ const merchantAPI = 'http://localhost:3000/merchants?count=3';
 
 class Cards extends Component {
     state = {
-        data: []
+        data: [],
+        isLoading: true
       }
 
       configuration(data) {
         console.log("merchant data");
         console.log(data);
-        this.setState({data: data, isLoading: false});
+        this.setState({data, isLoading: false});
         console.log("card row data");
         console.log(data);
           }
@@ -35,7 +36,7 @@ class Cards extends Component {
         let config = {
           headers: {
             Authorization: "Bearer " + this.props.oidc.user.access_token,
-            Origin: "App",
+            //Origin: "App",
           }
         }
         axios.get(API.localBaseUrlString + API.merchantAPI + "?lat=42.3968906547252&limit=30&lng=-82.9234670923287&radius=10.0&search=Food", config).then(
@@ -45,40 +46,26 @@ class Cards extends Component {
         })
       
       }
-
-
-
-
-
-        fetch(merchantAPI)
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Something went wrong ...');
-          }
-        })
-        .then(
-          data => this.setState({ data, isLoading: false }
-          )
-        )
         }
 
         if (error) {
             return <p>{error.message}</p>;
           }
         
-          if (isLoading) {
-            return <p>Loading ...</p>;
-          }
+
 
 
         render() {
+          if (this.state.isLoading) {
+            return <p>Loading ...</p>;
+          }
+          console.log("state value new");
+          console.log(this.state.data.merchants);
             return (
     <Page>
     <div>
-    {this.state.data.map( merchants =>
-     <CardRow 
+    {this.state.data.merchants.map( merchant =>
+     <CardRow
      merchant={{merchant}}
       />
   )}

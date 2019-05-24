@@ -35,8 +35,11 @@ import React, { Component } from 'react';
 
   export default withFetching;*/
 
+  var corsString = "https://cors-anywhere.herokuapp.com/";
+
   export default {
-    localBaseUrlString:"https://cors-anywhere.herokuapp.com/https://dev.apiv2.wantify.com/api/v1",
+    corsString: corsString,
+    localBaseUrlString:corsString + "https://dev.apiv2.wantify.com/api/v1",
     devBaseUrlString:"https://dev.apiv2.wantify.com/api/v1",
     prodBaseUrlString:"https://api.v2.wantify.com/api/v1",
  
@@ -46,7 +49,7 @@ import React, { Component } from 'react';
   
     merchantTypeaheadSearchAPI:"/search",
     merchantsAPI:"/merchants",
-    favoriteMerchantAPI:"users/me/favorites",
+    favoriteMerchantAPI:"/users/me/favorites",
     /* the two below are variables, change */
     merchantAPI:"/merchants",
     merchantNoticesAPI:"/merchants/%@/notices",
