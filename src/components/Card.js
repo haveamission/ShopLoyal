@@ -40,7 +40,7 @@ class Card extends Component {
       }
       //this.state.merchant.isFavorite
       console.log("Before favorite send");
-      axios.post(API.localBaseUrlString + API.favoriteMerchantAPI, {"merchantId": this.state.merchant.id, "status": "true"}, config).then(
+      axios.post(API.localBaseUrlString + API.favoriteMerchantAPI, {"merchantId": this.state.merchant.id, "status": !this.state.merchant.isFavorite}, config).then(
         response => this.configuration(response.data)
       ).catch(function(error) {
         console.log(error);
@@ -53,7 +53,6 @@ class Card extends Component {
     super();
     this.state = {
       data: {},
-      color: "purple",
     }
     this.routeChange = this.routeChange.bind(this);
     this.handleFavorite = this.handleFavorite.bind(this);

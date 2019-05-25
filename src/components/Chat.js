@@ -54,6 +54,16 @@ class Chat extends Component {
       this.setState({messages: [message,...this.state.messages]})
     }
   }
+  
+  componentDidMount() {
+  
+  axios.post(API.localBaseUrlString + API.favoriteMerchantAPI, {"merchantId": this.state.merchant.id, "status": !this.state.merchant.isFavorite}, config).then(
+        response => this.configuration(response.data)
+      ).catch(function(error) {
+        console.log(error);
+      })
+  
+  }
 
   renderMessage(props) {
     const { currentMessage: { text: currText } } = props;
