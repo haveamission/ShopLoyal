@@ -54,5 +54,8 @@ import React, { Component } from 'react';
     merchantAPI:"/merchants",
     merchantNoticesAPI:"/merchants/%@/notices",
     userProfileAPI:"/users/me/profile",
-    userFavoritesAPI:"/users/me/favorites"
+    userFavoritesAPI:"/users/me/favorites",
+    
+    channels: "users/me/channels",
+    channel: "users/me/channel",
   }

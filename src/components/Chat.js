@@ -36,6 +36,52 @@ function generateMessage(text, index, additionalData) {
   }
 }
 
+loadChannels(data) {
+
+}
+
+loadChannel(data) {
+
+}
+
+pullChannels() {
+
+let config = {
+        headers: {
+          Authorization: "Bearer " + this.props.oidc.user.access_token,
+          //Origin: "App",
+        }
+      }
+
+axios.get(API.localBaseUrlString + API.channels, config).then(
+response => loadChannels(response.data)
+).catch(function(error) {
+console.log(error);
+})
+}
+
+pullChannel() {
+
+let config = {
+        headers: {
+          Authorization: "Bearer " + this.props.oidc.user.access_token,
+          //Origin: "App",
+        }
+      }
+      
+      
+var body = {
+merchantId: this.state.merchant.id,
+channelId: this.state.merchant.id + "-" this.state.user.id,
+}
+
+axios.post(API.localBaseUrlString + API.channel, body, config).then(
+response => loadChannel(response.data)
+).catch(function(error) {
+console.log(error);
+})
+}
+
 class Chat extends Component {
   constructor() {
     super()
