@@ -10,6 +10,8 @@ import Composer from './Composer';
 import InputToolbar from './InputToolbar';
 import SLBubble from './SLBubble'
 import { isSameUser, isSameDay } from './utils'
+import axios from 'axios'
+import API from './API'
 
 const loremIpsum ='Lorem ipsum dolor sit amet, consectetur adipiscing elit';
 
@@ -57,11 +59,22 @@ class Chat extends Component {
   
   componentDidMount() {
   
-  axios.post(API.localBaseUrlString + API.favoriteMerchantAPI, {"merchantId": this.state.merchant.id, "status": !this.state.merchant.isFavorite}, config).then(
+    if(this.props.oidc) {
+      let config = {
+        headers: {
+          Authorization: "Bearer " + this.props.oidc.user.access_token,
+          //Origin: "App",
+        }
+      }
+      //this.state.merchant.isFavorite
+      console.log("Before favorite send");
+      axios.post(API.localBaseUrlString + API.favoriteMerchantAPI, {"merchantId": this.state.merchant.id, "status": !this.state.merchant.isFavorite}, config).then(
         response => this.configuration(response.data)
       ).catch(function(error) {
         console.log(error);
       })
+    
+    }
   
   }
 
