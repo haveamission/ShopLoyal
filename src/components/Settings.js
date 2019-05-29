@@ -13,6 +13,8 @@ import API from './API'
 import LogoutSettings from './LogoutSettings'
 import axios from 'axios';
 import { push } from 'connected-react-router'
+import MainSettings from './MainSettings'
+
 
 class Settings extends Component {
 
@@ -22,6 +24,25 @@ class Settings extends Component {
 
   configuration(data) {
 this.setState({profile: data});
+  }
+
+  getSettings() {
+    let config = {
+      headers: {
+        Authorization: "Bearer " + this.props.oidc.user.access_token,
+      }
+    }
+
+    axios.get(API.localBaseUrlString + API.settings, config).then(
+      response => this.loadSettings(response.data)
+      ).catch(function(error) {
+      console.log(error);
+      })
+  }
+
+  loadSettings(data) {
+console.log(data);
+this.setState(data);
   }
 
 
@@ -39,6 +60,9 @@ let config = {
 axios.get(API.localBaseUrlString + API.userProfileAPI, config).then(
   response => this.configuration(response.data)
 );
+
+this.getSettings();
+
   }
   else {
    // this.props.dispatch(push("/login"));
@@ -46,6 +70,7 @@ axios.get(API.localBaseUrlString + API.userProfileAPI, config).then(
 }
 
   render() {
+    console.log("state here");
     console.log(this.state);
     if (Object.keys(this.state.profile).length === 0) {
       console.log("gets triggered");
@@ -60,7 +85,7 @@ axios.get(API.localBaseUrlString + API.userProfileAPI, config).then(
         <Page>
   <div className="settings">
       <ProfileSettings profile={this.state.profile}/>
-      <MainSettings profile={this.state.profile} />
+      <MainSettings data={this.state} />
       <LogoutSettings />
   </div>
   </Page>
@@ -99,25 +124,6 @@ class ProfileSettings extends React.Component {
   )
 }
 }
-
-class MainSettings extends React.Component {
-  render() {
-    return(
-    <ul className="main-settings">
-    <div className="fav-merchants">
-    <span className="merchant-number">{this.props.profile.merchantCount}</span>
-    <div className="fav-merchants-text">Favorite Merchants</div>
-    </div>
-<Link to="/support/"><li>Support</li></Link>
-<li>Waitlist</li>
-<li>Notifications</li>
-<li>Email Notifications</li>
-
-    </ul>
-  )
-}
-}
-
   
 const Images = (props) => ( 
   props.images.map((image, i) =>

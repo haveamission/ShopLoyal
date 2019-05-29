@@ -46,7 +46,6 @@ class Card extends Component {
       ).catch(function(error) {
         console.log(error);
       })
-    
     }
   }
 
@@ -72,8 +71,6 @@ class Card extends Component {
     }
     return {"merchant": merchant};
   }
-
-
 
   lightestColor(colors) {
     var highestColor;
@@ -119,9 +116,9 @@ class Card extends Component {
     if (!this.state.data) {
       return <div />
   }
-  console.log("further bad days");
-  console.log(this.props);
-  console.log(this.state);
+  //console.log("further bad days");
+  //console.log(this.props);
+  //console.log(this.state);
 
     return (
     <div className="card titlecard" onClick={this.routeChange}style={{backgroundImage: `url(${this.state.merchant.coverPhoto})`}}>
@@ -142,7 +139,7 @@ class Card extends Component {
         
         <div className="card-right-bottom">
           <h2 className="card-title">{this.state.merchant.name}</h2>
-          <div className="card-address">{this.state.data.address1}</div>
+          <div className="card-address">{this.state.merchant.address1}</div>
           <hr />
           <div className="card-nav">
           <ul>

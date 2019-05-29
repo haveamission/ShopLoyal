@@ -15,7 +15,19 @@ import Loading from './Loading'
 class Cards extends Component {
     state = {
         data: [],
-        isLoading: true
+        isLoading: true,
+        position: {
+          latitude: 0,
+          longitude: 0,
+        },
+search: "",
+      }
+      constructor() {
+        super();
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(this.showPosition);
+        }
+        this.showPosition = this.showPosition.bind(this);
       }
 
       configuration(data) {
@@ -25,24 +37,40 @@ class Cards extends Component {
         console.log("card row data");
         console.log(data);
           }
+
+          showPosition =(position) =>  {
+            console.log("position");
+            console.log(position);
+            this.setState({position: position.coords});
+            if(this.props.oidc) {
+              let config = {
+                headers: {
+                  Authorization: "Bearer " + this.props.oidc.user.access_token,
+                  //Origin: "App",
+                }
+              }
+              console.log("top girl");
+              console.log(API.localBaseUrlString + API.merchantAPI + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search);
+              axios.get(API.localBaseUrlString + API.merchantAPI + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search, config).then(
+                response => this.configuration(response.data)
+              ).catch(function(error) {
+                console.log(error);
+              })
+            
+            }
+          }
     
 
     componentDidMount() {
 
-      if(this.props.oidc) {
-        let config = {
-          headers: {
-            Authorization: "Bearer " + this.props.oidc.user.access_token,
-            //Origin: "App",
-          }
-        }
-        axios.get(API.localBaseUrlString + API.merchantAPI + "?lat=42.3968906547252&limit=30&lng=-82.9234670923287&radius=10.0&search=Food", config).then(
-          response => this.configuration(response.data)
-        ).catch(function(error) {
-          console.log(error);
-        })
-      
-      }
+      console.log("geolocation");
+      console.log(navigator.geolocation);
+
+
+      console.log("position gets here")
+      console.log(this.state);
+
+
         }
 
         if (error) {
@@ -53,10 +81,10 @@ class Cards extends Component {
             return <Loading />;
           }
           console.log("state value new");
-          console.log(this.state.data.merchants);
+          console.log(this.state.data);
             return (
     <Page>
-    <div>
+    <div className="cards">
     {this.state.data.merchants.map( merchant =>
      <CardRow
      merchant={{merchant}}

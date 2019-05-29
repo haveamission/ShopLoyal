@@ -23,6 +23,8 @@ import Settings from './components/Settings';
 import Callback from './components/Callback';
 import Support from './components/Support';
 import Privacy from './components/Privacy';
+import Error from './components/Error';
+import FavMerchants from './components/FavMerchants';
 
 // Import Styles
 import './bootstrap2-toggle.min.css';
@@ -85,6 +87,7 @@ render((
       <Switch>
         <Route exact path="/login" component={LoginPage} />
         <Route path="/callback/" component={Callback} />
+        <Route path="/error/" component={Error} />
         <PrivateRoute exact path="/settings" component={Settings} />
         <PrivateRoute exact path="/" component={Cards} />
         <PrivateRoute exact path="/map/" component={Map} />
@@ -94,6 +97,7 @@ render((
         <PrivateRoute path="/detail/" component={Detail} />
         <PrivateRoute path="/support/" component={Support} />
         <PrivateRoute path="/privacy/" component={Privacy} />
+        <PrivateRoute path="/favmerchants/" component={FavMerchants} />
       </Switch>
     )}
     />

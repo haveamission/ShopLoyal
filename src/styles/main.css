@@ -73,11 +73,14 @@ header {
 /*
 * Card-specific styles
 */
+.cards .card {
+    overflow: hidden;
+}
 .card {
 width: 34rem;
 height: 19rem;
 margin: 0 auto;
-overflow: hidden;
+
 position: relative;
 margin-bottom: 3rem;
 color: #FFF;
@@ -329,6 +332,17 @@ top: 38rem;
     margin-top: 1rem;
     margin-right: 3rem;
 }
+.right-triangle {
+    transform: rotate(-45deg);
+    border-right: .2rem solid;
+    border-bottom: .2rem solid;
+    height: 1.3rem;
+    width: 1.3rem;
+    -webkit-transform: rotate(-45deg);
+    display: inline-block;
+    margin-left: 1rem;
+    margin-top: 1rem;
+}
 ::-webkit-input-placeholder {
     transform:translate3d(0,1em,0)
  }
@@ -375,10 +389,50 @@ top: 38rem;
 .detail .layer {
     display: none;
 }
+.detail .about {
+    margin-top: 10rem;
+}
 .detail .card {
     width: 100%;
     margin-bottom: 0rem;
     margin-top: 5rem;
+    background-repeat: no-repeat;
+    height: 15rem;
+}
+.detail .card-nav {
+    margin-top: 10.5rem;
+    position: absolute;
+}
+.detail .card-nav li {
+    color: #27295F;
+    text-decoration: none;
+    font-family: Helvetica, Arial, sans-serif;
+    text-align: center;
+    padding: 0 10px;
+    line-height: 20px;
+    display: inline-block;
+    position: relative;
+    border-radius: 5px;
+    /*background-image: linear-gradient(#335b71 45%, #03324c 55%);*/
+    box-shadow: 0 2px 2px #536DFE;
+}
+.detail .card-nav img {
+    vertical-align: middle;
+}
+.detail .card-address {
+    position: absolute;
+    margin-top: 8rem;
+    color: #969FA2;
+}
+.detail .card hr {
+    display: none;
+}
+.detail .card-title {
+    margin-top: 6rem;
+    position: absolute;
+    color: #27295F;
+    font-weight: bold;
+    font-family: "Monserrat"
 }
 .detail .ico-times {
     position: absolute;
@@ -544,11 +598,18 @@ html {
 }
 .merchant-number {
     color: #000;
-    font-size: 18px;
+    font-size: 1.75rem;
 }
 .fav-merchants-text {
     color: #000;
     font-size: 10px;
+}
+.toggle-text {
+    margin-left: 5%;
+    vertical-align: super;
+}
+.main-settings label {
+    width: 100%;
 }
 
 /*
@@ -557,6 +618,41 @@ html {
 .sweet-loading {
     margin: 0 auto;
     text-align: center;
+}
+
+/*
+* Favorite Merchants
+*/
+.fav-merchant-item {
+    margin-bottom: 2rem;
+    color: #000;
+}
+.fav-merchant-item .favorite {
+    width: 3rem;
+    margin-right: 1rem;
+}
+.fav-merchant-item .fav-logo {
+    width: 3rem;
+    margin-left: 1rem;
+    height: 3rem;
+}
+.fav-merchant-item .favorite {
+    float: right;
+}
+.fav-merchant-item .fav-item {
+    display: inline-block;
+    margin-left: 1.5rem;
+}
+.fav-merchant-item .fav-address {
+
+    font-size: 1rem;
+    /* Will accomplish what you want - but maybe a more elegant way? */
+    margin-left: 5rem;
+    margin-top: -1rem;
+}
+.fav-merchant-item .fav-address img {
+    width: 1.2rem;
+    vertical-align: text-bottom;
 }
 
 

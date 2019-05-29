@@ -3,12 +3,14 @@ import { connectRouter } from 'connected-react-router'
 import auth, * as fromAuth from './auth.js'
 import general from './general.js'
 import {author} from './general.js'
+import LocationReducer from './location.js'
 import { reducer as oidcReducer } from 'redux-oidc';
 export default (history) => combineReducers({
         auth: auth,
   router: connectRouter(history),
   general: general,
   oidc: oidcReducer,
+  coordinates: LocationReducer,
 })
 export const isAuthenticated =
  state => fromAuth.isAuthenticated(state.auth)

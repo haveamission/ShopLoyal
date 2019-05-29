@@ -2,48 +2,78 @@ import React, { Component } from 'react';
 import Card from "./Card";
 import Page from './Page'
 import { connect } from 'react-redux'
+import getLocation from '../actions/location'
+import {bindActionCreators} from 'redux'
+import axios from 'axios';
+import API from './API'
+import Promotions from './Promotions'
 
-const About = () => (
-    
+class About extends Component {
+  render() {
+    return (
 <div className="about">
 <h3>About</h3>
-<p>Our selection of toys is one of the largest in the Metro Detroit area. In our store, you can find all your kid's favorites. We are always up-to-date with the latest and greatest toys that they're sure to love.</p>
+<p>{this.props.desc}</p>
 </div>
 );
-
-const Promotions = () => (
-<div className="promotions">
-<h3>Promotions</h3>
-</div>
-);
+  }
+}
 
 class Detail extends Component {
 
     state = {
         data: {
         },
+        search: "",
       }
 
       goBack() {
         this.props.history.goBack();
       }
 
-      componentWillMount() {
-        var merchant_id = this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1);
-        console.log(merchant_id);
-        
-        var merchantAPIDetail = 'http://localhost:3000/merchants/' + merchant_id;
-        fetch(merchantAPIDetail)
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Something went wrong ...');
+
+      constructor() {
+        super();
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(this.showPosition);
+        }
+        this.showPosition = this.showPosition.bind(this);
+      }
+
+      configuration(data) {
+        console.log("merchant data");
+        console.log(data);
+        this.setState({data, isLoading: false});
+        console.log("card row data");
+        console.log(data);
           }
-        })
-        .then(
-          data => this.setState({ data, isLoading: false }, () => console.log(this.state))
-        )
+
+          showPosition =(position) =>  {
+            console.log("position");
+            console.log(position);
+            this.setState({position: position.coords});
+            if(this.props.oidc) {
+              var merchant_id = this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1);
+              let config = {
+                headers: {
+                  Authorization: "Bearer " + this.props.oidc.user.access_token,
+                  //Origin: "App",
+                }
+              }
+              console.log("top girl");
+              console.log(API.localBaseUrlString + API.merchantAPI + "/" + merchant_id + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search);
+              axios.get(API.localBaseUrlString + API.merchantAPI + "/" + merchant_id + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search, config).then(
+                response => this.configuration(response.data)
+              ).catch(function(error) {
+                console.log(error);
+              })
+            
+            }
+          }
+
+
+      componentWillMount() {
+
         }
 
         if (error) {
@@ -67,7 +97,7 @@ console.log(this.state.data);
     <div className="detail">
     <i onClick={this.goBack} className="ico-times"></i>
     <Card merchant={this.state.data}/>
-    <About />
+    <About desc={this.state.data.longDescription}/>
     <Promotions />
     </div>
     </Page>
@@ -78,7 +108,13 @@ console.log(this.state.data);
 const mapStateToProps = (state) => {
   return {
     oidc: state.oidc,
+    coordinates: state.coordinates,
   };
 };
 
-export default  connect(mapStateToProps, null)(Detail);
+function mapDispatchToProps(dispatch) {
+  let actions = bindActionCreators({ getLocation });
+  return { ...actions, dispatch };
+}
+
+export default  connect(mapStateToProps, mapDispatchToProps)(Detail);

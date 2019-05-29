@@ -28,6 +28,21 @@ const loggerMiddleware = store => next => action => {
   console.log("State after:", store.getState());
 };
 
+function promiseMiddleware({dispatch}) {
+  function isPromise(val) {
+    return val && typeof val.then === 'function';
+  }
+
+  return next => action => {
+    return isPromise(action.payload)
+      ? action.payload.then(
+          result => dispatch({...action, payload: result}),
+          error => dispatch({...action, payload: error, error: true })
+        )
+      : next(action);
+  };
+}
+
 const persistedReducer = persistReducer(persistConfig, createRootReducer(history))
 
 function configureStore(preloadedState) {
@@ -39,7 +54,8 @@ function configureStore(preloadedState) {
         oidcMiddleware,
         loggerMiddleware,
         routerMiddleware(history),
-        apiMiddleware
+        apiMiddleware,
+        promiseMiddleware,
       ),
     ),
   )

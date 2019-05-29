@@ -4,6 +4,7 @@ import GoogleImg from '../resources/img/icon-googleplus-white.png';
 import { Link } from 'react-router-dom'
 import Page from './Page'
 import userManager from '../config/OIDC';
+import { push } from 'connected-react-router'
 
 class LoginPage extends React.Component {
 
@@ -21,7 +22,7 @@ class LoginPage extends React.Component {
 <div className="googlered loginbutton" onClick={this.onLoginButtonClick}>Log In with Google<img className="login-img" src={GoogleImg} /></div>
 <div className="facebookblue loginbutton" onClick={this.onLoginButtonClick}>Log In with Facebook<img className="login-img" src={FBImg} /></div>
 </div>
-<Link to="/signup/"><div className="bottomtext">Don't have an account? Sign Up</div></Link>
+{/*<Link to="/signup/"><div className="bottomtext">Don't have an account? Sign Up</div></Link>*/}
 </div>
 </Page>
 );

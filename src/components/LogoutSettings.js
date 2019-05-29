@@ -6,7 +6,7 @@ import Loading from './Loading'
 
 class LogoutSettings extends React.Component {
 
-    logout() {
+    logout =() => {
       console.log("logout");
       console.log(this);
       let config = {

@@ -50,7 +50,7 @@ import React, { Component } from 'react';
     userLogout:"/users/me/logout",
   
     merchantTypeaheadSearchAPI:"/search",
-    merchantsAPI:"/merchants",
+    merchantAPI:"/merchants",
     favoriteMerchantAPI:"/users/me/favorites",
     /* the two below are variables, change */
     merchantNoticesAPI:"/merchants/{}/notices",
@@ -61,5 +61,7 @@ import React, { Component } from 'react';
     
     channels: "/users/me/channels",
     channel: "/users/me/channel",
+
+    settings: "/users/settings",
 
   }

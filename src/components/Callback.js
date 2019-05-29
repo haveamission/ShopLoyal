@@ -33,7 +33,7 @@ axios.defaults.headers.common['Authorization'] = bearer;
         userManager={userManager}
         successCallback={this.successCallback}
         errorCallback={error => {
-          //this.props.dispatch(push("/chat"));
+          this.props.dispatch(push("/error"));
           console.error(error);
         }}
         >
