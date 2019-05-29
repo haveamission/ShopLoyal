@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Card from "./Card";
 import Page from './Page'
+import { connect } from 'react-redux'
 
 const About = () => (
     
@@ -21,6 +22,10 @@ class Detail extends Component {
     state = {
         data: {
         },
+      }
+
+      goBack() {
+        this.props.history.goBack();
       }
 
       componentWillMount() {
@@ -60,7 +65,7 @@ console.log(this.state.data);
         return (
     <Page>
     <div className="detail">
-    <i className="ico-times"></i>
+    <i onClick={this.goBack} className="ico-times"></i>
     <Card merchant={this.state.data}/>
     <About />
     <Promotions />
@@ -70,4 +75,10 @@ console.log(this.state.data);
     }
 }
 
-export default Detail;
+const mapStateToProps = (state) => {
+  return {
+    oidc: state.oidc,
+  };
+};
+
+export default  connect(mapStateToProps, null)(Detail);

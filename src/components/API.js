@@ -39,23 +39,27 @@ import React, { Component } from 'react';
 
   export default {
     corsString: corsString,
-    localBaseUrlString:corsString + "https://dev.apiv2.wantify.com/api/v1",
+    /*localBaseUrlString:corsString + "https://dev.apiv2.wantify.com/api/v1",*/
+    localBaseUrlString:corsString + "https://api.v2.wantify.com/api/v1",
     devBaseUrlString:"https://dev.apiv2.wantify.com/api/v1",
     prodBaseUrlString:"https://api.v2.wantify.com/api/v1",
  
     userNoticesAPI:"/users/me/notices",
     userPushRegisterAPI:"/users/me/register_device",
-    userInvitesAPI:"users/me/invites",
+    userInvitesAPI:"/users/me/invites",
+    userLogout:"/users/me/logout",
   
     merchantTypeaheadSearchAPI:"/search",
     merchantsAPI:"/merchants",
     favoriteMerchantAPI:"/users/me/favorites",
     /* the two below are variables, change */
-    merchantAPI:"/merchants",
-    merchantNoticesAPI:"/merchants/%@/notices",
+    merchantNoticesAPI:"/merchants/{}/notices",
     userProfileAPI:"/users/me/profile",
     userFavoritesAPI:"/users/me/favorites",
+    merchantMessages:"/merchants/{}/message/history?limit=20&skip=0",
+    merchantSendMessage:"/merchants/{}/message",
     
-    channels: "users/me/channels",
-    channel: "users/me/channel",
+    channels: "/users/me/channels",
+    channel: "/users/me/channel",
+
   }

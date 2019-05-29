@@ -10,10 +10,7 @@ import Page from './Page'
 import axios from 'axios';
 import API from './API'
 import { connect } from "react-redux";
-
-const merchantAPI = 'http://localhost:3000/merchants?count=3';
-
-// Insert API call here?
+import Loading from './Loading'
 
 class Cards extends Component {
     state = {
@@ -51,13 +48,9 @@ class Cards extends Component {
         if (error) {
             return <p>{error.message}</p>;
           }
-        
-
-
-
         render() {
           if (this.state.isLoading) {
-            return <p>Loading ...</p>;
+            return <Loading />;
           }
           console.log("state value new");
           console.log(this.state.data.merchants);

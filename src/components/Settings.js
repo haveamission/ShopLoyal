@@ -6,10 +6,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBowlingBall } from '@fortawesome/free-solid-svg-icons'
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import { faImages, faImage } from '@fortawesome/free-solid-svg-icons'
-import { ClipLoader } from 'react-spinners';
+import Loading from './Loading'
 import userManager from '../config/OIDC';
 import { connect } from "react-redux";
 import API from './API'
+import LogoutSettings from './LogoutSettings'
 import axios from 'axios';
 import { push } from 'connected-react-router'
 
@@ -92,7 +93,6 @@ class ProfileSettings extends React.Component {
     console.log(this.props);
     return (
 <div>
-<button onClick={this.onLoginButtonClick}>Login with Google</button>
 <h3 className="profile-name">{this.props.profile.name}</h3>
 <div className="profile-email">{this.props.profile.email}</div>
 </div>
@@ -118,32 +118,6 @@ class MainSettings extends React.Component {
 }
 }
 
-  const LogoutSettings = () => (
-    <ul className="logout-settings">
-<li className="list-bottom">Log Out</li>
-    </ul>
-  )
-
-class Spinner extends React.Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        loading: true
-      }
-    }
-    render() {
-      return (
-        <div className='sweet-loading'>
-          <ClipLoader
-            sizeUnit={"px"}
-            size={50}
-            color={'#123abc'}
-            loading={this.state.loading}
-          />
-        </div> 
-      )
-    }
-  }
   
 const Images = (props) => ( 
   props.images.map((image, i) =>
@@ -212,7 +186,7 @@ const Buttons = (props) => (
       const content = () => {
         switch(true) {
           case uploading:
-            return <Spinner />
+            return <Loading />
           case images.length > 0:
             return <Images images={images} removeImage={this.removeImage} />
           default:

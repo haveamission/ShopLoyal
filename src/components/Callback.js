@@ -24,7 +24,7 @@ axios.defaults.headers.common['Authorization'] = bearer;
 
     this.props.dispatch(author(bearer));
 
-    this.props.dispatch(push("/settings"));
+    this.props.dispatch(push("/"));
   };
   render() {
     // just redirect to '/' in both cases

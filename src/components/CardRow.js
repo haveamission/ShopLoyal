@@ -13,10 +13,6 @@ import axios from 'axios';
 import API from './API'
 import { connect } from "react-redux";
 
-
-const noticeAPI = 'http://localhost:3000/notice?count=3';
-const merchantAPI = 'http://localhost:3000/merchants?count=3';
-
 /*const list = [
     <Card />,
     <PromoCard />,

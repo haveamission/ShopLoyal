@@ -13,6 +13,7 @@ import { connect } from 'react-redux'
 import {bindActionCreators} from 'redux'
 import saveColor from '../actions/general'
 import SLBubble from './SLBubble'
+import Loading from './Loading'
 import axios from 'axios'
 import API from './API'
 import { push } from 'connected-react-router'
@@ -93,7 +94,7 @@ class Card extends Component {
   }
 
   if (isLoading) {
-    return <p>Loading ...</p>;
+    return <Loading />;
   }
 
   componentDidMount() {
