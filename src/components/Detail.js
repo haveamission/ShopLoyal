@@ -98,7 +98,7 @@ console.log(this.state.data);
     <i onClick={this.goBack} className="ico-times"></i>
     <Card merchant={this.state.data}/>
     <About desc={this.state.data.longDescription}/>
-    <Promotions />
+    <Promotions location={this.props.location}/>
     </div>
     </Page>
 )

@@ -3,7 +3,7 @@ import Card from './Card';
 
 const Business = () => (
     <div className="business">
-    <Card />
+    {/*<Card />*/}
     </div>
 );
 

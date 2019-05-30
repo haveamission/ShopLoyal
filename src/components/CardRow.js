@@ -10,8 +10,9 @@ import Card from "./Card";
 import PromoCard from "./PromoCard";
 //import withFetching from "./API";
 import axios from 'axios';
-import API from './API'
+import API from './API';
 import { connect } from "react-redux";
+const format = require('string-format')
 
 /*const list = [
     <Card />,
@@ -21,31 +22,79 @@ import { connect } from "react-redux";
     <PromoCard />,
 ]*/
 
-const promoIter = ({ data, isLoading, error }) => {
-//console.log("test");
-return null;
-}
+function loadJSONIntoUI(data) {
 
+  if(!(data instanceof Array)){
+     data = [data];
+  }
+
+  return data;
+}
 
 function rnd(min,max){
     return Math.floor(Math.random()*(max-min+1)+min );
 }
    
   class CardRow extends Component {
-    constructor() {
-      super();
-      //console.log("constructor works");
-      //console.log(withFetching);
-      //console.log(noticeAPI);
-      //console.log(promoIter);
-    //const test = withFetching(noticeAPI)(promoIter);
-    //console.log("BEFORE TEST");
-    //console.log(test);
+
+constructor() {
+  super();
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(this.showPosition);
+  }
+  this.showPosition = this.showPosition.bind(this);
 }
 
+state = {
+  data: [],
+  search: "",
+  list: [],
+}
 
+configuration =(data) =>  {
+  console.log("notices");
+  console.log(data);
+  data = loadJSONIntoUI(data);
 
-list = []
+  console.log("data before foreach");
+  console.log(data);
+
+  data.forEach((promo) => {
+    this.state.list.push(<PromoCard data={promo}/>);
+      });
+
+  this.setState({data, isLoading: false});
+
+/*var promotions = [];
+  data.forEach(function(obj) {
+      console.log(obj);
+      promotions.push(<PromoCard data={obj} />);
+      });
+      this.setState({promotions, isLoading: false})*/
+}
+
+showPosition =(position) =>  {
+  console.log("position");
+  console.log(position);
+  this.setState({position: position.coords});
+  console.log(this.props);
+  if(this.props.oidc) {
+    let config = {
+      headers: {
+        Authorization: "Bearer " + this.props.oidc.user.access_token,
+        //Origin: "App",
+      }
+    }
+    console.log("top girl");
+    console.log(API.localBaseUrlString + format(API.merchantNoticesAPI, this.props.merchant.merchant.id) + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search);
+    axios.get(API.localBaseUrlString + format(API.merchantNoticesAPI, this.props.merchant.merchant.id) + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search, config).then(
+      response => this.configuration(response.data)
+    ).catch(function(error) {
+      console.log(error);
+    })
+  
+  }
+}
 
 componentWillMount() {
   //console.log("will mount");
@@ -54,23 +103,31 @@ componentWillMount() {
   //console.log(this.props.merchant);
   console.log("props merchant");
   console.log(this.props.merchant);
-  this.list.push(<Card merchant={this.props.merchant.merchant} />)
+  this.state.list.push(<Card merchant={this.props.merchant.merchant} />)
+  
 }
 
 componentDidMount() {
   //console.log("did mount");
   //console.log(this.props.merchant);
-  console.log("will mount merchant");
-  console.log(this.props.merchant);
+  console.log("did mount state promo");
+  console.log(this.state);
+  /*this.state.data.forEach(function(promo) {
+  this.list.push(<PromoCard data={promo}/>);
+    });*/
 
 }
     render() {
+
+      if (Object.keys(this.state).length == 0) {
+        return <div />
+    }
    
       return (
-        <div className="App">
+        <div className="App card-row">
            
           <ScrollMenu
-            data={this.list}
+            data={this.state.list}
           />
         </div>
       );

@@ -6,7 +6,7 @@ import {Footer} from 'react-materialize';
 class SL_Footer extends Component{
   render(){
     return (
-      <Footer copyrights="&copy; 2015 Copyright Text"
+      <Footer copyrights="&copy; 2019 Copyright Text"
           className='example'
       >
         <h5 className="white-text">Footer Content</h5>

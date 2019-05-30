@@ -1,6 +1,8 @@
-import React from 'react'
+import React, { Component } from 'react';
 
-const Categories = () => (
+class Categories extends Component {
+  render(){
+    return(
       <ul className="categories">
           <li>All</li>
           <li>Shop</li>
@@ -10,6 +12,8 @@ const Categories = () => (
           <li>Tech</li>
           <li>Health</li>
     </ul>
-  )
+  );
+}
+}
   
   export default Categories
