@@ -127,7 +127,9 @@ console.log("merchant id");
 console.log(this.state);
 console.log(this.state.merchant.id);
 
-axios.get(API.localBaseUrlString + format(API.merchantMessages, this.state.merchant.id), config).then(
+var merchant_id = this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1);
+
+axios.get(API.localBaseUrlString + format(API.merchantMessages, merchant_id), config).then(
 response => this.loadMessages(response.data)
 ).catch(function(error) {
 console.log(error);
@@ -176,6 +178,9 @@ console.log(error);
 
   componentDidMount() {
   console.log("before oidc");
+  console.log(this.state);
+  console.log(this.props);
+  this.setState({"merchantName": this.props.location.state.merchant.name});
     if(this.props.oidc) {
       let config = {
         headers: {
@@ -234,7 +239,6 @@ renderBubble() {
   }
 
   goBack() {
-    console.log("kuai le");
     this.props.history.goBack();
   }
 
@@ -246,7 +250,7 @@ renderBubble() {
         <div style={styles.chat} className="full-chat">
         {/* Make this into a link ultimately when routing method is decided on */}
         <div className="chatlinkback" onClick={this.goBack}><div className="triangle"></div>
-        <div className="chatlinktitle">Adventures in Toys</div>
+        <div className="chatlinktitle">{this.state.merchantName}</div>
         </div>
 
           <GiftedChat user={{id: 1,}}

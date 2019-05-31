@@ -102,8 +102,8 @@ componentDidMount() {
       return (
   <div className="promotions">
   <h3>Updates</h3>
-  {this.state.data.map( promo =>
-    <PromoCard data={promo} />
+  {this.state.data.map( (promo, index) =>
+    <PromoCard data={promo} count={index}/>
   )}
   </div>
   );

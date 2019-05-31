@@ -87,8 +87,8 @@ showPosition =(position) =>  {
       }
     }
     console.log("top girl");
-    console.log(API.localBaseUrlString + API.merchantAPI + "?lat=" + this.props.coordinates.coords.latitude + "&lng=" + this.props.coordinates.coords.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search);
-        axios.get(API.localBaseUrlString + API.merchantAPI + "?lat=" + this.props.coordinates.coords.latitude + "&lng=" + this.props.coordinates.coords.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search, config).then(
+    console.log(API.localBaseUrlString + format(API.merchantNoticesAPI, this.props.merchant.merchant.id) + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search);
+    axios.get(API.localBaseUrlString + format(API.merchantNoticesAPI, this.props.merchant.merchant.id) + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search, config).then(
           response => this.configuration(response.data)
     ).catch(function(error) {
       console.log(error);
@@ -110,7 +110,7 @@ for (let el of data) {
 }
 console.log("MESSAGE VALUE HERE");
 console.log(msg);
-this.setState({bubble:msg});
+this.setState({"bubblemsg":msg.message, "bubbleid":msg.merchantId});
 }
 
 componentWillMount() {
@@ -167,6 +167,12 @@ merchant_id = 37;
    
       return (
         <div className="App card-row">
+              {this.state.bubblemsg ? (
+        <NotifBubble message={this.state.bubblemsg} merchant={this.props.merchant.merchant}/>
+      ) : (
+       null
+      )}
+        
            
           <ScrollMenu
             data={this.state.list}

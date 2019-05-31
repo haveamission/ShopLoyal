@@ -6,7 +6,7 @@ import Footer from './Footer'
 
 const App = () => (
   <div>
-    <Header />
+
     {/*<Main />*/}
   </div>
 )

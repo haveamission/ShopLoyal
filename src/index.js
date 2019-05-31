@@ -93,7 +93,7 @@ render((
         <PrivateRoute exact path="/map/" component={Map} />
         <PrivateRoute exact path="/cards/" component={Cards} />
         <PrivateRoute exact path="/cardrow/" component={CardRow} />
-        <PrivateRoute exact path="/chat/" component={Chat} />
+        <PrivateRoute path="/chat/" component={Chat} />
         <PrivateRoute path="/detail/" component={Detail} />
         <PrivateRoute path="/support/" component={Support} />
         <PrivateRoute path="/privacy/" component={Privacy} />

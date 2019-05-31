@@ -10,6 +10,7 @@ import searchSave from '../actions/search'
 import {bindActionCreators} from 'redux'
 import getLocation from '../actions/location'
 import Loading from './Loading'
+import Categories from './Categories'
 
 const mapStyles = {
   width: "100%",
@@ -144,6 +145,7 @@ export class MapContainer extends Component {
 
     return (
       <Page>
+            <Categories />
       <div className="gmaps">
       <Map
         google={this.props.google}

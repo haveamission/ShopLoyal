@@ -57,7 +57,7 @@ import {
                     this.props.containerStyle,
                   ]}
                 >
-                  {this.renderAvatar()}
+                  {/*this.renderAvatar()*/}
                   {this.renderBubble()}
                 </View>
               </View>

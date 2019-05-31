@@ -14,7 +14,7 @@ class PromoCard extends Component {
     }
     render() {
         return(
-    <div className="card promocard">
+    <div className={"card promocard promocard-" + this.props.count}>
     <div className="promo-name"><img src={this.props.data.photo} />{this.props.data.merchant.name}</div>
     <img className="promo-main-img" src={this.props.data.photo} />
     <div className="promo-title">{this.props.data.title}</div>

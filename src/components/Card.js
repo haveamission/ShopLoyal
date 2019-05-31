@@ -24,10 +24,16 @@ const getColors = require('get-image-colors')
 
 class Card extends Component {
 
-  routeChange =() => {
+  routeChange =(e) => {
     console.log(this.state);
     console.log("route change!");
     console.log(this.props);
+    console.log("EVENT TARGET");
+    console.log(e.target.nodeName);
+    if(e.target.nodeName == "LI" || e.target.nodeName == "a") {
+      console.log("LI HERE!");
+    return;
+    }
     //console.log(this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1));
     let path = "/detail/" + this.state.merchant.id;
     this.props.dispatch(push(path));
@@ -39,6 +45,11 @@ class Card extends Component {
       var merchant = this.state.merchant;
       merchant.isFavorite = !merchant.isFavorite;
       this.setState({merchant: merchant});
+    }
+
+    handleLinks(e) {
+      //e.stopPropagation();
+      console.log("e stop propogation");
     }
   
   handleFavorite(e) {
@@ -68,6 +79,7 @@ class Card extends Component {
     }
     this.routeChange = this.routeChange.bind(this);
     this.handleFavorite = this.handleFavorite.bind(this);
+    this.handleLinks = this.handleLinks.bind(this);
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -161,9 +173,12 @@ class Card extends Component {
           <hr />
           <div className="card-nav">
           <ul>
-          <li>Message<img src={MessageText} /></li>
-          <li>Call<img src={Call} /></li>
-          <li>Map<img src={Map} /></li>
+          <Link to={{
+                  pathname: "/chat/" + this.state.merchant.id,
+                  state: {merchant: this.state.merchant}
+          }}><li>Message<img src={MessageText} /></li></Link>
+          <a href={"tel+" + this.state.merchant.phoneNumber}><li>Call<img src={Call} /></li></a>
+          <Link to="/map"><li>Map<img src={Map} /></li></Link>
           </ul>
               </div>
         </div>
