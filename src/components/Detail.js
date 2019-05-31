@@ -38,6 +38,7 @@ class Detail extends Component {
           navigator.geolocation.getCurrentPosition(this.showPosition);
         }
         this.showPosition = this.showPosition.bind(this);
+        this.goBack = this.goBack.bind(this);
       }
 
       configuration(data) {
@@ -95,7 +96,7 @@ console.log(this.state.data);
         return (
     <Page>
     <div className="detail">
-    <i onClick={this.goBack} className="ico-times"></i>
+    {/*<i onClick={this.goBack} className="ico-times"></i>*/}
     <Card merchant={this.state.data}/>
     <About desc={this.state.data.longDescription}/>
     <Promotions location={this.props.location}/>

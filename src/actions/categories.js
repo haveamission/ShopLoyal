@@ -1,14 +1,11 @@
-//
-//  Actions
-//
 const Actions = {
-    SEARCH: 'SEARCH',
+    CATEGORIES: 'CATEGORIES',
   };
   //
   //  Action Creators
   //
 
   export default (text) => ({
-    type: Actions.SEARCH,
+    type: Actions.CATEGORIES,
     payload: text
   });

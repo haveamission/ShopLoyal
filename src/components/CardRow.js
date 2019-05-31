@@ -12,6 +12,7 @@ import PromoCard from "./PromoCard";
 import axios from 'axios';
 import API from './API';
 import { connect } from "react-redux";
+import NotifBubble from './NotifBubble'
 const format = require('string-format')
 
 /*const list = [
@@ -52,12 +53,12 @@ state = {
 }
 
 configuration =(data) =>  {
-  console.log("notices");
-  console.log(data);
+  //console.log("notices");
+  //console.log(data);
   data = loadJSONIntoUI(data);
 
-  console.log("data before foreach");
-  console.log(data);
+  //console.log("data before foreach");
+  //console.log(data);
 
   data.forEach((promo) => {
     this.state.list.push(<PromoCard data={promo}/>);
@@ -86,14 +87,30 @@ showPosition =(position) =>  {
       }
     }
     console.log("top girl");
-    console.log(API.localBaseUrlString + format(API.merchantNoticesAPI, this.props.merchant.merchant.id) + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search);
-    axios.get(API.localBaseUrlString + format(API.merchantNoticesAPI, this.props.merchant.merchant.id) + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search, config).then(
-      response => this.configuration(response.data)
+    console.log(API.localBaseUrlString + API.merchantAPI + "?lat=" + this.props.coordinates.coords.latitude + "&lng=" + this.props.coordinates.coords.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search);
+        axios.get(API.localBaseUrlString + API.merchantAPI + "?lat=" + this.props.coordinates.coords.latitude + "&lng=" + this.props.coordinates.coords.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search, config).then(
+          response => this.configuration(response.data)
     ).catch(function(error) {
       console.log(error);
     })
   
   }
+}
+
+merchantMessageConfiguration(data) {
+console.log("MERCHANT mesSAHGES");
+console.log(data);
+var msg;
+for (let el of data) {
+  console.log(el);
+  if (el.recipient === "customer") {
+    msg = el;
+    break;
+  }
+}
+console.log("MESSAGE VALUE HERE");
+console.log(msg);
+this.setState({bubble:msg});
 }
 
 componentWillMount() {
@@ -116,6 +133,31 @@ componentDidMount() {
   this.list.push(<PromoCard data={promo}/>);
     });*/
 
+    console.log("CARD MESSAGES ROW PROPS");
+    console.log(this.props);
+
+    if(this.props.oidc && this.props.count == 0) {
+var merchant_id = this.props.merchant.merchant.id;
+console.log("Army of Swedes");
+console.log(merchant_id);
+// FAKE VALUE FOR TESTING
+merchant_id = 37;
+      let config = {
+        headers: {
+          Authorization: "Bearer " + this.props.oidc.user.access_token,
+          //Origin: "App",
+        }
+      }
+      console.log("top girl");
+      console.log(API.localBaseUrlString + format(API.merchantMessages, merchant_id));
+      axios.get(API.localBaseUrlString + format(API.merchantMessages, merchant_id), config).then(
+        response => this.merchantMessageConfiguration(response.data)
+      ).catch(function(error) {
+        console.log(error);
+      })
+    
+    }
+
 }
     render() {
 
@@ -136,7 +178,10 @@ componentDidMount() {
 
   const mapStateToProps = (state) => {
     return {
-      oidc: state.oidc
+      oidc: state.oidc,
+      search: state.search,
+      coordinates: state.coordinates,
+      category: state.categories,
     };
   };
   

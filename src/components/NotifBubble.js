@@ -1,8 +1,13 @@
-import React from "react";
+import React, { Component } from 'react';
 
-const NotifBubble = () => (
+class NotifBubble extends Component {
+    render() {
+        return(
     <div >
+        {this.props.title}
 </div>
 );
+    }
+}
 
 export default NotifBubble;

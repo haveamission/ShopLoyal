@@ -11,7 +11,7 @@ import Categories from './Categories'
 const Header = () => (
   <header>
     <nav>
-      <img className="logo" src={ShopLoyalImg} />
+      <Link to="/"><img className="logo" src={ShopLoyalImg} /></Link>
       {/*<img className="profile" src={ProfileImg} />*/}
     </nav>
     <Search />

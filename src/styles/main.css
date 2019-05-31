@@ -25,14 +25,27 @@ nav .profile {
     height: 32px;
     position: absolute;
     right: 0;
-}
+} 
 
 .search-text {
-    display: block;
     font-size: large;
+    text-align: right;
+    color: #27295F;
 }
 .search-text i {
-    margin-right: 2rem;
+    margin-right: .5rem;
+    color: #27295F;
+}
+.large {
+    font-size: 125%;
+}
+.fa-times {
+    margin-right: 1rem;
+}
+.search-wrapper input {
+width: 70%;
+color: #27295F;
+font-size: large;
 }
 .hr-header {
     margin-top: 0px;
@@ -44,10 +57,10 @@ nav .profile {
     border: #000;
     /*width: 75px;*/ /* non-optimal */
 }
-.search-text input:focus {
+.search-text input:focus, .search-wrapper input:focus {
 outline-width: 0;
 }
-.search-text input::placeholder {
+.search-text input::placeholder, .search-wrapper input::placeholder {
     color: #120533;
 }
 input[type="text"] {
@@ -189,6 +202,12 @@ vertical-align: top;
 .titlecard .layer {
     /*background-color: rgba(6, 86, 165, 0.9);*/
 }
+.gmaps .titlecard .layer {
+    background-color: rgba(6, 86, 165, 0.9) !important;
+}
+.gmaps div > .titlecard img.card-favorite, .gmaps div > .titlecard img.card-logo-img {
+    border: none !important;
+}
 .promocard .layer {
     background-color: #FFF;
 }
@@ -209,27 +228,33 @@ vertical-align: top;
 .categories li {
     color: #120533;
     display: inline-block;
-    margin-right: 1rem;
+    /*margin-right: 1rem;*/
+    /*margin-right: .5rem;*/
     border-right:1px solid #CCC;
-    padding-right: 1rem;
+    border-left:1px solid #CCC;
+    padding-right: .5rem;
+    padding-left: .5rem;
     text-transform: uppercase;
     font-size:.9rem;
     font-weight: bold;
 }
-.categories li:first-child {
-    border: 1px solid #120533;
+.categories li.selected {
+    border: 1px solid #120533 !important;
     text-align: center;
-    margin-right: 1rem;
-    margin-left: .5rem;
+    /*margin-right: .5rem;*/
     padding-right: .5rem;
     padding-left: .5rem;
     padding-top: .2rem;
     padding-bottom: .2rem;
 }
 .categories li:last-child {
-    border-right: none;
+    /*border-right: none;
     padding-right: 0rem;
-    margin-right: 0rem;
+    margin-right: 0rem;*/
+    border-right: none;
+}
+.categories li:first-child {
+    border-left: none;
 }
 /*
 * Google Maps Specific
@@ -239,6 +264,14 @@ color: #000;
 }
 .gmaps div > div {
     border-radius: 10px 10px 0px 0px;
+}
+
+.gmaps div > img:not([role="presentation"]) {
+    border-radius: 50px;
+    border: 5px solid #00A4FF !important;
+}
+.gmaps div > img[src="https://maps.gstatic.com/mapfiles/api-3/images/google4_hdpi.png"] {
+    border: none !important;
 }
 /*.gmaps .business {
     background-color: #0587e0;
@@ -276,8 +309,8 @@ top: 38rem;
     top: 1rem;
 }
 .gmaps .business .card .card-right-bottom {
-    top: 0rem;
-    left: 2rem;
+    top: 1rem;
+    left: 3rem;
 }
 .gmaps .business .card .card-right .card-title{
     margin-top: 1rem;
@@ -291,7 +324,7 @@ top: 38rem;
     height: 4.5rem;
 }
 .gmaps .business .card .card-favorite {
-    margin-top: 0rem;
+    margin-top: 2rem;
     margin-left: 27rem;
 }
 .gmaps .business .card hr, .gmaps .business .card-nav {
@@ -479,7 +512,8 @@ font-size: 2rem;
     width: 20%;
     float: left;
     margin-left: 5%;
-    margin-top: 2rem;
+    margin-top: 1rem;
+    height: 6rem;
 }
 .promocard .promo-title {
     font-weight: bold;

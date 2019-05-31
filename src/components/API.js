@@ -56,6 +56,7 @@ import React, { Component } from 'react';
     merchantNoticesAPI:"/merchants/{}/notices",
     userProfileAPI:"/users/me/profile",
     userFavoritesAPI:"/users/me/favorites",
+    // Add a way to get one-way messages later on
     merchantMessages:"/merchants/{}/message/history?limit=20&skip=0",
     merchantSendMessage:"/merchants/{}/message",
     
@@ -64,6 +65,6 @@ import React, { Component } from 'react';
 
     settings: "/users/settings",
 
-    
+
 
   }

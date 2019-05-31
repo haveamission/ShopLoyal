@@ -5,6 +5,7 @@ import general from './general.js'
 import {author} from './general.js'
 import LocationReducer from './location.js'
 import search from './search.js'
+import categories from './categories.js'
 import { reducer as oidcReducer } from 'redux-oidc';
 export default (history) => combineReducers({
         auth: auth,
@@ -12,6 +13,7 @@ export default (history) => combineReducers({
   general: general,
   oidc: oidcReducer,
   search: search,
+  categories: categories,
   coordinates: LocationReducer,
 })
 export const isAuthenticated =

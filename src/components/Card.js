@@ -17,6 +17,7 @@ import Loading from './Loading'
 import axios from 'axios'
 import API from './API'
 import { push } from 'connected-react-router'
+const format = require('string-format')
 
 
 const getColors = require('get-image-colors')
@@ -25,8 +26,19 @@ class Card extends Component {
 
   routeChange =() => {
     console.log(this.state);
-    let path = "detail/" + this.state.merchant.id;
+    console.log("route change!");
+    console.log(this.props);
+    //console.log(this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1));
+    let path = "/detail/" + this.state.merchant.id;
     this.props.dispatch(push(path));
+    }
+
+    configuration(data) {
+      console.log("pre set state card");
+      console.log(data);
+      var merchant = this.state.merchant;
+      merchant.isFavorite = !merchant.isFavorite;
+      this.setState({merchant: merchant});
     }
   
   handleFavorite(e) {
@@ -62,6 +74,9 @@ class Card extends Component {
     // Normalizing the data, as react adds an object wrapper sometimes
 
     var merchant = {}
+
+    //console.log("CARDS PROPS");
+    //console.log(props);
 
     if(typeof props.merchant.merchant !== 'undefined') {
       merchant = props.merchant.merchant;
@@ -107,7 +122,10 @@ class Card extends Component {
       var colorsHex = colors.map(color => color.hex());
       this.lightestColor(colorsHex);
     })
+    
+
   }
+
 }
 
 
@@ -165,7 +183,7 @@ const mapStateToProps = (state) => {
 
 function mapDispatchToProps(dispatch) {
   //return bindActionCreators({saveColor}, dispatch);
-  let actions = bindActionCreators({ saveColor });
+  let actions = bindActionCreators({ saveColor }, dispatch);
   return { ...actions, dispatch };
 }
 

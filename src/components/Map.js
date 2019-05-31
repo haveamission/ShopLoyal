@@ -16,6 +16,16 @@ const mapStyles = {
   height: "40%"
 };
 
+function search(nameKey, myArray){
+  console.log("my array");
+  console.log(myArray);
+  for (var i=0; i < myArray.length; i++) {
+      if (myArray[i].id === nameKey) {
+          return myArray[i];
+      }
+  }
+}
+
 export class MapContainer extends Component {
   constructor(props) {
     super(props);
@@ -23,22 +33,33 @@ export class MapContainer extends Component {
       showingInfoWindow: false,
       activeMarker: {},
       selectedPlace: {},
-      search: this.props.search.search,
+      search: "",
+      data: {merchants: []},
+      selectedMerchant: null,
     };
    
   }
 
   getDrivedStateFromProps(props, state) {
-    this.setState({search: this.props.search.search})
+    this.setState({search: this.props.search.search});
+    this.setState({category: this.props.category.category});
   }
 
-  onMarkerClick = (props, marker, e) =>
+  onMarkerClick = (props, marker, e) => {
+  console.log(marker);
+  console.log(e);
+  console.log(marker.title);
+  console.log("marker title");
+  console.log(this.state.data);
+  var selectedMerchant = search(parseInt(marker.title), this.state.data.merchants);
+  this.setState({selectedMerchant: selectedMerchant});
     this.setState({
       selectedPlace: props,
       activeMarker: marker,
       showingInfoWindow: true,
-      showResults: true
+      showResults: true,
     });
+  }
 
   onMapClicked = (props) => {
     if (this.state.showingInfoWindow) {
@@ -54,16 +75,11 @@ export class MapContainer extends Component {
  
   }
 
-  configuration(data) {
-    console.log("map configuration");
-    console.log(data);
-  }
-
-  componentDidMount() {
-    console.log("Map props");
-    console.log(this.props);
-    //this.props.getLocation();
-    
+  componentDidUpdate() {
+    console.log("component did update");
+    if(this.state.updatedSearch == this.props.search.search && this.state.updatedCategories == this.props.category.category) {
+      return;
+    }
 
     if(this.props.oidc) {
       let config = {
@@ -74,21 +90,53 @@ export class MapContainer extends Component {
       }
         console.log("top girl");
         console.log(this.props);
-        console.log(API.localBaseUrlString + API.merchantAPI + "?lat=" + this.props.coordinates.coords.latitude + "&lng=" + this.props.coordinates.coords.longitude + "&radius=10.0&limit=30&search=" + this.state.search + "&value=" + this.props.search.search);
-        axios.get(API.localBaseUrlString + API.merchantAPI + "?lat=" + this.props.coordinates.coords.latitude + "&lng=" + this.props.coordinates.coords.longitude + "&radius=10.0&limit=30&search=" + this.state.search + "&value=" + this.props.search.search, config).then(
+        console.log(API.localBaseUrlString + API.merchantAPI + "?lat=" + this.props.coordinates.coords.latitude + "&lng=" + this.props.coordinates.coords.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search);
+        axios.get(API.localBaseUrlString + API.merchantAPI + "?lat=" + this.props.coordinates.coords.latitude + "&lng=" + this.props.coordinates.coords.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search, config).then(
           response => this.configuration(response.data)
         ).catch(function(error) {
           console.log(error);
         })
-
-
-    
     }
+
+  }
+
+  configuration(data) {
+    console.log("map configuration");
+    console.log(data);
+    this.setState({data: data, updatedSearch: this.props.search.search, updatedCategories: this.props.category.category});
+  }
+
+  componentDidMount() {
+    console.log("Map props");
+    console.log(this.props);
+    console.log(this.state);
+    //this.props.getLocation();
+    
+    if(this.props.oidc) {
+      let config = {
+        headers: {
+          Authorization: "Bearer " + this.props.oidc.user.access_token,
+          //Origin: "App",
+        }
+      }
+        console.log("top girl");
+        console.log(this.props);
+        console.log(API.localBaseUrlString + API.merchantAPI + "?lat=" + this.props.coordinates.coords.latitude + "&lng=" + this.props.coordinates.coords.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search);
+        axios.get(API.localBaseUrlString + API.merchantAPI + "?lat=" + this.props.coordinates.coords.latitude + "&lng=" + this.props.coordinates.coords.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search, config).then(
+          response => this.configuration(response.data)
+        ).catch(function(error) {
+          console.log(error);
+        })
+    }
+ 
   }
 
   render() {
     console.log("props before loading");
     console.log(this.props);
+
+    console.log("state before mapping");
+    console.log(this.state);
 
     if (this.props.coordinates.length == 0) {
       return <Loading />
@@ -96,7 +144,6 @@ export class MapContainer extends Component {
 
     return (
       <Page>
-        {this.props.search.search}
       <div className="gmaps">
       <Map
         google={this.props.google}
@@ -112,28 +159,26 @@ export class MapContainer extends Component {
         streetViewControl={false}
         fullscreenControl={false}
       >
- <Marker
-    title={'Adventures in Toys'}
-    name={'Adventures in Toys'}
-    position={{lat: 42.5467, lng: -83.2113}}
-    onClick={this.onMarkerClick}
-    />
+        {this.state.data.merchants.map( merchant =>
      <Marker
-    title={'Test Marker 2'}
-    name={'Test Marker 2'}
-    position={{lat: 43.5467, lng: -83.2113}}
-    onClick={this.onMarkerClick}
-    />
-        <InfoWindow
-          marker={this.state.activeMarker}
-          visible={this.state.showingInfoWindow}>
-            <div>
-              <h2>{this.state.selectedPlace.name}</h2>
-            </div>
-        </InfoWindow>
+     title={String(merchant.id)}
+     name={merchant.name}
+     position={{lat: merchant.latitude, lng: merchant.longitude}}
+     onClick={this.onMarkerClick}
+     icon={{url: merchant.logo,
+      scaledSize: new this.props.google.maps.Size(64,64)
+    }}
+      />
+  )}
+
       </Map>
 <div>
-        <Business />
+
+        {this.state.selectedMerchant ? (
+        <Business merchant={this.state.selectedMerchant} />
+      ) : (
+        ""
+      )}
 </div>
         <h3>
       { this.state.showResults ? <Results /> : null }
@@ -161,6 +206,7 @@ const mapStateToProps = (state) => {
     oidc: state.oidc,
     search: state.search,
     coordinates: state.coordinates,
+    category: state.categories,
   };
 };
 

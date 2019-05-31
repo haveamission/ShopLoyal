@@ -85,9 +85,10 @@ search: "",
             return (
     <Page>
     <div className="cards">
-    {this.state.data.merchants.map( merchant =>
+    {this.state.data.merchants.map( (merchant, index) =>
      <CardRow
      merchant={{merchant}}
+     count={index}
       />
   )}
     </div>

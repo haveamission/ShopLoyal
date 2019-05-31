@@ -4,6 +4,7 @@ import API from './API';
 import { connect } from "react-redux";
 import searchSave from '../actions/search'
 import {bindActionCreators} from 'redux'
+import { push } from 'connected-react-router'
 const format = require('string-format')
 
 class Search extends Component {
@@ -19,6 +20,7 @@ class Search extends Component {
 
   searchForText = (text) => {
 this.props.searchSave(text);
+this.props.dispatch(push("/map"));
   }
 
   handleChange (event) {
@@ -39,14 +41,39 @@ this.props.searchSave(text);
   }
 
 
-  render(){
+  /*render(){
     return(
       <span className="search-text">
-      <i className="fas fa-search small"></i>
+            {this.state.value ? (
+        <i class="fas fa-times small"></i>
+      ) : (
+        <i className="fas fa-search small"></i>
+      )}
       <input className="" placeholder="Search" onChange={this.handleChange}></input>
       </span>
   )
+}*/
+
+  render(){
+    return(
+      <span className="search-wrapper">
+                  {this.state.value ? (
+        <i className="fas fa-times large"></i>
+      ) : (
+        ""
+      )}
+<input className="" onChange={this.handleChange}></input>
+{this.state.value ? (
+        ""
+      ) : (
+        <span className="search-text"><i className="fas fa-search small"></i>Search</span>
+      )}
+
+</span>
+  )
 }
+
+
 }
 
 const mapStateToProps = (state) => {
@@ -57,8 +84,8 @@ const mapStateToProps = (state) => {
 };
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ searchSave }, dispatch);
-  //return { ...actions, dispatch };
+  let actions =  bindActionCreators({ searchSave }, dispatch);
+  return { ...actions, dispatch };
 }
 
 
