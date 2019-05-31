@@ -114,7 +114,7 @@ componentDidMount() {
 render() {
     return(
         <Page>
-<div>Favorite Merchants</div>
+<div className="fav-merchant-list">Favorite Merchants</div>
 <div>
     {this.state.favs}
     </div>

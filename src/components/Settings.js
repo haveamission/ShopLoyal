@@ -106,12 +106,6 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps)(Settings);
 
 class ProfileSettings extends React.Component {
-  onLoginButtonClick(event) {
-    event.preventDefault();
-    userManager.signinRedirect();
-  }
-
-
 
   render() {
 

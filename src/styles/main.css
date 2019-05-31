@@ -847,6 +847,11 @@ html {
         margin-top: -7rem;
     }
 
+    .fav-merchant-list {
+        text-align: center;
+        font-size: 2rem;
+    }
+
 
   /*
   * TEMPORARY STYLES - REMOVE WHEN DONE

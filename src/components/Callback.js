@@ -10,8 +10,6 @@ import axios from 'axios'
 
 class CallbackPage extends React.Component {
  successCallback = (user) => {
-    console.log(user);
-    console.log("GONGXIGONGXI");
     var accessToken = user ? user.access_token : undefined;
     var bearer = "Bearer " + accessToken; // This can be added to the Authorization Header
 console.log(bearer);
