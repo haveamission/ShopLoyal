@@ -28,14 +28,20 @@
             * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
                 * Enable inline JS: add 'unsafe-inline' to default-src
         -->
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
+        <script type="javascript">
+            function GetCookieData() {
+              var app = "shoployal"; // Your Custom URL Scheme
+              var data = document.cookie; // Change to be whatever data you want to read
+              window.location = app + '://?data=' + encodeURIComponent(data); // Pass data to your app
+            }
+          </script>
         <meta name="format-detection" content="telephone=no">
         <meta name="msapplication-tap-highlight" content="no">
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
         <link rel="stylesheet" type="text/css" href="css/index.css">
-        <title>Hello World</title>
+        <title>ShopLoyal</title>
     </head>
-    <body>
+    <body onload="GetCookieData()">
         <div class="app">
             <h1>Apache Cordova</h1>
             <div id="deviceready" class="blink">
@@ -43,8 +49,9 @@
                 <p class="event received">Device is Tested</p>
             </div>
         </div>
-        <script type="text/javascript" src="cordova.js"></script>
+       <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
+
     </body>
 </html>
 

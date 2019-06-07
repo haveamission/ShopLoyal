@@ -20,7 +20,7 @@ class MainSettings extends React.Component {
   this.setState({'notificationEnabled': event.target.checked})
   let config = {
     headers: {
-      Authorization: "Bearer " + this.props.oidc.user.access_token,
+      Authorization: "Bearer " + this.props.keycloak.idToken,
     }
   }
   
@@ -28,7 +28,7 @@ class MainSettings extends React.Component {
     "notificationEnabled": event.target.checked
   }
   
-  axios.post(API.localBaseUrlString + API.settings, body, config).then(
+  axios.post(API.prodBaseUrlString + API.settings, body, config).then(
     response => console.log(response.data)
     ).then(data => this.setState({'notificationEnabled': event.target.checked})).catch(function(error) {
     console.log(error);
@@ -41,7 +41,7 @@ class MainSettings extends React.Component {
   
   let config = {
     headers: {
-      Authorization: "Bearer " + this.props.oidc.user.access_token,
+      Authorization: "Bearer " + this.props.keycloak.idToken,
     }
   }
   
@@ -49,7 +49,7 @@ class MainSettings extends React.Component {
     "notificationEmailEnabled": event.target.checked
   }
   
-  axios.post(API.localBaseUrlString + API.settings, body, config).then(
+  axios.post(API.prodBaseUrlString + API.settings, body, config).then(
     response => console.log(response.data)
     ).then(data => this.setState({'notificationEmailEnabled': event.target.checked})).catch(function(error) {
     console.log(error);
@@ -86,11 +86,5 @@ class MainSettings extends React.Component {
     )
   }
   }
-
-  const mapStateToProps = (state) => {
-    return {
-      oidc: state.oidc
-    };
-  };
   
-  export default connect(mapStateToProps)(MainSettings);
+  export default withKeycloak(MainSettings);

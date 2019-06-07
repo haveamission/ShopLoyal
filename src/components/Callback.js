@@ -6,9 +6,15 @@ import userManager from '../config/OIDC';
 import {bindActionCreators} from 'redux'
 import {author} from '../actions/general'
 import axios from 'axios'
-
+import { withKeycloak } from 'react-keycloak';
 
 class CallbackPage extends React.Component {
+
+  handleOpenURL(url) {
+    console.log("received url: " + url);
+  }
+
+
  successCallback = (user) => {
     var accessToken = user ? user.access_token : undefined;
     var bearer = "Bearer " + accessToken; // This can be added to the Authorization Header
@@ -20,22 +26,27 @@ axios.defaults.headers.common['Authorization'] = bearer;
 
     console.log(this.props);
 
-    this.props.dispatch(author(bearer));
+    //this.props.dispatch(author(bearer));
 
     this.props.dispatch(push("/"));
   };
   render() {
+
     // just redirect to '/' in both cases
     return (
       <CallbackComponent
         userManager={userManager}
         successCallback={this.successCallback}
         errorCallback={error => {
-          this.props.dispatch(push("/error"));
-          console.error(error);
+          console.log("bread");
+          console.log(error);
+          console.log("bread");
+          this.setState({error: error});
+          //this.props.dispatch(push("/error"));
+
         }}
         >
-        <div>Redirecting...</div>
+        <div></div>
       </CallbackComponent>
     );
   }

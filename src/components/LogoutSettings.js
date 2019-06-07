@@ -3,6 +3,7 @@ import API from './API'
 import axios from 'axios';
 import { connect } from "react-redux";
 import Loading from './Loading'
+import { withKeycloak } from 'react-keycloak';
 
 class LogoutSettings extends React.Component {
 
@@ -11,17 +12,17 @@ class LogoutSettings extends React.Component {
       console.log(this);
       let config = {
         headers: {
-          Authorization: "Bearer " + this.props.oidc.user.access_token,
+          Authorization: "Bearer " + this.props.keycloak.idToken,
         }
       }
       
     var body = {
-    "refreshToken": this.props.oidc.user.access_token,
+    "refreshToken": this.props.keycloak.idToken,
     "clientId": "wantify-app",
-    "accessToken": this.props.oidc.user.access_token,
+    "accessToken": this.props.keycloak.idToken,
     }
     
-    axios.post(API.localBaseUrlString + API.userLogout, body, config).then(
+    axios.post(API.prodBaseUrlString + API.userLogout, body, config).then(
     response => console.log(response)
     ).catch(function(error) {
     console.log(error);
@@ -42,11 +43,5 @@ if(!this.props) {
     )
   }
   }
-
-  const mapStateToProps = (state) => {
-    return {
-      oidc: state.oidc
-    };
-  };
   
-export default connect(mapStateToProps)(LogoutSettings);
+export default withKeycloak(LogoutSettings);

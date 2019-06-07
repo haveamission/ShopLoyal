@@ -39,8 +39,8 @@ import React, { Component } from 'react';
 
   export default {
     corsString: corsString,
-    /*localBaseUrlString:corsString + "https://dev.apiv2.wantify.com/api/v1",*/
-    localBaseUrlString:corsString + "https://api.v2.wantify.com/api/v1",
+    /*prodBaseUrlString:corsString + "https://dev.apiv2.wantify.com/api/v1",*/
+    localBaseUrl:corsString + "https://api.v2.wantify.com/api/v1",
     devBaseUrlString:"https://dev.apiv2.wantify.com/api/v1",
     prodBaseUrlString:"https://api.v2.wantify.com/api/v1",
  

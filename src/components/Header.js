@@ -9,6 +9,7 @@ import Categories from './Categories'
 import { connect } from 'react-redux'
 import API from './API'
 import axios from 'axios';
+import { withKeycloak } from 'react-keycloak';
 
 // The Header creates links that can be used to navigate
 // between routes.
@@ -28,22 +29,22 @@ class Header extends React.Component {
       this.setState({profile: data});
   }
 
-componentDidMount() {
+/*componentDidMount() {
   console.log("HEADER STATE AND PROPS props");
   console.log(this.props);
   console.log(this.state);
   // Messy probably - clean it later
   console.log(window.location.pathname);
-  if(window.location.pathname === '/') {
+  if(window.location.pathname === '/' && this.props.keycloak.authenticated) {
 this.setState({headerLoc: true})
 
-if(this.props.oidc) {
+if(this.props.keycloak.authenticated && this.props.keycloak.authenticated.user) {
   let config = {
     headers: {
-      Authorization: "Bearer " + this.props.oidc.user.access_token,
+      Authorization: "Bearer " + this.props.keycloak.idToken,
     }
   }
-    axios.get(API.localBaseUrlString + API.userProfileAPI, config).then(
+    axios.get(API.prodBaseUrlString + API.userProfileAPI, config).then(
     response => this.configuration(response.data)
   );
 
@@ -51,9 +52,12 @@ if(this.props.oidc) {
 
 
   }
-}
+}*/
 
   render() {
+    if(!this.props.keycloak.authenticated) {
+      return <div></div>
+    }
     var navStyles = {
       justifyContent: "left",
     }
@@ -73,7 +77,7 @@ if(this.props.oidc) {
       <div className="secondary-nav">
        <div className="welcome-text" style={navStyles}>
        Welcome
-       <span className="welcome-text-name">{this.props.oidc.user.profile.given_name}</span>
+       <span className="welcome-text-name">{this.props.keycloak.authenticated.user.profile.given_name}</span>
        </div>
        {this.state.profile ? (
        <Link to="/settings"><img className="profile-picture" src={this.state.profile.picture} /></Link> )
@@ -94,7 +98,7 @@ if(this.props.oidc) {
 
 const mapStateToProps = (state) => {
   return {
-    oidc: state.oidc,
+    //oidc: state.oidc,
     router: state.router,
   };
 };

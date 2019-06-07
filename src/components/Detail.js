@@ -7,6 +7,7 @@ import {bindActionCreators} from 'redux'
 import axios from 'axios';
 import API from './API'
 import Promotions from './Promotions'
+import { withKeycloak } from 'react-keycloak';
 
 class About extends Component {
   render() {
@@ -53,17 +54,17 @@ class Detail extends Component {
             console.log("position");
             console.log(position);
             this.setState({position: position.coords});
-            if(this.props.oidc) {
+            if(this.props.keycloak.authenticated) {
               var merchant_id = this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1);
               let config = {
                 headers: {
-                  Authorization: "Bearer " + this.props.oidc.user.access_token,
+                  Authorization: "Bearer " + this.props.keycloak.idToken,
                   //Origin: "App",
                 }
               }
               console.log("top girl");
-              console.log(API.localBaseUrlString + API.merchantAPI + "/" + merchant_id + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search);
-              axios.get(API.localBaseUrlString + API.merchantAPI + "/" + merchant_id + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search, config).then(
+              console.log(API.prodBaseUrlString + API.merchantAPI + "/" + merchant_id + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search);
+              axios.get(API.prodBaseUrlString + API.merchantAPI + "/" + merchant_id + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search, config).then(
                 response => this.configuration(response.data)
               ).catch(function(error) {
                 console.log(error);

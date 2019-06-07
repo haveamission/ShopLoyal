@@ -3,6 +3,7 @@ import { render } from 'react-dom'
 import { ConnectedRouter } from 'connected-react-router'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import registerServiceWorker from './registerServiceWorker';
+import { push } from 'connected-react-router'
 import "@babel/polyfill";
 //import appsFlyer from 'cordova-plugin-appsflyer-sdk';
 
@@ -25,6 +26,7 @@ import Support from './components/Support';
 import Privacy from './components/Privacy';
 import Error from './components/Error';
 import FavMerchants from './components/FavMerchants';
+import Dummy from './components/Dummy';
 
 // Import Styles
 import './bootstrap2-toggle.min.css';
@@ -44,27 +46,55 @@ import userManager from './config/OIDC';
 
 // Redux
 //import { combineReducers } from 'redux'
-import { Provider } from 'react-redux'
+import { Provider, ReactReduxContext } from 'react-redux'
 import { PersistGate } from 'redux-persist/es/integration/react'
 //import createHistory from 'history/createBrowserHistory'
+// Keycloak
+import Keycloak from 'keycloak-js';
+import { KeycloakProvider } from 'react-keycloak';
+import keycloak_config from './keycloak.json';
+import { addTokens } from './actions/tokens';
 const {store, persistor} = configureStore(history)
 
-console.log(userManager);
-
-
+const keycloak = new Keycloak(keycloak_config);
 
 //userManager.signinRedirect();
 
 const startApp = () => {
-    
 // Initialize
+
+//window.open = window.cordova.InAppBrowser.open;
 
 appsflyerInit();
 //oneSignal();
+function myhandler(previousRoute, nextRoute) {
+console.log(previousRoute);
+console.log(nextRoute);
+}
+
+const onKeycloakEvent = (event, error) => {
+  console.log('onKeycloakEvent', event, error);
+  //alert('onKeycloakEvent');
+}
+
+render(
+  (
     
-render((
+    <KeycloakProvider 
+    keycloak={keycloak}
+    onEvent={(event, error) => {
+      //alert(error);
+    }}
+    onTokens={tokens => {
+      store.dispatch(addTokens(tokens));
+      store.dispatch(push("/"));
+      //history.pushState(null, '/');
+    }}
+
+    >
     <Provider store={store}>
-    <OidcProvider store={store} userManager={userManager}>
+    
+    {/*<OidcProvider store={store} userManager={userManager}>*/}
     <PersistGate loading={<Loading />} persistor={persistor}>
     <ConnectedRouter history={history}>
     <Layout>
@@ -80,6 +110,7 @@ render((
                     enter: 1000,
                     exit: 1000,
                   }}
+                  onChange={myhandler}
                 >
     <Route
                     location={location}
@@ -109,8 +140,9 @@ render((
       </Layout>
     </ConnectedRouter>
     </PersistGate>
-    </OidcProvider>
+    {/*</OidcProvider>*/}
   </Provider>
+  </KeycloakProvider>
  
 ), document.getElementById('root'));
 registerServiceWorker();
@@ -124,7 +156,7 @@ function appsflyerInit() {
  
   var userAgent = window.navigator.userAgent.toLowerCase();
   if (/iphone|ipad|ipod/.test( userAgent )) {
-    options.appId = '1458126556'; // your ios app id in app store        
+    options.appId = '1458126556'; // your ios app id in app store     
   }
    
   var onSuccess = function(result) {

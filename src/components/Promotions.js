@@ -4,6 +4,7 @@ import API from './API'
 import { connect } from 'react-redux'
 import PromoCard from './PromoCard'
 const format = require('string-format')
+import { withKeycloak } from 'react-keycloak';
 
 function loadJSONIntoUI(data) {
 
@@ -50,17 +51,17 @@ class Promotions extends Component {
         console.log(position);
         this.setState({position: position.coords});
         console.log(this.props);
-        if(this.props.oidc) {
+        if(this.props.keycloak.authenticated) {
           var merchant_id = this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1);
           let config = {
             headers: {
-              Authorization: "Bearer " + this.props.oidc.user.access_token,
+              Authorization: "Bearer " + this.props.keycloak.idToken,
               //Origin: "App",
             }
           }
           console.log("top girl");
-          console.log(API.localBaseUrlString + format(API.merchantNoticesAPI, merchant_id) + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search);
-          axios.get(API.localBaseUrlString + format(API.merchantNoticesAPI, merchant_id) + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search, config).then(
+          console.log(API.prodBaseUrlString + format(API.merchantNoticesAPI, merchant_id) + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search);
+          axios.get(API.prodBaseUrlString + format(API.merchantNoticesAPI, merchant_id) + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search, config).then(
             response => this.configuration(response.data)
           ).catch(function(error) {
             console.log(error);
@@ -71,17 +72,17 @@ class Promotions extends Component {
 
 componentDidMount() {
     /*
-    if(this.props.oidc) {
+    if(this.props.keycloak.authenticated) {
         var merchant_id = this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1);
         let config = {
           headers: {
-            Authorization: "Bearer " + this.props.oidc.user.access_token,
+            Authorization: "Bearer " + this.props.keycloak.idToken,
             //Origin: "App",
           }
         }
         console.log("top girl");
-        console.log(API.localBaseUrlString + format(API.merchantNoticesAPI, merchant_id) + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search);
-        axios.get(API.localBaseUrlString + format(API.merchantNoticesAPI, merchant_id) + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search, config).then(
+        console.log(API.prodBaseUrlString + format(API.merchantNoticesAPI, merchant_id) + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search);
+        axios.get(API.prodBaseUrlString + format(API.merchantNoticesAPI, merchant_id) + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search, config).then(
           response => this.configuration(response.data)
         ).catch(function(error) {
           console.log(error);

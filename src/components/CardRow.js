@@ -13,6 +13,7 @@ import axios from 'axios';
 import API from './API';
 import { connect } from "react-redux";
 import NotifBubble from './NotifBubble'
+import { withKeycloak } from 'react-keycloak';
 const format = require('string-format')
 
 /*const list = [
@@ -79,16 +80,16 @@ showPosition =(position) =>  {
   console.log(position);
   this.setState({position: position.coords});
   console.log(this.props);
-  if(this.props.oidc) {
+  if(this.props.keycloak.authenticated) {
     let config = {
       headers: {
-        Authorization: "Bearer " + this.props.oidc.user.access_token,
+        Authorization: "Bearer " + this.props.keycloak.idToken,
         //Origin: "App",
       }
     }
     console.log("top girl");
-    console.log(API.localBaseUrlString + format(API.merchantNoticesAPI, this.props.merchant.merchant.id) + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search);
-    axios.get(API.localBaseUrlString + format(API.merchantNoticesAPI, this.props.merchant.merchant.id) + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search, config).then(
+    console.log(API.prodBaseUrlString + format(API.merchantNoticesAPI, this.props.merchant.merchant.id) + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search);
+    axios.get(API.prodBaseUrlString + format(API.merchantNoticesAPI, this.props.merchant.merchant.id) + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search, config).then(
           response => this.configuration(response.data)
     ).catch(function(error) {
       console.log(error);
@@ -136,7 +137,7 @@ componentDidMount() {
     console.log("CARD MESSAGES ROW PROPS");
     console.log(this.props);
 
-    if(this.props.oidc && this.props.count == 0) {
+    if(this.props.keycloak.authenticated && this.props.count == 0) {
 var merchant_id = this.props.merchant.merchant.id;
 console.log("Army of Swedes");
 console.log(merchant_id);
@@ -144,13 +145,13 @@ console.log(merchant_id);
 merchant_id = 37;
       let config = {
         headers: {
-          Authorization: "Bearer " + this.props.oidc.user.access_token,
+          Authorization: "Bearer " + this.props.keycloak.idToken,
           //Origin: "App",
         }
       }
       console.log("top girl");
-      console.log(API.localBaseUrlString + format(API.merchantMessages, merchant_id));
-      axios.get(API.localBaseUrlString + format(API.merchantMessages, merchant_id), config).then(
+      console.log(API.prodBaseUrlString + format(API.merchantMessages, merchant_id));
+      axios.get(API.prodBaseUrlString + format(API.merchantMessages, merchant_id), config).then(
         response => this.merchantMessageConfiguration(response.data)
       ).catch(function(error) {
         console.log(error);
@@ -192,4 +193,4 @@ merchant_id = 37;
   };
   
 
-  export default connect(mapStateToProps)(CardRow);
+  export default connect(mapStateToProps)(withKeycloak(CardRow));

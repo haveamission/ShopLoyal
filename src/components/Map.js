@@ -82,17 +82,17 @@ export class MapContainer extends Component {
       return;
     }
 
-    if(this.props.oidc) {
+    if(this.props.keycloak.authenticated) {
       let config = {
         headers: {
-          Authorization: "Bearer " + this.props.oidc.user.access_token,
+          Authorization: "Bearer " + this.props.keycloak.idToken,
           //Origin: "App",
         }
       }
         console.log("top girl");
         console.log(this.props);
-        console.log(API.localBaseUrlString + API.merchantAPI + "?lat=" + this.props.coordinates.coords.latitude + "&lng=" + this.props.coordinates.coords.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search);
-        axios.get(API.localBaseUrlString + API.merchantAPI + "?lat=" + this.props.coordinates.coords.latitude + "&lng=" + this.props.coordinates.coords.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search, config).then(
+        console.log(API.prodBaseUrlString + API.merchantAPI + "?lat=" + this.props.coordinates.coords.latitude + "&lng=" + this.props.coordinates.coords.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search);
+        axios.get(API.prodBaseUrlString + API.merchantAPI + "?lat=" + this.props.coordinates.coords.latitude + "&lng=" + this.props.coordinates.coords.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search, config).then(
           response => this.configuration(response.data)
         ).catch(function(error) {
           console.log(error);
@@ -113,17 +113,17 @@ export class MapContainer extends Component {
     console.log(this.state);
     //this.props.getLocation();
     
-    if(this.props.oidc) {
+    if(this.props.keycloak.authenticated) {
       let config = {
         headers: {
-          Authorization: "Bearer " + this.props.oidc.user.access_token,
+          Authorization: "Bearer " + this.props.keycloak.idToken,
           //Origin: "App",
         }
       }
         console.log("top girl");
         console.log(this.props);
-        console.log(API.localBaseUrlString + API.merchantAPI + "?lat=" + this.props.coordinates.coords.latitude + "&lng=" + this.props.coordinates.coords.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search);
-        axios.get(API.localBaseUrlString + API.merchantAPI + "?lat=" + this.props.coordinates.coords.latitude + "&lng=" + this.props.coordinates.coords.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search, config).then(
+        console.log(API.prodBaseUrlString + API.merchantAPI + "?lat=" + this.props.coordinates.coords.latitude + "&lng=" + this.props.coordinates.coords.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search);
+        axios.get(API.prodBaseUrlString + API.merchantAPI + "?lat=" + this.props.coordinates.coords.latitude + "&lng=" + this.props.coordinates.coords.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search, config).then(
           response => this.configuration(response.data)
         ).catch(function(error) {
           console.log(error);
@@ -219,4 +219,4 @@ function mapDispatchToProps(dispatch) {
 
 export default GoogleApiWrapper({
   apiKey: "AIzaSyC8ayoSBFNdHdORkbiteD5feHhpLYsToWE"
-})(connect(mapStateToProps, mapDispatchToProps)(MapContainer));
+})(connect(mapStateToProps, mapDispatchToProps)(withKeycloak((MapContainer))));

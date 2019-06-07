@@ -14,6 +14,7 @@ import LogoutSettings from './LogoutSettings'
 import axios from 'axios';
 import { push } from 'connected-react-router'
 import MainSettings from './MainSettings'
+import { withKeycloak } from 'react-keycloak';
 
 
 class Settings extends Component {
@@ -29,11 +30,11 @@ this.setState({profile: data});
   getSettings() {
     let config = {
       headers: {
-        Authorization: "Bearer " + this.props.oidc.user.access_token,
+        Authorization: "Bearer " + this.props.keycloak.idToken,
       }
     }
 
-    axios.get(API.localBaseUrlString + API.settings, config).then(
+    axios.get(API.prodBaseUrlString + API.settings, config).then(
       response => this.loadSettings(response.data)
       ).catch(function(error) {
       console.log(error);
@@ -48,16 +49,16 @@ this.setState(data);
 
   componentDidMount() {
 
-    if(this.props.oidc.user) {
+    if(this.props.keycloak.authenticated.user) {
 
 let config = {
   headers: {
-    Authorization: "Bearer " + this.props.oidc.user.access_token,
+    Authorization: "Bearer " + this.props.keycloak.idToken,
   }
 }
     
 
-axios.get(API.localBaseUrlString + API.userProfileAPI, config).then(
+axios.get(API.prodBaseUrlString + API.userProfileAPI, config).then(
   response => this.configuration(response.data)
 );
 
@@ -93,17 +94,7 @@ this.getSettings();
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    oidc: state.oidc
-  };
-};
-
-function mapDispatchToProps(dispatch) {
-  return { dispatch };
-}
-
-export default connect(mapStateToProps)(Settings);
+export default withKeycloak(Settings);
 
 class ProfileSettings extends React.Component {
 

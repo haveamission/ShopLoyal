@@ -55,16 +55,16 @@ class Card extends Component {
   handleFavorite(e) {
     e.stopPropagation();
     console.log("child");
-    if(this.props.oidc) {
+    if(this.props.keycloak.authenticated) {
       let config = {
         headers: {
-          Authorization: "Bearer " + this.props.oidc.user.access_token,
+          Authorization: "Bearer " + this.props.keycloak.idToken,
           //Origin: "App",
         }
       }
       //this.state.merchant.isFavorite
       console.log("Before favorite send");
-      axios.post(API.localBaseUrlString + API.favoriteMerchantAPI, {"merchantId": this.state.merchant.id, "status": !this.state.merchant.isFavorite}, config).then(
+      axios.post(API.prodBaseUrlString + API.favoriteMerchantAPI, {"merchantId": this.state.merchant.id, "status": !this.state.merchant.isFavorite}, config).then(
         response => this.configuration(response.data)
       ).catch(function(error) {
         console.log(error);

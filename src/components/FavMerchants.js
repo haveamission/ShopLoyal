@@ -9,6 +9,7 @@ import UnFavorite from "../img/full_heart_white.png";
 import Favorite from "../img/full_heart_purple.png";
 import Map from "../img/map.png";
 import { push } from 'connected-react-router'
+import { withKeycloak } from 'react-keycloak';
 
 class FavMerchantsItem extends React.Component {
 
@@ -31,16 +32,16 @@ this.setState({merchant: merchant})
         handleFavorite = (e) =>  {
             e.stopPropagation();
             console.log("child");
-            if(this.props.oidc) {
+            if(this.props.keycloak.authenticated) {
               let config = {
                 headers: {
-                  Authorization: "Bearer " + this.props.oidc.user.access_token,
+                  Authorization: "Bearer " + this.props.keycloak.idToken,
                   //Origin: "App",
                 }
               }
               //this.state.merchant.isFavorite
               console.log("Before favorite send");
-              axios.post(API.localBaseUrlString + API.favoriteMerchantAPI, {"merchantId": this.state.merchant.id, "status": !this.state.merchant.isFavorite}, config).then(
+              axios.post(API.prodBaseUrlString + API.favoriteMerchantAPI, {"merchantId": this.state.merchant.id, "status": !this.state.merchant.isFavorite}, config).then(
                 response => this.processFavorite(response.data)
               ).catch(function(error) {
                 console.log(error);
@@ -90,7 +91,7 @@ console.log(data);
 var arr = [];
 data.map((item, index) => {
     arr.push(
-        <FavMerchantsItem merchant={item} oidc={this.props.oidc}/>
+        <FavMerchantsItem merchant={item} oidc={this.props.keycloak.authenticated}/>
       )
       
  });
@@ -100,11 +101,11 @@ componentDidMount() {
 
     let config = {
         headers: {
-          Authorization: "Bearer " + this.props.oidc.user.access_token,
+          Authorization: "Bearer " + this.props.keycloak.idToken,
         }
       }
       
-  axios.get(API.localBaseUrlString + API.favoriteMerchantAPI + "?lat=42.2&limit=30&lng=-83", config).then(
+  axios.get(API.prodBaseUrlString + API.favoriteMerchantAPI + "?lat=42.2&limit=30&lng=-83", config).then(
   response => this.loadFavMerchants(response.data)
   ).catch(function(error) {
   console.log(error);
@@ -125,11 +126,5 @@ render() {
 
 
 }
-
-const mapStateToProps = (state) => {
-    return {
-      oidc: state.oidc
-    };
-  };
   
-  export default connect(mapStateToProps)(FavMerchants);
+  export default withKeycloak(FavMerchants);

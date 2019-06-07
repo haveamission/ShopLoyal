@@ -1,0 +1,9 @@
+{
+  "realm": "wantify",
+  "ssl-required": "external",
+  "resource": "wantify-app",
+  "public-client": true,
+  "confidential-port": 0,
+  "clientId": "wantify-app",
+  "url": "https://id.v2.wantify.com/auth"
+}

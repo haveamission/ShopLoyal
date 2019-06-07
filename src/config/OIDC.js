@@ -109,11 +109,15 @@ const settings = {
     "tls_client_certificate_bound_access_tokens":true,
     "authority": "https://id.v2.wantify.com/auth/realms/wantify",
     "client_id": "wantify-app",
-    "redirect_uri": "http://localhost:3002/callback",
+    /*"redirect_uri": "http://localhost:3005/callback",*/
+    /*"redirect_uri": "shoployal://index.html?test=test2",*/
+    "redirect_uri": "http://localhost",
     "response_type": "id_token token",
     "extraQueryParams": {"kc_idp_hint": "google"},
     "loadUserInfo": true,
-    "scope": ["openid", "profile", "email"]
+    "scope": ["openid", "profile", "email"],
+    "popupWindowTarget": "",
+    "loadUserInfo": true
 }
 
 export default createUserManager(settings);

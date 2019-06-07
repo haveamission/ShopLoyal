@@ -6,13 +6,15 @@ import {author} from './general.js'
 import LocationReducer from './location.js'
 import search from './search.js'
 import categories from './categories.js'
+import tokens from './tokens';
 import { reducer as oidcReducer } from 'redux-oidc';
 export default (history) => combineReducers({
         auth: auth,
   router: connectRouter(history),
   general: general,
-  oidc: oidcReducer,
+  /*oidc: oidcReducer,*/
   search: search,
+  tokens,
   categories: categories,
   coordinates: LocationReducer,
 })

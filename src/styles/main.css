@@ -630,7 +630,7 @@ margin-bottom: 0rem;
     text-align: center;
     width: 60%;
     margin: 0 auto;
-    margin-top: 6em;
+    margin-top: 3em;
     /*line-height: 25px;*/
 }
 .facebookblue {
@@ -850,6 +850,14 @@ html {
     .fav-merchant-list {
         text-align: center;
         font-size: 2rem;
+    }
+
+    textarea:focus, input:focus{
+        outline: none;
+    }
+
+    *:focus {
+        outline: none;
     }
 
 

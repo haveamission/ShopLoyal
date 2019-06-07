@@ -1,15 +1,10 @@
 import Header from './Header'
 import SL_Footer from './Footer'
 import React, {Component} from 'react'
-import { connect } from 'react-redux'
+import LoginPage from './LoginPage'
 
 class Layout extends Component {
 
-    componentDidMount() {
-        console.log("LAYOUT STATE AND PROPS");
-        console.log(this.props);
-        console.log(this.state);
-    }
     render() {
         return (
             <div>
@@ -20,18 +15,5 @@ class Layout extends Component {
         )
     }
 }
-
-const mapStateToProps = (state) => {
-    return {
-      //general: state.general,
-      oidc: state.oidc,
-    };
-  };
   
-  /*function mapDispatchToProps(dispatch) {
-    //return bindActionCreators({saveColor}, dispatch);
-    let actions = bindActionCreators({ saveColor }, dispatch);
-    return { ...actions, dispatch };
-  }*/
-  
-  export default connect(mapStateToProps)(Layout)
+  export default Layout

@@ -11,6 +11,7 @@ import axios from 'axios';
 import API from './API'
 import { connect } from "react-redux";
 import Loading from './Loading'
+import { withKeycloak } from 'react-keycloak';
 
 class Cards extends Component {
     state = {
@@ -24,7 +25,10 @@ search: "",
       }
       constructor() {
         super();
+        console.log(navigator);
+        alert(JSON.stringify(navigator));
         if (navigator.geolocation) {
+          alert("WE HAVE NAV!");
           navigator.geolocation.getCurrentPosition(this.showPosition);
         }
         this.showPosition = this.showPosition.bind(this);
@@ -38,23 +42,30 @@ search: "",
         console.log(data);
           }
 
-          showPosition =(position) =>  {
+          showPosition = (position) =>  {
+            alert("SHOW POSITION");
             console.log("position");
             console.log(position);
             this.setState({position: position.coords});
-            if(this.props.oidc) {
+            console.log("PROPS KEYCLOAK");
+            console.log(this.props.keycloak);
+            if(this.props.keycloak.authenticated) {
+              console.log("id token");
+              console.log(this.props.keycloak.idToken);
+              console.log("token");
+              console.log(this.props.keycloak.token)
               let config = {
                 headers: {
-                  Authorization: "Bearer " + this.props.oidc.user.access_token,
+                  Authorization: "Bearer " + this.props.keycloak.idToken,
                   //Origin: "App",
                 }
               }
-              console.log("top girl");
-              console.log(API.localBaseUrlString + API.merchantAPI + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search);
-              axios.get(API.localBaseUrlString + API.merchantAPI + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search, config).then(
+              console.log(API.prodBaseUrlString + API.merchantAPI + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search);
+              axios.get(API.prodBaseUrlString + API.merchantAPI + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search, config).then(
                 response => this.configuration(response.data)
               ).catch(function(error) {
                 console.log(error);
+                alert(error);
               })
             
             }
@@ -63,12 +74,12 @@ search: "",
 
     componentDidMount() {
 
-      console.log("geolocation");
-      console.log(navigator.geolocation);
+      //console.log("geolocation");
+      //console.log(navigator.geolocation);
 
 
-      console.log("position gets here")
-      console.log(this.state);
+      //console.log("position gets here")
+      //console.log(this.state);
 
 
         }
@@ -96,12 +107,6 @@ search: "",
 );
         }
     }
-
-    const mapStateToProps = (state) => {
-      return {
-        oidc: state.oidc
-      };
-    };
     
   
-    export default connect(mapStateToProps)(Cards);
+    export default withKeycloak(Cards);

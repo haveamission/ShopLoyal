@@ -6,12 +6,16 @@ import { routerMiddleware } from 'connected-react-router'
 import rootReducer from './reducers/index'
 import createRootReducer from './reducers/index'
 import { createBrowserHistory } from 'history'
+import {createHashHistory} from 'history'
 import reducers from './reducers/index'
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 import createOidcMiddleware from "redux-oidc";
 import userManager from './config/OIDC';
 
-export const history = createBrowserHistory()
+//export const history = createBrowserHistory()
+
+export const history = createHashHistory()
+
 
 const persistConfig = {
   key: 'root',
@@ -21,9 +25,9 @@ const persistConfig = {
 const oidcMiddleware = createOidcMiddleware(userManager);
 
 const loggerMiddleware = store => next => action => {
-  //console.log("Action type:", action.type);
-  //console.log("Action payload:", action.payload);
-  //console.log("State before:", store.getState());
+  console.log("Action type:", action.type);
+  console.log("Action payload:", action.payload);
+  console.log("State before:", store.getState());
   next(action);
   console.log("State after:", store.getState());
 };
@@ -51,7 +55,7 @@ function configureStore(preloadedState) {
     preloadedState,
     compose(
       applyMiddleware(
-        oidcMiddleware,
+        //oidcMiddleware,
         loggerMiddleware,
         routerMiddleware(history),
         apiMiddleware,

@@ -14,6 +14,7 @@ import axios from 'axios'
 import API from './API'
 import { connect } from 'react-redux'
 import {bindActionCreators} from 'redux'
+import { withKeycloak } from 'react-keycloak';
 const format = require('string-format')
 
 const messages = [];
@@ -55,7 +56,7 @@ class Chat extends Component {
   saveMessage(message) {
     let config = {
       headers: {
-        'Authorization': "Bearer " + this.props.oidc.user.access_token,
+        'Authorization': "Bearer " + this.props.keycloak.idToken,
         'Content-Type': 'application/x-www-form-urlencoded'
       }
     }
@@ -65,9 +66,9 @@ class Chat extends Component {
     }
 
     console.log("chat url");
-    console.log(API.localBaseUrlString + format(API.merchantSendMessage, this.state.merchant.id));
+    console.log(API.prodBaseUrlString + format(API.merchantSendMessage, this.state.merchant.id));
 
-axios.post(API.localBaseUrlString + format(API.merchantSendMessage, this.state.merchant.id), body, config).then(
+axios.post(API.prodBaseUrlString + format(API.merchantSendMessage, this.state.merchant.id), body, config).then(
 response => console.log(response.data)
 ).catch(function(error) {
 console.log(error);
@@ -119,7 +120,7 @@ console.log(data.map(obj => obj.message));
   pullMessages() {
     let config = {
       headers: {
-        Authorization: "Bearer " + this.props.oidc.user.access_token,
+        Authorization: "Bearer " + this.props.keycloak.idToken,
       }
     }
 
@@ -129,7 +130,7 @@ console.log(this.state.merchant.id);
 
 var merchant_id = this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1);
 
-axios.get(API.localBaseUrlString + format(API.merchantMessages, merchant_id), config).then(
+axios.get(API.prodBaseUrlString + format(API.merchantMessages, merchant_id), config).then(
 response => this.loadMessages(response.data)
 ).catch(function(error) {
 console.log(error);
@@ -140,14 +141,14 @@ console.log(error);
   
   let config = {
           headers: {
-            Authorization: "Bearer " + this.props.oidc.user.access_token,
+            Authorization: "Bearer " + this.props.keycloak.idToken,
           }
         }
 
         console.log("pull channels url");
-        console.log(API.localBaseUrlString + API.channels);
+        console.log(API.prodBaseUrlString + API.channels);
   
-  axios.get(API.localBaseUrlString + API.channels, config).then(
+  axios.get(API.prodBaseUrlString + API.channels, config).then(
   response => this.loadChannels(response.data)
   ).catch(function(error) {
   console.log(error);
@@ -160,7 +161,7 @@ console.log(error);
   
   let config = {
           headers: {
-            Authorization: "Bearer " + this.props.oidc.user.access_token,
+            Authorization: "Bearer " + this.props.keycloak.idToken,
           }
         }
         
@@ -169,7 +170,7 @@ console.log(error);
   channelId: this.state.merchant.id + "-" + userId,
   }
   
-  axios.post(API.localBaseUrlString + API.channel, body, config).then(
+  axios.post(API.prodBaseUrlString + API.channel, body, config).then(
   response => this.loadChannel(response.data)
   ).catch(function(error) {
   console.log(error);
@@ -181,10 +182,10 @@ console.log(error);
   console.log(this.state);
   console.log(this.props);
   this.setState({"merchantName": this.props.location.state.merchant.name});
-    if(this.props.oidc) {
+    if(this.props.keycloak.authenticated) {
       let config = {
         headers: {
-          Authorization: "Bearer " + this.props.oidc.user.access_token,
+          Authorization: "Bearer " + this.props.keycloak.idToken,
           //Origin: "App",
         }
       }
@@ -294,16 +295,4 @@ const styles = {
   
 }
 
-const mapStateToProps = (state) => {
-  return {
-    oidc: state.oidc,
-  };
-};
-
-/*function mapDispatchToProps(dispatch) {
-  //return bindActionCreators({saveColor}, dispatch);
-  let actions = bindActionCreators();
-  return { ...actions, dispatch };
-}*/
-
-export default connect(mapStateToProps, null)(Chat);
+export default withKeycloak(Chat);
