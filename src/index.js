@@ -66,18 +66,41 @@ const startApp = () => {
 
 //window.cordova.plugins.Keyboard.hideFormAccessoryBar(true);
 
+<<<<<<< HEAD
 appsflyerInit();
+=======
+//appsflyerInit();
+>>>>>>> 66ba9ec6b1b8206610dba744cb66b9502e2032af
 //oneSignal();
 function myhandler(previousRoute, nextRoute) {
 console.log(previousRoute);
 console.log(nextRoute);
 }
 
+<<<<<<< HEAD
 render(
   (
     <KeycloakProvider
     keycloak={keycloak}
     onEvent={(event, error) => {
+=======
+const onKeycloakEvent = (event, error) => {
+  console.log('onKeycloakEvent', event, error);
+  alert('onKeycloakEvent');
+}
+
+alert("Gets here");
+
+alert("and here");
+
+
+render(
+  (
+    <KeycloakProvider 
+    keycloak={keycloak}
+    onEvent={(event, error) => {
+      alert(error);
+>>>>>>> 66ba9ec6b1b8206610dba744cb66b9502e2032af
     }}
     onTokens={tokens => {
       store.dispatch(addTokens(tokens));

@@ -621,7 +621,11 @@ margin-bottom: 0rem;
     height: 3rem;
 }
 .card-row {
+<<<<<<< HEAD
     margin-bottom: 5rem !important;
+=======
+    margin-bottom: 15rem !important;
+>>>>>>> 66ba9ec6b1b8206610dba744cb66b9502e2032af
 }
 
 /*
@@ -874,7 +878,11 @@ html {
 
     textarea:focus, input:focus{
         outline: none !important;
+<<<<<<< HEAD
 
+=======
+        border: transparent;
+>>>>>>> 66ba9ec6b1b8206610dba744cb66b9502e2032af
     }
 
     *:focus {
