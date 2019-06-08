@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>630124357672-16a92o2f7o0sv9etoslq7kkg3qptmg64.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.630124357672-16a92o2f7o0sv9etoslq7kkg3qptmg64</string>
+	<key>API_KEY</key>
+	<string>AIzaSyB0f1fRM3L1XB1WjHQJR6-3Gm4V7GcAZp0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>630124357672</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.shoployal.shoployaldemo</string>
+	<key>PROJECT_ID</key>
+	<string>shoployaldemo</string>
+	<key>STORAGE_BUCKET</key>
+	<string>shoployaldemo.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string></string>
+	<key>DATABASE_URL</key>
+	<string>https://shoployaldemo.firebaseio.com</string>
+</dict>
+</plist>

@@ -62,7 +62,7 @@ this.props.dispatch(push("/map"));
       ) : (
         ""
       )}
-<input className="" onChange={this.handleChange}></input>
+<input className="search-input" onChange={this.handleChange}></input>
 {this.state.value ? (
         ""
       ) : (

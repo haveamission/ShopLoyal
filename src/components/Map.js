@@ -11,6 +11,7 @@ import {bindActionCreators} from 'redux'
 import getLocation from '../actions/location'
 import Loading from './Loading'
 import Categories from './Categories'
+import { withKeycloak } from 'react-keycloak';
 
 const mapStyles = {
   width: "100%",
@@ -108,6 +109,7 @@ export class MapContainer extends Component {
   }
 
   componentDidMount() {
+    //alert(JSON.stringify(this.props));
     console.log("Map props");
     console.log(this.props);
     console.log(this.state);
@@ -219,4 +221,4 @@ function mapDispatchToProps(dispatch) {
 
 export default GoogleApiWrapper({
   apiKey: "AIzaSyC8ayoSBFNdHdORkbiteD5feHhpLYsToWE"
-})(connect(mapStateToProps, mapDispatchToProps)(withKeycloak((MapContainer))));
+})(connect(mapStateToProps, mapDispatchToProps)(withKeycloak(MapContainer)));

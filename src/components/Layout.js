@@ -2,6 +2,7 @@ import Header from './Header'
 import SL_Footer from './Footer'
 import React, {Component} from 'react'
 import LoginPage from './LoginPage'
+import Dummy from './Dummy'
 
 class Layout extends Component {
 

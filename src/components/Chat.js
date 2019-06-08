@@ -15,6 +15,7 @@ import API from './API'
 import { connect } from 'react-redux'
 import {bindActionCreators} from 'redux'
 import { withKeycloak } from 'react-keycloak';
+import Loading from './Loading';
 const format = require('string-format')
 
 const messages = [];
@@ -50,7 +51,7 @@ class Chat extends Component {
   }
 
   renderLoading() {
-    return (<div>Loading...</div>)
+    return (<Loading />)
   }
 
   saveMessage(message) {

@@ -3,8 +3,8 @@ import axios from 'axios';
 import API from './API'
 import { connect } from 'react-redux'
 import PromoCard from './PromoCard'
-const format = require('string-format')
 import { withKeycloak } from 'react-keycloak';
+const format = require('string-format')
 
 function loadJSONIntoUI(data) {
 
@@ -117,4 +117,4 @@ componentDidMount() {
     };
   };
 
-  export default  connect(mapStateToProps, null)(Promotions);
+  export default  connect(mapStateToProps, null)(withKeycloak(Promotions));

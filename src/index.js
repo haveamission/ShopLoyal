@@ -11,7 +11,6 @@ import "@babel/polyfill";
 //import App from './App';
 import Layout from './components/Layout'
 import configureStore, { history } from './store'
-import Login from './containers/Login';
 import Map from './components/Map';
 import Cards from './components/Cards';
 import CardRow from './components/CardRow';
@@ -33,9 +32,9 @@ import './bootstrap2-toggle.min.css';
 import './index.css';
 import './styles/main.css';
 import Toggle from 'react-bootstrap-toggle';
-import { 
-  CSSTransition, 
-  TransitionGroup 
+import {
+  CSSTransition,
+  TransitionGroup
 } from 'react-transition-group';
 //import 'bootstrap/dist/css/bootstrap.css';
 
@@ -59,11 +58,13 @@ const {store, persistor} = configureStore(history)
 const keycloak = new Keycloak(keycloak_config);
 
 //userManager.signinRedirect();
-
 const startApp = () => {
 // Initialize
 
 //window.open = window.cordova.InAppBrowser.open;
+
+
+//window.cordova.plugins.Keyboard.hideFormAccessoryBar(true);
 
 appsflyerInit();
 //oneSignal();
@@ -72,28 +73,26 @@ console.log(previousRoute);
 console.log(nextRoute);
 }
 
-const onKeycloakEvent = (event, error) => {
-  console.log('onKeycloakEvent', event, error);
-  //alert('onKeycloakEvent');
-}
-
 render(
   (
-    
-    <KeycloakProvider 
+    <KeycloakProvider
     keycloak={keycloak}
     onEvent={(event, error) => {
-      //alert(error);
     }}
     onTokens={tokens => {
       store.dispatch(addTokens(tokens));
       store.dispatch(push("/"));
       //history.pushState(null, '/');
     }}
+    initConfig={{
+      onLoad: 'check-sso',
+      flow: 'implicit'
+    }
+    }
 
     >
     <Provider store={store}>
-    
+
     {/*<OidcProvider store={store} userManager={userManager}>*/}
     <PersistGate loading={<Loading />} persistor={persistor}>
     <ConnectedRouter history={history}>
@@ -103,7 +102,7 @@ render(
             const { pathname } = location;
             return (
               <TransitionGroup>
-                <CSSTransition 
+                <CSSTransition
                   key={pathname}
                   classNames="page"
                   timeout={{
@@ -143,7 +142,7 @@ render(
     {/*</OidcProvider>*/}
   </Provider>
   </KeycloakProvider>
- 
+
 ), document.getElementById('root'));
 registerServiceWorker();
 }
@@ -153,33 +152,33 @@ function appsflyerInit() {
     devKey: '5TgbTvDgXuQkN5sdxBEGa8', // your AppsFlyer devKey
     isDebug: true,
   };
- 
+
   var userAgent = window.navigator.userAgent.toLowerCase();
   if (/iphone|ipad|ipod/.test( userAgent )) {
-    options.appId = '1458126556'; // your ios app id in app store     
+    options.appId = '1458126556'; // your ios app id in app store
   }
-   
+
   var onSuccess = function(result) {
     console.log(result);
   };
-  
+
   function onError(err) {
     console.log(err);
   }
 
   //console.log(window.plugins);
-  
+
   //window.plugins.appsFlyer.initSdk(options, onSuccess, onError);
 }
 
 function oneSignal() {
     // Enable to debug issues.
     // window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
-    
+
     var notificationOpenedCallback = function(jsonData) {
       console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
     };
-  
+
     window.plugins.OneSignal
       .startInit("2f19cafc-d4ab-4b01-aecd-dd7961b3b8e3")
       .handleNotificationOpened(notificationOpenedCallback)

@@ -29,16 +29,17 @@ class Header extends React.Component {
       this.setState({profile: data});
   }
 
-/*componentDidMount() {
+componentDidMount() {
   console.log("HEADER STATE AND PROPS props");
   console.log(this.props);
   console.log(this.state);
   // Messy probably - clean it later
   console.log(window.location.pathname);
-  if(window.location.pathname === '/' && this.props.keycloak.authenticated) {
+
+  if(this.props.router.location.pathname === '/' && this.props.keycloak.authenticated) {
 this.setState({headerLoc: true})
 
-if(this.props.keycloak.authenticated && this.props.keycloak.authenticated.user) {
+if(this.props.keycloak.authenticated) {
   let config = {
     headers: {
       Authorization: "Bearer " + this.props.keycloak.idToken,
@@ -52,7 +53,19 @@ if(this.props.keycloak.authenticated && this.props.keycloak.authenticated.user) 
 
 
   }
-}*/
+}
+
+componentDidUpdate(prevProps, prevState) {
+  if(this.props.router.location.pathname === '/' && this.state.headerLoc == false) {
+    this.setState({headerLoc: true})
+    
+    }
+    else if (this.props.router.location.pathname !== '/' && this.state.headerLoc == true) {
+      this.setState({headerLoc: false})
+    }
+    
+    
+      }
 
   render() {
     if(!this.props.keycloak.authenticated) {
@@ -64,6 +77,7 @@ if(this.props.keycloak.authenticated && this.props.keycloak.authenticated.user) 
 
     console.log("state during render");
     console.log(this.state);
+    
   return(
   <header>
     <nav style={navStyles}>
@@ -77,7 +91,7 @@ if(this.props.keycloak.authenticated && this.props.keycloak.authenticated.user) 
       <div className="secondary-nav">
        <div className="welcome-text" style={navStyles}>
        Welcome
-       <span className="welcome-text-name">{this.props.keycloak.authenticated.user.profile.given_name}</span>
+       <span className="welcome-text-name">{this.props.keycloak.tokenParsed.given_name}</span>
        </div>
        {this.state.profile ? (
        <Link to="/settings"><img className="profile-picture" src={this.state.profile.picture} /></Link> )
@@ -103,4 +117,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Header)
+export default connect(mapStateToProps)(withKeycloak(Header));

@@ -17,6 +17,7 @@ import Loading from './Loading'
 import axios from 'axios'
 import API from './API'
 import { push } from 'connected-react-router'
+import { withKeycloak } from 'react-keycloak';
 const format = require('string-format')
 
 
@@ -122,7 +123,6 @@ class Card extends Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
 
     // Not ideal - deal with how react does this later
 
@@ -202,7 +202,7 @@ function mapDispatchToProps(dispatch) {
   return { ...actions, dispatch };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Card)
+export default connect(mapStateToProps, mapDispatchToProps)(withKeycloak(Card));
 
 //export default Card;
 

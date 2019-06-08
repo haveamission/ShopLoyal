@@ -119,4 +119,4 @@ function mapDispatchToProps(dispatch) {
   return { ...actions, dispatch };
 }
 
-export default  connect(mapStateToProps, mapDispatchToProps)(Detail);
+export default  connect(mapStateToProps, mapDispatchToProps)(withKeycloak(Detail));

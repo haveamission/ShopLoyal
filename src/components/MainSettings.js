@@ -6,6 +6,7 @@ import Loading from './Loading'
 import Toggle from 'react-toggle'
 import { Link } from 'react-router-dom'
 import '../styles/toggle.css';
+import { withKeycloak } from 'react-keycloak';
 
 class MainSettings extends React.Component {
 
@@ -86,5 +87,5 @@ class MainSettings extends React.Component {
     )
   }
   }
-  
+
   export default withKeycloak(MainSettings);
