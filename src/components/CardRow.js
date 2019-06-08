@@ -54,13 +54,7 @@ state = {
 }
 
 configuration =(data) =>  {
-  //console.log("notices");
-  //console.log(data);
   data = loadJSONIntoUI(data);
-
-  //console.log("data before foreach");
-  //console.log(data);
-
   data.forEach((promo) => {
     this.state.list.push(<PromoCard data={promo}/>);
       });
@@ -76,18 +70,13 @@ configuration =(data) =>  {
 }
 
 showPosition =(position) =>  {
-  console.log("position");
-  console.log(position);
   this.setState({position: position.coords});
-  console.log(this.props);
   if(this.props.keycloak.authenticated) {
     let config = {
       headers: {
         Authorization: "Bearer " + this.props.keycloak.idToken,
-        //Origin: "App",
       }
     }
-    console.log("top girl");
     console.log(API.prodBaseUrlString + format(API.merchantNoticesAPI, this.props.merchant.merchant.id) + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search);
     axios.get(API.prodBaseUrlString + format(API.merchantNoticesAPI, this.props.merchant.merchant.id) + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search, config).then(
           response => this.configuration(response.data)
@@ -99,8 +88,6 @@ showPosition =(position) =>  {
 }
 
 merchantMessageConfiguration(data) {
-console.log("MERCHANT mesSAHGES");
-console.log(data);
 var msg;
 for (let el of data) {
   console.log(el);
@@ -115,10 +102,6 @@ this.setState({"bubblemsg":msg.message, "bubbleid":msg.merchantId});
 }
 
 componentWillMount() {
-  //console.log("will mount");
-  //const test = withFetching(noticeAPI)(promoIter);
-  //this.setState({testval: test})
-  //console.log(this.props.merchant);
   console.log("props merchant");
   console.log(this.props.merchant);
   this.state.list.push(<Card merchant={this.props.merchant.merchant} />)
@@ -134,22 +117,13 @@ componentDidMount() {
   this.list.push(<PromoCard data={promo}/>);
     });*/
 
-    console.log("CARD MESSAGES ROW PROPS");
-    console.log(this.props);
-
     if(this.props.keycloak.authenticated && this.props.count == 0) {
 var merchant_id = this.props.merchant.merchant.id;
-console.log("Army of Swedes");
-console.log(merchant_id);
-// FAKE VALUE FOR TESTING
-merchant_id = 37;
       let config = {
         headers: {
           Authorization: "Bearer " + this.props.keycloak.idToken,
-          //Origin: "App",
         }
       }
-      console.log("top girl");
       console.log(API.prodBaseUrlString + format(API.merchantMessages, merchant_id));
       axios.get(API.prodBaseUrlString + format(API.merchantMessages, merchant_id), config).then(
         response => this.merchantMessageConfiguration(response.data)

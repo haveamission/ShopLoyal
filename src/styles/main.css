@@ -612,6 +612,9 @@ margin-bottom: 0rem;
     margin-right: 1rem;
     height: 3rem;
 }
+.card-row {
+    margin-bottom: 15rem !important;
+}
 
 /*
 * Create a closing X
@@ -853,11 +856,12 @@ html {
     }
 
     textarea:focus, input:focus{
-        outline: none;
+        outline: none !important;
+        border: transparent;
     }
 
     *:focus {
-        outline: none;
+        outline: none !important;
     }
 
 

@@ -29,7 +29,7 @@ class Header extends React.Component {
       this.setState({profile: data});
   }
 
-/*componentDidMount() {
+componentDidMount() {
   console.log("HEADER STATE AND PROPS props");
   console.log(this.props);
   console.log(this.state);
@@ -38,7 +38,7 @@ class Header extends React.Component {
   if(window.location.pathname === '/' && this.props.keycloak.authenticated) {
 this.setState({headerLoc: true})
 
-if(this.props.keycloak.authenticated && this.props.keycloak.authenticated.user) {
+if(this.props.keycloak.authenticated) {
   let config = {
     headers: {
       Authorization: "Bearer " + this.props.keycloak.idToken,
@@ -52,7 +52,7 @@ if(this.props.keycloak.authenticated && this.props.keycloak.authenticated.user) 
 
 
   }
-}*/
+}
 
   render() {
     if(!this.props.keycloak.authenticated) {
@@ -103,4 +103,4 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(Header)
+export default connect(mapStateToProps)(withKeycloak(Header));

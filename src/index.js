@@ -11,7 +11,6 @@ import "@babel/polyfill";
 //import App from './App';
 import Layout from './components/Layout'
 import configureStore, { history } from './store'
-import Login from './containers/Login';
 import Map from './components/Map';
 import Cards from './components/Cards';
 import CardRow from './components/CardRow';
@@ -65,7 +64,10 @@ const startApp = () => {
 
 //window.open = window.cordova.InAppBrowser.open;
 
-appsflyerInit();
+
+//window.cordova.plugins.Keyboard.hideFormAccessoryBar(true);
+
+//appsflyerInit();
 //oneSignal();
 function myhandler(previousRoute, nextRoute) {
 console.log(previousRoute);
@@ -74,16 +76,20 @@ console.log(nextRoute);
 
 const onKeycloakEvent = (event, error) => {
   console.log('onKeycloakEvent', event, error);
-  //alert('onKeycloakEvent');
+  alert('onKeycloakEvent');
 }
+
+alert("Gets here");
+
+alert("and here");
+
 
 render(
   (
-    
     <KeycloakProvider 
     keycloak={keycloak}
     onEvent={(event, error) => {
-      //alert(error);
+      alert(error);
     }}
     onTokens={tokens => {
       store.dispatch(addTokens(tokens));

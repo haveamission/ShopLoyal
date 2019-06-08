@@ -13,7 +13,7 @@ import { connect } from 'react-redux'
 class LoginPage extends React.Component {
 
   onLoginButtonClick() {
-
+    alert(JSON.stringify(window.cordova.plugins));
   }
       
       render(){
@@ -33,9 +33,9 @@ class LoginPage extends React.Component {
     <div className="loginpage">
 <h2 className="login-header">Log In to Your Account</h2>
 <div className="loginbuttongroup">
-<div className="googlered loginbutton" onClick={() => this.props.keycloak.login()}>Log In with Keycloak<img className="login-img" src={GoogleImg} /></div>
-<div className="googlered loginbutton" onClick={this.onLoginButtonClick}>Log In with Google<img className="login-img" src={GoogleImg} /></div>
-<div className="facebookblue loginbutton" onClick={this.onLoginButtonClick}>Log In with Facebook<img className="login-img" src={FBImg} /></div>
+{/*<div className="googlered loginbutton" onClick={() => this.props.keycloak.login()}>Log In with Keycloak<img className="login-img" src={GoogleImg} /></div>*/}
+<div className="googlered loginbutton" onClick={() => this.props.keycloak.login({idpHint: 'google'})}>Log In with Google<img className="login-img" src={GoogleImg} /></div>
+<div className="facebookblue loginbutton" onClick={() => this.props.keycloak.login({idpHint: 'facebook'})}>Log In with Facebook<img className="login-img" src={FBImg} /></div>
 </div>
 {/*<Link to="/signup/"><div className="bottomtext">Don't have an account? Sign Up</div></Link>*/}
 </div>

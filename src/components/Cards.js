@@ -26,9 +26,8 @@ search: "",
       constructor() {
         super();
         console.log(navigator);
-        alert(JSON.stringify(navigator));
+        //alert(JSON.stringify(navigator));
         if (navigator.geolocation) {
-          alert("WE HAVE NAV!");
           navigator.geolocation.getCurrentPosition(this.showPosition);
         }
         this.showPosition = this.showPosition.bind(this);
@@ -43,7 +42,6 @@ search: "",
           }
 
           showPosition = (position) =>  {
-            alert("SHOW POSITION");
             console.log("position");
             console.log(position);
             this.setState({position: position.coords});
@@ -60,12 +58,13 @@ search: "",
                   //Origin: "App",
                 }
               }
-              console.log(API.prodBaseUrlString + API.merchantAPI + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search);
-              axios.get(API.prodBaseUrlString + API.merchantAPI + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search, config).then(
+              console.log(API.prodBaseUrlString + API.merchantAPI + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=5&search=" + this.state.search);
+              axios.get(API.prodBaseUrlString + API.merchantAPI + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=5&search=" + this.state.search, config).then(
                 response => this.configuration(response.data)
               ).catch(function(error) {
+                console.log("500 error here???");
                 console.log(error);
-                alert(error);
+                //alert(error);
               })
             
             }
