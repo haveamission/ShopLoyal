@@ -12,8 +12,8 @@ import { ClipLoader } from 'react-spinners';
           return (
             <div className='sweet-loading'>
               <ClipLoader
-                sizeUnit={"px"}
-                size={50}
+                sizeUnit={"em"}
+                size={100}
                 color={'#123abc'}
                 loading={this.state.loading}
               />
