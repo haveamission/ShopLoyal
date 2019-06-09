@@ -837,6 +837,7 @@ html {
     }
     .shoployal-main-logo {
         width: 15rem;
+        display: block;
     }
     .welcome-text {
         color: #27295F;

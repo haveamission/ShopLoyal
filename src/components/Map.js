@@ -135,11 +135,6 @@ export class MapContainer extends Component {
   }
 
   render() {
-    console.log("props before loading");
-    console.log(this.props);
-
-    console.log("state before mapping");
-    console.log(this.state);
 
     if (this.props.coordinates.length == 0) {
       return <Loading />
@@ -218,6 +213,11 @@ function mapDispatchToProps(dispatch) {
   //return { ...actions, dispatch };
 }
 
+const LoadingContainer = (props) => (
+  <div></div>
+)
+
 export default GoogleApiWrapper({
-  apiKey: "AIzaSyC8ayoSBFNdHdORkbiteD5feHhpLYsToWE"
+  apiKey: "AIzaSyC8ayoSBFNdHdORkbiteD5feHhpLYsToWE",
+  LoadingContainer: LoadingContainer
 })(connect(mapStateToProps, mapDispatchToProps)(withKeycloak(MapContainer)));
