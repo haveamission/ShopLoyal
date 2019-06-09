@@ -621,7 +621,7 @@ margin-bottom: 0rem;
     height: 3rem;
 }
 .card-row {
-    margin-bottom: 5rem !important;
+    margin-bottom: 0rem !important;
 }
 
 /*
@@ -879,6 +879,58 @@ html {
     *:focus {
         outline: none !important;
     }
+
+    /*
+    * Page transitions
+    */
+    /*.page {
+        height: 100vh;
+        overflow-y: auto;
+        position: fixed;
+        top: 8em;
+        width: 100%;
+        -webkit-overflow-scrolling: touch;
+        transition: transform .5s ease-in-out;
+        background-color: #FFF;
+      }
+      .main-page {
+          top: 15em;
+      }*/
+
+      .page {
+          background-color: #fff;
+      }
+
+      .page-exit {
+        opacity: 0;
+    }
+      
+ /*
+.page-enter {
+    opacity: 0.01;
+}
+
+.page-enter.page-enter-active {
+    opacity: 1;
+    transition: opacity 3000ms ease-in;
+}
+
+
+
+.page-exit.page-exit-active {
+    opacity: 0.01;
+    transition: opacity 3000ms ease-in;
+}
+
+.transition-group {
+    position: relative;
+}*/
+
+      header {
+z-index: 100;
+      }
+   
+      
 
 
 

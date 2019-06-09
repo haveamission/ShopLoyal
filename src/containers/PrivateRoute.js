@@ -7,8 +7,8 @@ import { withKeycloak } from 'react-keycloak';
 const PrivateRoute = ({ component: Component, ...rest }) => (
 
   <Route {...rest} render={props => (
-    alert("SHOULD get here - before this props"),
-    alert("props"),
+    //alert("SHOULD get here - before this props"),
+    //alert("props"),
     //alert(JSON.stringify(props)),
     //alert("rest"),
     //alert(JSON.stringify(rest)),

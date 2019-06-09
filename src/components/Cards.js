@@ -93,7 +93,7 @@ search: "",
           console.log("state value new");
           console.log(this.state.data);
             return (
-    <Page>
+    <Page className="main-page">
     <div className="cards">
     {this.state.data.merchants.map( (merchant, index) =>
      <CardRow

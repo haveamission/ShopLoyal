@@ -86,7 +86,7 @@ render(
     }}
     initConfig={{
       onLoad: 'check-sso',
-      flow: 'implicit'
+      flow: 'hybrid'
     }
     }
 
@@ -101,15 +101,14 @@ render(
           render={({ location }) => {
             const { pathname } = location;
             return (
-              <TransitionGroup>
+              <TransitionGroup className="transition-group">
                 <CSSTransition
                   key={pathname}
                   classNames="page"
                   timeout={{
-                    enter: 1000,
-                    exit: 1000,
+                    enter: 3000,
+                    exit: 3000,
                   }}
-                  onChange={myhandler}
                 >
     <Route
                     location={location}

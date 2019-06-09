@@ -51,7 +51,6 @@ if(this.props.keycloak.authenticated) {
 
 }
 
-
   }
 }
 

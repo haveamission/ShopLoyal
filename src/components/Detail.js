@@ -8,6 +8,7 @@ import axios from 'axios';
 import API from './API'
 import Promotions from './Promotions'
 import { withKeycloak } from 'react-keycloak';
+import Loading from './Loading';
 
 class About extends Component {
   render() {
@@ -83,7 +84,7 @@ class Detail extends Component {
           }
         
           if (isLoading) {
-            return <p>Loading ...</p>;
+            return <Loading />;
           }
 
     render() {

@@ -207,7 +207,6 @@ const mapStateToProps = (state) => {
   console.log("map state to props");
   console.log(state);
   return {
-    oidc: state.oidc,
     search: state.search,
     coordinates: state.coordinates,
     category: state.categories,

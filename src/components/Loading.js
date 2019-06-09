@@ -13,7 +13,7 @@ import { ClipLoader } from 'react-spinners';
             <div className='sweet-loading'>
               <ClipLoader
                 sizeUnit={"em"}
-                size={100}
+                size={10}
                 color={'#123abc'}
                 loading={this.state.loading}
               />
