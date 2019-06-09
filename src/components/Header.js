@@ -47,7 +47,11 @@ if(this.props.keycloak.authenticated) {
   }
     axios.get(API.prodBaseUrlString + API.userProfileAPI, config).then(
     response => this.configuration(response.data)
-  );
+  ).catch(function(error) {
+    console.log("500 error here???");
+    console.log(error);
+    alert(error);
+  });
 
 }
 
@@ -56,6 +60,21 @@ if(this.props.keycloak.authenticated) {
 
 componentDidUpdate(prevProps, prevState) {
   if(this.props.router.location.pathname === '/' && this.state.headerLoc == false) {
+    if(this.props.keycloak.authenticated) {
+      let config = {
+        headers: {
+          Authorization: "Bearer " + this.props.keycloak.idToken,
+        }
+      }
+        axios.get(API.prodBaseUrlString + API.userProfileAPI, config).then(
+        response => this.configuration(response.data)
+      ).catch(function(error) {
+        console.log("500 error here???");
+        console.log(error);
+        alert(error);
+      });
+    
+    }
     this.setState({headerLoc: true})
     
     }

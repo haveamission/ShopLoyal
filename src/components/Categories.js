@@ -14,14 +14,10 @@ class Categories extends Component {
 
 
   componentDidMount() {
-    console.log("categories props");
-    console.log(this.props);
     this.setState({selectedCat: this.props.category.category});
 
   }
   rootClassNames(cat) {
-    console.log("CAT!");
-    console.log(cat);
     if(this.state.selectedCat == "" && cat == "All") {
       return "selected"
     }
@@ -31,8 +27,6 @@ class Categories extends Component {
   }
 
   handleClick = (cat) => {
-console.log("event");
-console.log(cat);
 var value = cat;
 if(value === "All") {
   value = "";

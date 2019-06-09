@@ -49,7 +49,9 @@ this.setState(data);
 
   componentDidMount() {
 
-    if(this.props.keycloak.authenticated.user) {
+    alert("Settings did mount");
+
+    if(this.props.keycloak.authenticated) {
 
 let config = {
   headers: {
