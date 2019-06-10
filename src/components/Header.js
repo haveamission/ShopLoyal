@@ -14,9 +14,6 @@ import { withKeycloak } from 'react-keycloak';
 // The Header creates links that can be used to navigate
 // between routes.
 
-
-
-
 class Header extends React.Component {
 
   state = {

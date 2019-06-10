@@ -116,6 +116,7 @@ componentDidMount() {
   /*this.state.data.forEach(function(promo) {
   this.list.push(<PromoCard data={promo}/>);
     });*/
+    alert(JSON.stringify(this.props));
 
     if(this.props.keycloak.authenticated && this.props.count == 0) {
 var merchant_id = this.props.merchant.merchant.id;
@@ -141,7 +142,7 @@ var merchant_id = this.props.merchant.merchant.id;
     }
    
       return (
-        <div className="App card-row">
+        <div className={"App card-row " + this.props.className}>
               {this.state.bubblemsg ? (
         <NotifBubble message={this.state.bubblemsg} merchant={this.props.merchant.merchant}/>
       ) : (
@@ -159,7 +160,6 @@ var merchant_id = this.props.merchant.merchant.id;
 
   const mapStateToProps = (state) => {
     return {
-      oidc: state.oidc,
       search: state.search,
       coordinates: state.coordinates,
       category: state.categories,

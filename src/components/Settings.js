@@ -49,8 +49,6 @@ this.setState(data);
 
   componentDidMount() {
 
-    alert("Settings did mount");
-
     if(this.props.keycloak.authenticated) {
 
 let config = {

@@ -129,15 +129,22 @@ class Card extends Component {
     console.log("THIS MERCHANT!!");
     console.log(this.props.merchant);
 
-    if (typeof this.props.merchant !== 'undefined') {
-    getColors(API.corsString + this.props.merchant.coverPhoto).then(colors => {
+    //lightestColorGen()
+    //styleGuideColorGen()
+
+}
+
+styleGuideColorGen() {
+
+}
+
+lightestColorGen() {
+  if (typeof this.props.merchant !== 'undefined') {
+    getColors(this.props.merchant.coverPhoto).then(colors => {
       var colorsHex = colors.map(color => color.hex());
       this.lightestColor(colorsHex);
     })
-    
-
   }
-
 }
 
 
@@ -152,7 +159,8 @@ class Card extends Component {
 
     return (
     <div className="card titlecard" onClick={this.routeChange}style={{backgroundImage: `url(${this.state.merchant.coverPhoto})`}}>
-    <div className="layer" style={{backgroundColor : this.state.cardColor}}></div>
+    {/*<div className="layer" style={{backgroundColor : this.state.cardColor}}></div>*/}
+    <div className="layer"></div>
     {/* Split off into another component */}
     {/*<SLBubble />*/}
       <div className="card-left">
