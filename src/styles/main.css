@@ -97,36 +97,29 @@ header {
 header {
     z-index: 100;
           }
+
+          .card-color .layer {
+            z-index: 30;
+            opacity: .7;
+          }
     
           .card-color-0 .layer {
             background-color: #536DFE;
-            z-index: 30;
-            opacity: .5;
           }
           .card-color-1 .layer {
-            z-index: 30;
             background-color: #5C6BC0;
-            opacity: .5;
           }
           .card-color-2 .layer {
-            z-index: 30;
               background-color: #969FA2;
-              opacity: .5;
           }
           .card-color-3 .layer {
-            z-index: 30;
               background-color: #27295F;
-              opacity: .5;
           }
           .card-color-4 .layer {
               background-color: #FFD138;
-              opacity: .5;
-              z-index: 30;
           }
           .card-color-5 .layer {
             background-color: #DDDDDD;
-            opacity: .5;
-            z-index: 30;
           }
 
 .cards .card {

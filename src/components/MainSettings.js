@@ -7,6 +7,7 @@ import Toggle from 'react-toggle'
 import { Link } from 'react-router-dom'
 import '../styles/toggle.css';
 import { withKeycloak } from 'react-keycloak';
+import axiosRetry from 'axios-retry';
 
 class MainSettings extends React.Component {
 
@@ -24,11 +25,16 @@ class MainSettings extends React.Component {
       Authorization: "Bearer " + this.props.keycloak.idToken,
     }
   }
+
+  console.log("Notif CHECKED - true or false?");
+  console.log(event.target.checked);
   
   var body = {
     "notificationEnabled": event.target.checked
   }
   
+  axiosRetry(axios, { retries: 10 });
+
   axios.post(API.prodBaseUrlString + API.settings, body, config).then(
     response => console.log(response.data)
     ).then(data => this.setState({'notificationEnabled': event.target.checked})).catch(function(error) {

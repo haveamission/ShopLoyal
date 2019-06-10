@@ -142,7 +142,7 @@ var merchant_id = this.props.merchant.merchant.id;
     }
    
       return (
-        <div className={"App card-row " + this.props.className}>
+        <div className={"App card-row card-color " + this.props.className}>
               {this.state.bubblemsg ? (
         <NotifBubble message={this.state.bubblemsg} merchant={this.props.merchant.merchant}/>
       ) : (
