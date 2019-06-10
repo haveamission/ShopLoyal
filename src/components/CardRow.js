@@ -116,7 +116,7 @@ componentDidMount() {
   /*this.state.data.forEach(function(promo) {
   this.list.push(<PromoCard data={promo}/>);
     });*/
-    alert(JSON.stringify(this.props));
+    //alert(JSON.stringify(this.props));
 
     if(this.props.keycloak.authenticated && this.props.count == 0) {
 var merchant_id = this.props.merchant.merchant.id;

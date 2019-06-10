@@ -99,7 +99,7 @@ search: "",
      <CardRow
      merchant={{merchant}}
      count={index}
-     className={'card-color-' + index + 1}
+     className={'card-color-' + index}
       />
   )}
     </div>

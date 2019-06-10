@@ -18,6 +18,7 @@ import axios from 'axios'
 import API from './API'
 import { push } from 'connected-react-router'
 import { withKeycloak } from 'react-keycloak';
+import axiosRetry from 'axios-retry';
 const format = require('string-format')
 
 
@@ -65,6 +66,7 @@ class Card extends Component {
       }
       //this.state.merchant.isFavorite
       console.log("Before favorite send");
+      axiosRetry(axios, { retries: 10 });
       axios.post(API.prodBaseUrlString + API.favoriteMerchantAPI, {"merchantId": this.state.merchant.id, "status": !this.state.merchant.isFavorite}, config).then(
         response => this.configuration(response.data)
       ).catch(function(error) {
@@ -158,7 +160,7 @@ lightestColorGen() {
   //console.log(this.state);
 
     return (
-    <div className="card titlecard" onClick={this.routeChange}style={{backgroundImage: `url(${this.state.merchant.coverPhoto})`}}>
+    <div className="card titlecard" onClick={this.routeChange} style={{backgroundImage: `url(${this.state.merchant.coverPhoto})`}}>
     {/*<div className="layer" style={{backgroundColor : this.state.cardColor}}></div>*/}
     <div className="layer"></div>
     {/* Split off into another component */}

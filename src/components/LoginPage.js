@@ -13,7 +13,7 @@ import { connect } from 'react-redux'
 class LoginPage extends React.Component {
 
   onLoginButtonClick() {
-    alert(JSON.stringify(window.cordova.plugins));
+    //alert(JSON.stringify(window.cordova.plugins));
   }
       
       render(){

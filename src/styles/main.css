@@ -94,6 +94,41 @@ header {
 /*
 * Card-specific styles
 */
+header {
+    z-index: 100;
+          }
+    
+          .card-color-0 .layer {
+            background-color: #536DFE;
+            z-index: 30;
+            opacity: .5;
+          }
+          .card-color-1 .layer {
+            z-index: 30;
+            background-color: #5C6BC0;
+            opacity: .5;
+          }
+          .card-color-2 .layer {
+            z-index: 30;
+              background-color: #969FA2;
+              opacity: .5;
+          }
+          .card-color-3 .layer {
+            z-index: 30;
+              background-color: #27295F;
+              opacity: .5;
+          }
+          .card-color-4 .layer {
+              background-color: #FFD138;
+              opacity: .5;
+              z-index: 30;
+          }
+          .card-color-5 .layer {
+            background-color: #DDDDDD;
+            opacity: .5;
+            z-index: 30;
+          }
+
 .cards .card {
     overflow: hidden;
 }
@@ -101,7 +136,6 @@ header {
 width: 34rem;
 height: 19rem;
 margin: 0 auto;
-
 position: relative;
 margin-bottom: 3rem;
 color: #FFF;
@@ -109,29 +143,36 @@ color: #FFF;
 .card .card-right {
     width: 25rem;
     float: right;
+    z-index: 50;
+    position: relative;
 }
 .card .card-left {
     float: left;
     position: relative;
     top: 12rem;
     left: 2rem;
+    z-index: 50;
 }
 .card .card-title {
     font-size: 2rem;
     margin-bottom: 0px;
     font-weight: bold;
+    z-index: 50;
 }
 .card hr {
     width: 100%;
     float: right;
     color: #fff;
     opacity: 50%;
+    z-index: 50;
 }
 .card .card-address {
     color: #DDD;
+    z-index: 50;
 }
 .card .card-title, .card .card-address, .card .card-nav {
     margin-left: 1rem;
+    z-index: 50;
 }
 .card-nav a li{
 
@@ -222,6 +263,9 @@ vertical-align: top;
 */
 .titlecard .layer {
     /*background-color: rgba(6, 86, 165, 0.9);*/
+}
+.titlecard {
+    z-index: 20;
 }
 .gmaps .titlecard .layer {
     background-color: rgba(6, 86, 165, 0.9) !important;
@@ -926,33 +970,6 @@ html {
 .transition-group {
     position: relative;
 }*/
-
-      header {
-z-index: 100;
-      }
-
-      .card-color-01 .layer {
-        background-color: #536DFE;
-        z-index: 100;
-      }
-      .card-color-02 .layer {
-        z-index: 100;
-        background-color: #5C6BC0;
-      }
-      .card-color-03 .layer {
-        z-index: 100;
-          background-color: #969FA2;
-      }
-      .card-color-04 .layer {
-        z-index: 100;
-          background-color: #27295F;
-      }
-      .card-color-05 .layer {
-          background-color: #FFD138;
-      }
-      .card-color-06 .layer {
-        background-color: #DDDDDD
-      }
    
       
 
