@@ -49,12 +49,16 @@ const styles = StyleSheet.create({
   container: {
     height: 44,
     justifyContent: 'flex-end',
+    position: "absolute",
+    bottom: 0,
   },
   text: {
     color: Color.defaultPurple,
     fontWeight: '600',
     fontSize: '1.5em',
+    zIndex: "100",
     backgroundColor: Color.backgroundTransparent,
+    textAlign: "right",
 marginBottom: '.5em',
     marginLeft: 10,
     marginRight: 10,

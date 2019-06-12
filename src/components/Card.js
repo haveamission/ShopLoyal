@@ -42,6 +42,7 @@ class Card extends Component {
     }
 
     configuration(data) {
+      //alert("Completed one round");
       console.log("pre set state card");
       console.log(data);
       var merchant = this.state.merchant;
@@ -71,6 +72,7 @@ class Card extends Component {
         response => this.configuration(response.data)
       ).catch(function(error) {
         console.log(error);
+        //alert(error);
       })
     }
   }
@@ -152,6 +154,7 @@ lightestColorGen() {
 
 
   render() {
+
     if (!this.state.data) {
       return <div />
   }

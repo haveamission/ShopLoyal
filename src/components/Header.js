@@ -47,7 +47,7 @@ if(this.props.keycloak.authenticated) {
   ).catch(function(error) {
     console.log("500 error here???");
     console.log(error);
-    alert(error);
+    //alert(error);
   });
 
 }
@@ -68,7 +68,7 @@ componentDidUpdate(prevProps, prevState) {
       ).catch(function(error) {
         console.log("500 error here???");
         console.log(error);
-        alert(error);
+        //alert(error);
       });
     
     }

@@ -16,6 +16,7 @@ import { connect } from 'react-redux'
 import {bindActionCreators} from 'redux'
 import { withKeycloak } from 'react-keycloak';
 import Loading from './Loading';
+import '../styles/chat.css';
 const format = require('string-format')
 
 const messages = [];
@@ -23,14 +24,17 @@ const messages = [];
 function generateMessage(message, index, additionalData) {
   if(message.recipient == 'merchant') {
 var idval = 1;
+var position = "mine";
   }
   else if(message.recipient == 'customer') {
 var idval = 2;
+var position = "yours;"
   }
   return {
     id: message.id,
     text: message.message,
     createdAt: message.createdAt,
+    position: position,
 user: {
 id: idval,
 name: "Generic"
@@ -39,11 +43,11 @@ name: "Generic"
   }
 }
 
-class Chat extends Component {
+class NewChat extends Component {
   constructor() {
     super()
     this.state = {
-      messages: [],
+      messages: [{}],
       merchant: {"id": 37},
       isLoading: true,
     }
@@ -80,8 +84,16 @@ console.log(error);
     for(let message of messages){
       console.log(message);
       this.saveMessage(message);
-      this.setState({messages: [message,...this.state.messages]})
+      var messageHydrated = this.addMessageInfo(message)
+      this.setState({messages: [...this.state.messages, messageHydrated]})
     }
+  }
+
+  addMessageInfo(message) {
+return {
+  text: message,
+  position: "mine"
+}
   }
 
   loadChannels(data) {
@@ -268,11 +280,14 @@ window.NativeKeyboard.showMessenger({
   },
   showKeyboard: true,
   autocorrectionEnabled: true,
+  animated: true,
   placeholder: 'Message...',
+  //autoscrollElement: document.getElementById("messages"), // default unset
+  keepOpenAfterSubmit: true,
   rightButton: {
     color: '#536DFE',
     type: 'text', // or 'fontawesome' or 'ionicon', default 'text'
-    value: 'Send', // 'fa-battery-quarter', // '\uf2c3', // 'Send', // default 'Send'
+    value: 'SEND', // 'fa-battery-quarter', // '\uf2c3', // 'Send', // default 'Send'
     textStyle: 'bold',
   },
 });
@@ -283,26 +298,29 @@ if (this.state.isLoading || !this.state.merchantName) {
   return <Loading />;
 }
 
+//alert(JSON.stringify(this.state.messages));
+
     return (
 <Page>
-      <div className="chat" style={styles.container}>
+<div className="chat" style={styles.container}>
             
-        <div style={styles.chat} className="full-chat">
-        {/* Make this into a link ultimately when routing method is decided on */}
-        <div className="chatlinkback" onClick={this.goBack}><div className="triangle"></div>
-        <div className="chatlinktitle">{this.state.merchantName}</div>
-        </div>
+            <div style={styles.chat} className="full-chat">
+            {/* Make this into a link ultimately when routing method is decided on */}
+            <div className="chatlinkback" onClick={this.goBack}><div className="triangle"></div>
+            <div className="chatlinktitle">{this.state.merchantName}</div>
+            </div>
+<div id="messages">
 
-          <GiftedChat user={{id: 1,}}
-                      messages={this.state.messages}
-                      onSend={this.onSend}
-renderInputToolbar={this.renderFakeInputToolbar}
-renderMessage={this.renderMessage}
-style={{alignItems: "flex-start"}}
-isAnimated={true}
-className="gift-chat-start"
-                      />
-                      </div>
+{this.state.messages.map( (message, index) =>
+
+  <div class={"messages " + message.position}>
+    <div class="message">
+      {message.text + " " + message.position}
+    </div>
+    </div>
+  )}
+          </div>
+          </div>
           </div>
       </Page>
     );
@@ -311,7 +329,7 @@ className="gift-chat-start"
 const styles = {
   container: {
     display:'flex',
-    height: '80vh',
+    height: '50vh',
     width: '95%',
     margin: '0 auto',
     overflow: "hidden",
@@ -332,4 +350,4 @@ const styles = {
   
 }
 
-export default withKeycloak(Chat);
+export default withKeycloak(NewChat);

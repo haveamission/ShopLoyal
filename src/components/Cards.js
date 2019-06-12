@@ -11,6 +11,7 @@ import axios from 'axios';
 import API from './API'
 import { connect } from "react-redux";
 import Loading from './Loading'
+import axiosRetry from 'axios-retry';
 import { withKeycloak } from 'react-keycloak';
 
 class Cards extends Component {
@@ -52,6 +53,7 @@ search: "",
               console.log(this.props.keycloak.idToken);
               console.log("token");
               console.log(this.props.keycloak.token)
+              axiosRetry(axios, { retries: 10 });
               let config = {
                 headers: {
                   Authorization: "Bearer " + this.props.keycloak.idToken,

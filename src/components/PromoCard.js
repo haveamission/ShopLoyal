@@ -19,7 +19,8 @@ class PromoCard extends Component {
     <img className="promo-main-img" src={this.props.data.photo} />
     <div className="promo-title">{this.props.data.title}</div>
     <div className="promo-desc">{this.props.data.text}</div>
-    <div className="promo-bottom"></div>
+    <div className="promo-false-bottom"></div>
+    {/*<div className="promo-bottom"></div>*/}
     </div>
 );
     }

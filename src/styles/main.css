@@ -125,14 +125,21 @@ header {
 .cards .card {
     overflow: hidden;
 }
+.cards .card {
+    margin-left: 2rem;
+    vertical-align: middle;
+}
 .card {
 width: 34rem;
 height: 19rem;
-margin: 0 auto;
+
 position: relative;
-margin-bottom: 3rem;
+display: inline-block;
+/*margin-bottom: 20rem;*/
 color: #FFF;
+background-color: #FFF;
 }
+
 .card .card-right {
     width: 25rem;
     float: right;
@@ -166,9 +173,6 @@ color: #FFF;
 .card .card-title, .card .card-address, .card .card-nav {
     margin-left: 1rem;
     z-index: 50;
-}
-.card-nav a li{
-
 }
 .card-row .card-nav a {
     color: #FFF;
@@ -230,27 +234,6 @@ width: 1rem;
 margin-left: .5rem;
 vertical-align: top;
 }
-/*
-* Card row styles
-*/
-.menu-item {
-    padding: 0 40px;
-    margin: 5px 10px;
-    user-select: none;
-    cursor: pointer;
-    border: none;
-  }
-   
-  .scroll-menu-arrow {
-    padding: 20px;
-    cursor: pointer;
-  }
-  .menu-item-wrapper {
-      margin-right: 2rem;
-  }
-  .menu-item-wrapper:focus {
-    outline: none;
-  }
 /*
 * Card-specific styles
 */
@@ -395,11 +378,21 @@ top: 38rem;
 /*
 * Chat application
 */
+.chat {
+    height: 500px !important;
+}
 .chat textarea {
-    color: #000;
+    /*color: #000;
     box-sizing: border-box;
     height: 100%;
     width: 70%;
+    float: left;*/
+}
+.chat textarea {
+    width: 70%;
+    box-sizing: border-box;
+    margin: 0 auto;
+    color: #000;
     float: left;
 }
 .chatlinkback {
@@ -408,7 +401,7 @@ top: 38rem;
    display: inline-block;
    position: absolute;
    z-index: 1;
-   margin-top: -10%;
+   margin-top: -0%;
    
 }
 .chatlinktitle {
@@ -440,7 +433,7 @@ top: 38rem;
 }
 .chat ::-webkit-input-placeholder {
     /* placeholder - messes up the 'Search' in the search component. Replace with more stringent styles if needed */
-    transform:translate3d(0,1em,0)
+    transform:translate3d(0, 1em,0)
  }
  /*
  * A bit messy, clean up later on when there is time to do so
@@ -591,15 +584,14 @@ font-size: 2rem;
     box-shadow: 1px 1px 11px 6px rgba(83,109,254,0.49);
     margin-top: -5rem;
 }
+/* Switch from important when there is time */
 .promotions .promocard-0 {
     margin-top: 2rem !important;
 }
 .promocard {
     color: #000;
-
-    /* Switch from important when there is time */
-
 }
+    
 .promocard .promo-main-img {
     width: 20%;
     float: left;
@@ -612,11 +604,15 @@ font-size: 2rem;
     float: right;
     width: 70%;
     margin-left: 5%;
-    margin-bottom: .5rem;
+    margin-bottom: 1rem;
     font-size: 1.5rem;
 }
+.card-row .promocard {
+height: 19rem !important;
+vertical-align: middle;
+}
 .promocard .promo-desc {
-    min-height: 5rem;
+    /*min-height: 5rem;*/
     font-weight: bold;
     display: inline-block;
     width: 70%;
@@ -638,7 +634,10 @@ font-size: 2rem;
     padding-bottom:2rem;
 }
 .card-row .promocard .promo-bottom {
-    margin-top: 1rem;
+    margin-top: 5rem;
+}
+.card-row .promocard {
+    border: 1px solid #DDDDDD;
 }
 .card-row .promocard {
     white-space: normal;
@@ -658,7 +657,13 @@ margin-bottom: 0rem;
     height: 3rem;
 }
 .card-row {
-    margin-bottom: 0rem !important;
+    margin-bottom: 2rem !important;
+}
+.card-row .promo-desc {
+    /*min-height: 20rem;
+    height: 20rem;
+    margin-bottom: 2rem;
+    padding-bottom: 20rem;*/
 }
 
 /*
@@ -824,6 +829,10 @@ html {
 .sweet-loading {
     margin: 0 auto;
     text-align: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 /*

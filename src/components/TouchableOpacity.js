@@ -37,6 +37,7 @@ export default class TouchableOpacity extends Component {
         onMouseDown={this.handleButtonPress}
         onMouseUp={this.handleButtonRelease}
         onMouseLeave={this.handleButtonRelease}
+        className="send-button"
       >
         {children}
       </div>

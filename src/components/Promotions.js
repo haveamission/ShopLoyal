@@ -37,13 +37,6 @@ class Promotions extends Component {
         data = loadJSONIntoUI(data);
 
         this.setState({data, isLoading: false});
-
-/*var promotions = [];
-        data.forEach(function(obj) {
-            console.log(obj);
-            promotions.push(<PromoCard data={obj} />);
-            });
-            this.setState({promotions, isLoading: false})*/
     }
 
     showPosition =(position) =>  {

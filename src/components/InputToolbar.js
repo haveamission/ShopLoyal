@@ -12,25 +12,23 @@ import Actions from './Actions';
 
 const styles = StyleSheet.create({
   container: {
-
-
+    position: "fixed",
+    bottom: ".5em",
+    width: "100%",
+    margin: "0 auto",
   },
   primary: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    height: "5em",
 borderColor: '#C7C7CC',
 borderWidth: '1px',
     borderTopWidth: StyleSheet.hairlineWidth,
     backgroundColor: '#FFF',
-    width: '80%',
-    margin: "0 auto",
+    width: '95%',
     display: "block",
     marginLeft: "auto",
     marginRight: "auto",
-    borderRadius: "50px",
-    height: "4em",
 
+    borderRadius: "50px",
+    height: "3em",
 
   },
   accessory: {

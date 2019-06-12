@@ -16,6 +16,12 @@ import userManager from './config/OIDC';
 
 export const history = createHashHistory()
 
+history.listen( location =>  {
+  window.NativeKeyboard.hideMessenger({
+    animated: true // default false
+  });
+ });
+
 
 const persistConfig = {
   key: 'root',
