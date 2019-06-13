@@ -1,15 +1,44 @@
 import React, { Component } from 'react';
 import Iframe from 'react-iframe'
+import Loading from './Loading'
+import Back from './Back'
 
-export default (props) => (
-    <Iframe url={props.url}
+class WebPage extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+          isLoading: true
+        };
+      }
+    hideSpinner = () => {
+        this.setState({
+          isLoading: false
+        });
+      };
+
+      componentDidMount() {
+      }
+
+    render() {
+
+        return (
+            <div>
+                <Back />
+              {this.state.isLoading ? (
+                <Loading />
+              ) : null}
+     <iframe
+    src={this.props.url}
     width="100%"
-    height="1000em"
-    id="support"
-    className="webpage"
-    display="initial"
+    height="700"
+    onLoad={this.hideSpinner}
     frameBorder="0"
-    overflow="hidden"
-    scrolling="no"
-    />
-);
+    marginHeight="0"
+    marginWidth="0"
+  />
+            </div>
+          );
+}
+}
+
+export default WebPage;

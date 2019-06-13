@@ -147,7 +147,8 @@ var merchant_id = this.props.merchant.merchant.id;
           <ScrollMenu
             data={this.state.list}
             inertiaScrolling={true}
-            scrollBy={4}
+            translate={-2}
+            transition={.1}
           />
         </div>
       );

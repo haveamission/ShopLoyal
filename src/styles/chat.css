@@ -39,37 +39,51 @@
 
 */
 
-#messages {
-  width: 50%;
+/*#messages {
+  width: 100%;
   left: 50%;
   position: absolute;
   top: 18rem;
   bottom: 0;
   overflow-y: scroll;
   white-space: normal;
-}
+}*/
 
-      .chat {
-        width: 100%;
+      #chat {
+        width: 95%;
         display: flex;
         flex-direction: column;
-        padding: 10px;
+        padding-top: 0em;
+        padding-left: 1em;
+        padding-right: 1em;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        white-space: normal;
+        margin-bottom: 0px;
+        height: 50vh;
+      }
+
+      #messages {
+        margin-top: 10em;
+        margin-bottom: 0px;
       }
       
       .messages {
-        margin-top: 30px;
+        margin-top: 1em;
         display: flex;
         flex-direction: column;
+        margin-bottom: 0px;
       }
       
       .message {
         white-space: normal;
         border-radius: 20px;
-        padding: 8px 15px;
-        margin-top: 5px;
-        margin-bottom: 5px;
+        padding: 1em 2em;
+        margin-top: .5em;
+        margin-bottom: .5em;
         display: inline-block;
-        max-width: 30%;
+        max-width: 50%;
+        text-align: center;
       }
       
       .yours {

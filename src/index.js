@@ -91,11 +91,11 @@ render(
     }
 
     >
-    <Provider store={store}>
+    <Provider store={store} context={ReactReduxContext}>
 
     {/*<OidcProvider store={store} userManager={userManager}>*/}
     <PersistGate loading={<Loading />} persistor={persistor}>
-    <ConnectedRouter history={history}>
+    <ConnectedRouter history={history} context={ReactReduxContext}>
     <Layout>
     <Route
           render={({ location }) => {

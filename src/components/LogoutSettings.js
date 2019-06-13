@@ -7,7 +7,7 @@ import { withKeycloak } from 'react-keycloak';
 
 class LogoutSettings extends React.Component {
 
-    logout =() => {
+    /*logout =() => {
       console.log("logout");
       console.log(this);
       let config = {
@@ -27,7 +27,7 @@ class LogoutSettings extends React.Component {
     ).catch(function(error) {
     console.log(error);
     })
-    }
+    }*/
   
     render() {
       console.log("props val");
@@ -38,7 +38,7 @@ if(!this.props) {
 
       return(
       <ul className="logout-settings">
-  <li className="list-bottom" onClick={this.logout}>Log Out</li>
+  <li className="list-bottom" onClick={() => keycloak.logout()}>Log Out</li>
       </ul>
     )
   }

@@ -15,6 +15,7 @@ import axios from 'axios';
 import { push } from 'connected-react-router'
 import MainSettings from './MainSettings'
 import { withKeycloak } from 'react-keycloak';
+import Back from './Back';
 
 
 class Settings extends Component {
@@ -84,6 +85,7 @@ this.getSettings();
 
     return (
         <Page>
+          <Back />
   <div className="settings">
       <ProfileSettings profile={this.state.profile}/>
       <MainSettings data={this.state} />

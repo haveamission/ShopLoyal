@@ -77,12 +77,14 @@ axios.post(API.prodBaseUrlString + format(API.merchantSendMessage, this.state.me
 response => console.log(response.data)
 ).catch(function(error) {
 console.log(error);
+//alert(error);
 })
   }
 
   onSend(messages) {
     for(let message of messages){
       console.log(message);
+      //alert(message);
       this.saveMessage(message);
       var messageHydrated = this.addMessageInfo(message)
       this.setState({messages: [...this.state.messages, messageHydrated]})
@@ -277,12 +279,14 @@ var that = this;
 window.NativeKeyboard.showMessenger({
   onSubmit: function(text) {
     that.onSend([text]);
+    //alert("Show keyboard");
   },
   showKeyboard: true,
   autocorrectionEnabled: true,
   animated: true,
   placeholder: 'Message...',
-  //autoscrollElement: document.getElementById("messages"), // default unset
+  autoscrollElement: document.getElementById("chat"), // default unset
+  scrollToBottomAfterMessengerShows: true,
   keepOpenAfterSubmit: true,
   rightButton: {
     color: '#536DFE',
@@ -302,20 +306,21 @@ if (this.state.isLoading || !this.state.merchantName) {
 
     return (
 <Page>
-<div className="chat" style={styles.container}>
-            
-            <div style={styles.chat} className="full-chat">
+<div style={styles.chat} className="full-chat">
             {/* Make this into a link ultimately when routing method is decided on */}
             <div className="chatlinkback" onClick={this.goBack}><div className="triangle"></div>
             <div className="chatlinktitle">{this.state.merchantName}</div>
             </div>
+<div id="chat" className="chat" style={styles.container}>
+            
+
 <div id="messages">
 
 {this.state.messages.map( (message, index) =>
 
   <div class={"messages " + message.position}>
     <div class="message">
-      {message.text + " " + message.position}
+      {message.text}
     </div>
     </div>
   )}
@@ -327,25 +332,25 @@ if (this.state.isLoading || !this.state.merchantName) {
   }
 }
 const styles = {
-  container: {
+  container: {/*
     display:'flex',
     height: '50vh',
     width: '95%',
     margin: '0 auto',
     overflow: "hidden",
-    flexDirection: "row"
+    flexDirection: "row"*/
  
   },
-  conversationList: {
+  conversationList: {/*
     display:'flex',
-    flex: 1,
+    flex: 1,*/
   },
   chat: {
 
   },
-  conversationDetails: {
+  conversationDetails: {/*
     display:'flex',
-    flex: 1,
+    flex: 1,*/
   }
   
 }

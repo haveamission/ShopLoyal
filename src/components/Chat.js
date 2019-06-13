@@ -289,7 +289,7 @@ if (this.state.isLoading || !this.state.merchantName) {
             
         <div style={styles.chat} className="full-chat">
         {/* Make this into a link ultimately when routing method is decided on */}
-        <div className="chatlinkback" onClick={this.goBack}><div className="triangle"></div>
+        <div className="linkback" onClick={this.goBack}><div className="triangle"></div>
         <div className="chatlinktitle">{this.state.merchantName}</div>
         </div>
 

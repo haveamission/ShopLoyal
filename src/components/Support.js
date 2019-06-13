@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import Page from './Page'
+import Back from './Back'
 
 export default () => (
     <Page>
+        <Back />
     <div className="settings">
     <ul className="main-settings">
     <li><span className="setting-left">Email</span> <span className="setting-right">contact@shoployal.com</span></li>

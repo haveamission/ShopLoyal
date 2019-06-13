@@ -20,6 +20,7 @@ class Search extends Component {
 
   searchForText = (text) => {
 this.props.searchSave(text);
+//this.setState({value: null});
 this.props.dispatch(push("/map"));
   }
 

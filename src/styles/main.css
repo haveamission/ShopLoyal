@@ -2,7 +2,9 @@ body {
     background-color: #FFF;
     color: #000;
 /*font-family: 'Raleway', sans-serif;*/
-font-family: 'Montserrat', sans-serif;
+font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+overflow-y: scroll; /* has to be scroll, not auto */
+  -webkit-overflow-scrolling: touch;
 }
 /*
 * Header
@@ -378,9 +380,6 @@ top: 38rem;
 /*
 * Chat application
 */
-.chat {
-    height: 500px !important;
-}
 .chat textarea {
     /*color: #000;
     box-sizing: border-box;
@@ -395,7 +394,7 @@ top: 38rem;
     color: #000;
     float: left;
 }
-.chatlinkback {
+.linkback {
    font-size:12px;
    font-weight: 900;
    display: inline-block;
@@ -438,9 +437,9 @@ top: 38rem;
  /*
  * A bit messy, clean up later on when there is time to do so
  */
- .full-chat > div:nth-of-type(2) > div:first-of-type {
+ /*.full-chat > div:nth-of-type(2) > div:first-of-type {
      align-items: flex-start;
- }
+ }*/
 
 /*
 * Notification Bubble - this possibly should possibly be refactored to take advantage of SOLID with chat application
@@ -658,6 +657,7 @@ margin-bottom: 0rem;
 }
 .card-row {
     margin-bottom: 2rem !important;
+    margin-left: -2rem !important;
 }
 .card-row .promo-desc {
     /*min-height: 20rem;
@@ -770,11 +770,11 @@ margin-bottom: 0rem;
     margin-left:1em;
 }
 ::-webkit-scrollbar {
-    width: 0px;  /* Remove scrollbar space */
-    background: transparent;  /* Optional: just make scrollbar invisible */
+    width: 0px !important;  /* Remove scrollbar space */
+    background: transparent !important;  /* Optional: just make scrollbar invisible */
 }
 ::-webkit-scrollbar { 
-    display: none; 
+    display: none !important; 
 }
 html {
     overflow: scroll;
