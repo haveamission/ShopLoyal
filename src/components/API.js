@@ -63,6 +63,8 @@ import React, { Component } from 'react';
     channels: "/users/me/channels",
     channel: "/users/me/channel",
 
+    openChannel: "/channels/{}/open",
+
     settings: "/users/settings",
 
 

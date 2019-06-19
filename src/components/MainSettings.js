@@ -18,7 +18,7 @@ class MainSettings extends React.Component {
 
     handleNotification = (event) => {
         event.persist();
-  console.log(event.target.checked);
+  //console.log(event.target.checked);
   this.setState({'notificationEnabled': event.target.checked})
   let config = {
     headers: {
@@ -26,8 +26,8 @@ class MainSettings extends React.Component {
     }
   }
 
-  console.log("Notif CHECKED - true or false?");
-  console.log(event.target.checked);
+  //console.log("Notif CHECKED - true or false?");
+  //console.log(event.target.checked);
   
   var body = {
     "notificationEnabled": event.target.checked
@@ -38,13 +38,13 @@ class MainSettings extends React.Component {
   axios.post(API.prodBaseUrlString + API.settings, body, config).then(
     response => console.log(response.data)
     ).then(data => this.setState({'notificationEnabled': event.target.checked})).catch(function(error) {
-    console.log(error);
+    //console.log(error);
     })
     }
   
     handleNotificationEmail = (event) => {
         event.persist();
-  console.log(event.target.checked);
+  //console.log(event.target.checked);
   
   let config = {
     headers: {
@@ -59,7 +59,7 @@ class MainSettings extends React.Component {
   axios.post(API.prodBaseUrlString + API.settings, body, config).then(
     response => console.log(response.data)
     ).then(data => this.setState({'notificationEmailEnabled': event.target.checked})).catch(function(error) {
-    console.log(error);
+    //console.log(error);
     })
     }
   

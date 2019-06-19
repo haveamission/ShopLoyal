@@ -2,8 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
+import { connect } from "react-redux";
 
-function Page({ 
+function Page({
   children, 
   color, 
   background,
@@ -23,6 +24,7 @@ function Page({
         background,
       }}
     >
+    TESTblahblah!
       {children}
     </section>
   );
@@ -37,4 +39,11 @@ Page.propTypes = {
 Page.defaultProps = {
 };
 
-export default withRouter(Page);
+const mapStateToProps = state => ({
+  pathname: state.router.location.pathname,
+  search: state.router.location.search,
+  hash: state.router.location.hash,
+  location: state.router.location,
+})
+
+export default connect(mapStateToProps)(Page)

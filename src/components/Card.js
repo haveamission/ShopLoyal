@@ -27,16 +27,9 @@ const getColors = require('get-image-colors')
 class Card extends Component {
 
   routeChange =(e) => {
-    console.log(this.state);
-    console.log("route change!");
-    console.log(this.props);
-    console.log("EVENT TARGET");
-    console.log(e.target.nodeName);
     if(e.target.nodeName == "LI" || e.target.nodeName == "a") {
-      console.log("LI HERE!");
     return;
     }
-    //console.log(this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1));
     let path = "/detail/" + this.state.merchant.id;
     this.props.dispatch(push(path));
     }
@@ -151,7 +144,9 @@ lightestColorGen() {
   }
 }
 
-
+componentWillUnmount() {
+  // indicate that the component has been unmounted
+}
 
   render() {
 
@@ -204,7 +199,7 @@ lightestColorGen() {
 const mapStateToProps = (state) => {
   return {
     //general: state.general,
-    oidc: state.oidc,
+    //oidc: state.oidc,
     color: state.saveColor
   };
 };

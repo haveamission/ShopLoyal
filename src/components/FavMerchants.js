@@ -10,6 +10,7 @@ import Favorite from "../img/full_heart_purple.png";
 import Map from "../img/map.png";
 import { push } from 'connected-react-router'
 import { withKeycloak } from 'react-keycloak';
+import Back from './Back';
 
 class FavMerchantsItem extends React.Component {
 
@@ -114,12 +115,12 @@ componentDidMount() {
 
 render() {
     return(
-        <Page>
+      <div>
 <div className="fav-merchant-list">Favorite Merchants</div>
 <div>
     {this.state.favs}
     </div>
-    </Page>
+    </div>
     )
 }
 

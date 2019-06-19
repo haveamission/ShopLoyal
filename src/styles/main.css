@@ -1,11 +1,14 @@
 body {
-    background-color: #FFF;
+    /*background-color: #FFF;*/
     color: #000;
 /*font-family: 'Raleway', sans-serif;*/
 font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-overflow-y: scroll; /* has to be scroll, not auto */
+/*overflow-y: scroll; /* has to be scroll, not auto */
   -webkit-overflow-scrolling: touch;
+  overflow-y: scroll;
+  height: 100vh;
 }
+
 /*
 * Header
 */
@@ -216,7 +219,7 @@ background-color: #FFF;
     border-right:1px solid #CCC;
     padding-right: 1.5rem;
     text-transform: uppercase;
-    font-size: .8rem;
+    font-size: 1rem;
 }
 .card-nav li:last-child {
     border-right: none;
@@ -232,7 +235,7 @@ background-color: #FFF;
     margin-top: .25rem;
 }
 .card-nav img {
-width: 1rem;
+width: 1.2rem;
 margin-left: .5rem;
 vertical-align: top;
 }
@@ -512,10 +515,14 @@ top: 38rem;
 .detail .card {
     width: 100%;
     margin-bottom: 0rem;
-    margin-top: 5rem;
+    margin-top: 0rem;
     background-repeat: no-repeat;
     height: 15rem;
     background-color: #FFF;
+    background-size: cover;
+}
+.card {
+    background-size: cover;
 }
 .detail .card-nav {
     margin-top: 10.5rem;
@@ -526,13 +533,17 @@ top: 38rem;
     text-decoration: none;
     font-family: Helvetica, Arial, sans-serif;
     text-align: center;
-    padding: 0 10px;
+    padding: 0 8px;
     line-height: 20px;
     display: inline-block;
     position: relative;
     border-radius: 5px;
     /*background-image: linear-gradient(#335b71 45%, #03324c 55%);*/
-    box-shadow: 0 2px 2px #536DFE;
+    /*box-shadow: 0 1px 1px #536DFE;*/
+    /* change to box shadow */
+    border-right: 1px solid #536DFE;
+    border-left: 1px solid #536DFE;
+    border-bottom: 1px solid #536DFE;
     margin-right: 1rem;
 }
 .detail .card-nav img {
@@ -900,7 +911,7 @@ html {
     }
     .profile-picture {
         float: right;
-        width: 8rem;
+        width: 6rem;
         border-radius: 50px;
         margin-top: -7rem;
     }
@@ -927,6 +938,11 @@ html {
         outline: none !important;
     }
 
+    .fav-merchant-list .linkback {
+        margin-top: -2rem;
+        position: relative;
+    }
+
     /*
     * Page transitions
     */
@@ -945,12 +961,12 @@ html {
       }*/
 
       .page {
-          background-color: #fff;
+          /*background-color: #fff;*/
       }
 
-      .page-exit {
+      /*.page-exit {
         opacity: 0;
-    }
+    }*/
       
  /*
 .page-enter {
@@ -984,3 +1000,23 @@ html {
   .detail .bubble, .gmaps .business .card .bubble {
       display: none;
   }
+
+  /*.page {
+    position: fixed;
+    height: 500px;
+  }*/
+
+  /*.page {
+      position: fixed;
+      width: 100%;
+      height: 100vh;
+      margin-top: 200px;
+  }*/
+
+  /*.switch-wrapper {
+    position: relative;
+  }
+  
+  .switch-wrapper > div {
+    position: absolute;
+  }*/

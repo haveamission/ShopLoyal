@@ -73,10 +73,6 @@ export class MapContainer extends Component {
     this.setState({ showResults: true })
   };
 
-  componentWillMount() {
- 
-  }
-
   componentDidUpdate() {
     console.log("component did update");
     if(this.state.updatedSearch == this.props.search.search && this.state.updatedCategories == this.props.category.category) {
@@ -141,7 +137,7 @@ export class MapContainer extends Component {
   }
 
     return (
-      <Page>
+      <div>
             <Categories />
       <div className="gmaps">
       <Map
@@ -183,7 +179,7 @@ export class MapContainer extends Component {
       { this.state.showResults ? <Results /> : null }
       </h3>
       </div>
-      </Page>
+      </div>
     );
   }
 }

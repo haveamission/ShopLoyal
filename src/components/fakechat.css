@@ -1,38 +1,45 @@
 #messages {
-  width: 96%;
-  left: 2%;
-  right: 2%;
+  width: 100%;
   position: absolute;
-  top: 2em;
+  top: 0em;
   bottom: 0;
   overflow-y: scroll;
+  overflow-x: hidden;
+  height: 70vh;
 }
 .message {
   width: 100%;
-  padding: .5em 0;
+  padding: 4px 0;
 }
 .right {
   text-align: right;
 }
 .message span {
-  width: 65%;
-  padding: 1em 1em;
-  border-radius: 5px;
+  width: 40%;
+  padding: 8px 10px;
+  border-radius: 12px;
   display: inline-block;
-  /*margin: 0 20px;*/
   text-align: left;
 }
 .message div {
   padding: 6px 10px;
   display: inline-block;
-  margin: 0 2em 1em 2em;
+  margin: 0 20px 8px 20px;
   color: #BBBBBB;
   font-size: 1em;
 }
 .message.left span {
   background-color: #CCCCCC;
+  margin-left: 2em;
 }
 .message.right span {
   color: #FFFFFF;
+  margin-right: 2em;
   background-color: #536DFE;
+}
+#messages-container {
+height: 100vh;
+position: fixed;
+width: 100%;
+touch-action: none;
 }

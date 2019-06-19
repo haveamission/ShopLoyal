@@ -16,7 +16,7 @@ import { connect } from 'react-redux'
 import {bindActionCreators} from 'redux'
 import { withKeycloak } from 'react-keycloak';
 import Loading from './Loading';
-import '../styles/chat.css';
+//import '../styles/chat.css';
 const format = require('string-format')
 
 const messages = [];
@@ -305,7 +305,6 @@ if (this.state.isLoading || !this.state.merchantName) {
 //alert(JSON.stringify(this.state.messages));
 
     return (
-<Page>
 <div style={styles.chat} className="full-chat">
             {/* Make this into a link ultimately when routing method is decided on */}
             <div className="chatlinkback" onClick={this.goBack}><div className="triangle"></div>
@@ -327,7 +326,6 @@ if (this.state.isLoading || !this.state.merchantName) {
           </div>
           </div>
           </div>
-      </Page>
     );
   }
 }

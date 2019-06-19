@@ -43,9 +43,6 @@ function rnd(min,max){
 
 constructor() {
   super();
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(this.showPosition);
-  }
   this.showPosition = this.showPosition.bind(this);
 }
 
@@ -101,10 +98,11 @@ console.log(msg);
 this.setState({"bubblemsg":msg.message, "bubbleid":msg.merchantId});
 }
 
-componentWillMount() {
-}
-
 componentDidMount() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(this.showPosition);
+  }
+
   console.log("props merchant");
   console.log(this.props.merchant);
   this.state.list.push(<Card merchant={this.props.merchant.merchant} key={this.props.merchant.merchant.id} />)
@@ -147,7 +145,6 @@ var merchant_id = this.props.merchant.merchant.id;
           <ScrollMenu
             data={this.state.list}
             inertiaScrolling={true}
-            translate={-2}
             transition={.1}
           />
         </div>

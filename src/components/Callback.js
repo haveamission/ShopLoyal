@@ -11,20 +11,20 @@ import { withKeycloak } from 'react-keycloak';
 class CallbackPage extends React.Component {
 
   handleOpenURL(url) {
-    console.log("received url: " + url);
+    //console.log("received url: " + url);
   }
 
 
  successCallback = (user) => {
     var accessToken = user ? user.access_token : undefined;
     var bearer = "Bearer " + accessToken; // This can be added to the Authorization Header
-console.log(bearer);
+//console.log(bearer);
 axios.defaults.headers.common['Authorization'] = bearer;
     this.setState({author: bearer});
 
-    console.log(this.state);
+    //console.log(this.state);
 
-    console.log(this.props);
+    //console.log(this.props);
 
     //this.props.dispatch(author(bearer));
 
@@ -38,9 +38,9 @@ axios.defaults.headers.common['Authorization'] = bearer;
         userManager={userManager}
         successCallback={this.successCallback}
         errorCallback={error => {
-          console.log("bread");
-          console.log(error);
-          console.log("bread");
+          //console.log("bread");
+          //console.log(error);
+          //console.log("bread");
           this.setState({error: error});
           //this.props.dispatch(push("/error"));
 

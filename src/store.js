@@ -9,8 +9,8 @@ import { createBrowserHistory } from 'history'
 import {createHashHistory} from 'history'
 import reducers from './reducers/index'
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
-import createOidcMiddleware from "redux-oidc";
-import userManager from './config/OIDC';
+//import createOidcMiddleware from "redux-oidc";
+//import userManager from './config/OIDC';
 
 //export const history = createBrowserHistory()
 
@@ -27,8 +27,6 @@ const persistConfig = {
   key: 'root',
   storage,
 }
-
-const oidcMiddleware = createOidcMiddleware(userManager);
 
 const loggerMiddleware = store => next => action => {
   console.log("Action type:", action.type);

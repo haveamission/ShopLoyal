@@ -19,9 +19,7 @@ class Promotions extends Component {
 
     constructor() {
         super();
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(this.showPosition);
-        }
+
         this.showPosition = this.showPosition.bind(this);
       }
 
@@ -64,6 +62,9 @@ class Promotions extends Component {
       }
 
 componentDidMount() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(this.showPosition);
+  }
     /*
     if(this.props.keycloak.authenticated) {
         var merchant_id = this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1);
@@ -106,7 +107,7 @@ componentDidMount() {
 
   const mapStateToProps = (state) => {
     return {
-      oidc: state.oidc,
+      //oidc: state.oidc,
     };
   };
 

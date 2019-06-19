@@ -79,7 +79,7 @@ this.props.dispatch(push("/map"));
 
 const mapStateToProps = (state) => {
   return {
-    oidc: state.oidc,
+    //oidc: state.oidc,
     search: state.search,
   };
 };

@@ -284,7 +284,7 @@ if (this.state.isLoading || !this.state.merchantName) {
 }
 
     return (
-<Page>
+
       <div className="chat" style={styles.container}>
             
         <div style={styles.chat} className="full-chat">
@@ -304,7 +304,6 @@ className="gift-chat-start"
                       />
                       </div>
           </div>
-      </Page>
     );
   }
 }

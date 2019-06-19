@@ -75,10 +75,6 @@ class Detail extends Component {
           }
 
 
-      componentWillMount() {
-
-        }
-
         if (error) {
             return <p>{error.message}</p>;
           }
@@ -96,14 +92,13 @@ console.log(this.state.data);
         console.log(this.state.data);
    
         return (
-    <Page>
+  
     <div className="detail">
     {/*<i onClick={this.goBack} className="ico-times"></i>*/}
     <Card merchant={this.state.data}/>
     <About desc={this.state.data.longDescription}/>
     <Promotions location={this.props.location}/>
     </div>
-    </Page>
 )
     }
 }

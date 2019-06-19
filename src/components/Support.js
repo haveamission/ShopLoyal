@@ -4,7 +4,7 @@ import Page from './Page'
 import Back from './Back'
 
 export default () => (
-    <Page>
+<div>
         <Back />
     <div className="settings">
     <ul className="main-settings">
@@ -12,5 +12,5 @@ export default () => (
 <Link to="/privacy/"><li className="list-bottom setting-left">Privacy Policy and T & C</li></Link>
     </ul>
     </div>
-    </Page>
+    </div>
   )

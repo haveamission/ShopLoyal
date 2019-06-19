@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import registerServiceWorker from './registerServiceWorker';
 import { push } from 'connected-react-router'
 import "@babel/polyfill";
+import { AnimatedSwitch } from 'react-router-transition';
 //import appsFlyer from 'cordova-plugin-appsflyer-sdk';
 
 // Import Components
@@ -16,6 +17,7 @@ import Cards from './components/Cards';
 import CardRow from './components/CardRow';
 import PrivateRoute from './containers/PrivateRoute';
 import NewChat from './components/NewChat';
+import FakeChat from './components/FakeChat';
 import Detail from './components/Detail';
 import Loading from './components/Loading';
 import LoginPage from './components/LoginPage';
@@ -26,6 +28,7 @@ import Privacy from './components/Privacy';
 import Error from './components/Error';
 import FavMerchants from './components/FavMerchants';
 import Dummy from './components/Dummy';
+import Header from './components/Header';
 
 // Import Styles
 import './bootstrap2-toggle.min.css';
@@ -40,8 +43,8 @@ import {
 
 // Import Config
 
-import { OidcProvider } from 'redux-oidc';
-import userManager from './config/OIDC';
+//import { OidcProvider } from 'redux-oidc';
+//import userManager from './config/OIDC';
 
 // Redux
 //import { combineReducers } from 'redux'
@@ -66,6 +69,24 @@ const startApp = () => {
 
 //window.cordova.plugins.Keyboard.hideFormAccessoryBar(true);
 
+const onEvent = (event, error) => {
+  console.log('onKeycloakEvent', event, error);
+  if (typeof error !== undefined) {
+    switch (event) {
+      case 'onAuthSuccess':
+        break;
+      case 'onAuthLogout':
+        store.dispatch(push("/login"));
+        break;
+      case 'onTokenExpired':
+        break;
+      case 'onAuthError':
+      default:
+        break;
+    }
+  }
+};
+
 appsflyerInit();
 //oneSignal();
 function myhandler(previousRoute, nextRoute) {
@@ -75,7 +96,7 @@ console.log(nextRoute);
 
 render(
   (
-    <KeycloakProvider
+<KeycloakProvider
     keycloak={keycloak}
     onEvent={(event, error) => {
     }}
@@ -92,8 +113,6 @@ render(
 
     >
     <Provider store={store} context={ReactReduxContext}>
-
-    {/*<OidcProvider store={store} userManager={userManager}>*/}
     <PersistGate loading={<Loading />} persistor={persistor}>
     <ConnectedRouter history={history} context={ReactReduxContext}>
     <Layout>
@@ -101,19 +120,15 @@ render(
           render={({ location }) => {
             const { pathname } = location;
             return (
-              <TransitionGroup className="transition-group">
-                <CSSTransition
-                  key={pathname}
-                  classNames="page"
-                  timeout={{
-                    enter: 3000,
-                    exit: 3000,
-                  }}
-                >
     <Route
                     location={location}
                     render={() => (
-      <Switch>
+                      <AnimatedSwitch
+                      atEnter={{ opacity: 1 }}
+                      atLeave={{ opacity: 1 }}
+                      atActive={{ opacity: 1 }}
+                      className="switch-wrapper"
+                    >
         <Route exact path="/login" component={LoginPage} />
         <Route path="/callback/" component={Callback} />
         <Route path="/error/" component={Error} />
@@ -122,23 +137,20 @@ render(
         <PrivateRoute exact path="/map/" component={Map} />
         <PrivateRoute exact path="/cards/" component={Cards} />
         <PrivateRoute exact path="/cardrow/" component={CardRow} />
-        <PrivateRoute path="/chat/" component={NewChat} />
+        <PrivateRoute path="/chat/" component={FakeChat} />
         <PrivateRoute path="/detail/" component={Detail} />
         <PrivateRoute path="/support/" component={Support} />
         <PrivateRoute path="/privacy/" component={Privacy} />
         <PrivateRoute path="/favmerchants/" component={FavMerchants} />
-      </Switch>
+      </AnimatedSwitch>
     )}
     />
-                    </CSSTransition>
-              </TransitionGroup>
             );
           }}
           />
       </Layout>
     </ConnectedRouter>
     </PersistGate>
-    {/*</OidcProvider>*/}
   </Provider>
   </KeycloakProvider>
 

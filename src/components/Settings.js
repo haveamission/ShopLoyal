@@ -77,21 +77,19 @@ this.getSettings();
     if (Object.keys(this.state.profile).length === 0) {
       console.log("gets triggered");
       return (
-        <Page>
         <div />
-        </Page>
       )
   }
 
     return (
-        <Page>
+      <div>
           <Back />
   <div className="settings">
       <ProfileSettings profile={this.state.profile}/>
       <MainSettings data={this.state} />
       <LogoutSettings />
   </div>
-  </Page>
+  </div>
 )
   }
 }

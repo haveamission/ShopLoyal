@@ -21,17 +21,17 @@ class Header extends React.Component {
   }
 
   configuration(data) {
-    console.log("set profile");
-    console.log(data);
+    //console.log("set profile");
+    //console.log(data);
       this.setState({profile: data});
   }
 
 componentDidMount() {
-  console.log("HEADER STATE AND PROPS props");
-  console.log(this.props);
-  console.log(this.state);
+  //console.log("HEADER STATE AND PROPS props");
+  //console.log(this.props);
+  //console.log(this.state);
   // Messy probably - clean it later
-  console.log(window.location.pathname);
+  //console.log(window.location.pathname);
 
   if(this.props.router.location.pathname === '/' && this.props.keycloak.authenticated) {
 this.setState({headerLoc: true})
@@ -45,8 +45,8 @@ if(this.props.keycloak.authenticated) {
     axios.get(API.prodBaseUrlString + API.userProfileAPI, config).then(
     response => this.configuration(response.data)
   ).catch(function(error) {
-    console.log("500 error here???");
-    console.log(error);
+    //console.log("500 error here???");
+    //console.log(error);
     //alert(error);
   });
 
@@ -66,8 +66,8 @@ componentDidUpdate(prevProps, prevState) {
         axios.get(API.prodBaseUrlString + API.userProfileAPI, config).then(
         response => this.configuration(response.data)
       ).catch(function(error) {
-        console.log("500 error here???");
-        console.log(error);
+        //console.log("500 error here???");
+        //console.log(error);
         //alert(error);
       });
     
@@ -90,8 +90,8 @@ componentDidUpdate(prevProps, prevState) {
       justifyContent: "left",
     }
 
-    console.log("state during render");
-    console.log(this.state);
+    //console.log("state during render");
+    //console.log(this.state);
     
   return(
   <header>

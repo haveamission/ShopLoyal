@@ -17,19 +17,7 @@ class LoginPage extends React.Component {
   }
       
       render(){
-
-        if(this.props.keycloak.authenticated) {
-            //alert("Does this somehow get triggered?");
-            //this.props.dispatch(push("/"));
-        }
-
-        console.log("props");
-        console.log(this.props);
-        //alert(JSON.stringify(this.props));
-
-
           return(
-    <Page>
     <div className="loginpage">
 <h2 className="login-header">Log In to Your Account</h2>
 <div className="loginbuttongroup">
@@ -39,7 +27,6 @@ class LoginPage extends React.Component {
 </div>
 {/*<Link to="/signup/"><div className="bottomtext">Don't have an account? Sign Up</div></Link>*/}
 </div>
-</Page>
 );
       }
     }

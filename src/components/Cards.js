@@ -26,13 +26,22 @@ search: "",
       }
       constructor() {
         super();
-        console.log(navigator);
+        //console.log(navigator);
         //alert(JSON.stringify(navigator));
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(this.showPosition);
-        }
         this.showPosition = this.showPosition.bind(this);
+        this.unmounted = false;
       }
+
+      componentWillUnmount() {
+        // indicate that the component has been unmounted
+        this.unmounted = true;
+      }
+
+      componentDidUpdate(prevProps, prevState) {
+//alert(JSON.stringify(prevProps));
+//alert(JSON.stringify(prevState));
+      }
+      
 
       configuration(data) {
         console.log("merchant data");
@@ -43,6 +52,7 @@ search: "",
           }
 
           showPosition = (position) =>  {
+            if (this.unmounted) { return; }
             console.log("position");
             console.log(position);
             this.setState({position: position.coords});
@@ -75,6 +85,11 @@ search: "",
 
     componentDidMount() {
 
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(this.showPosition);
+      }
+   
+
       //console.log("geolocation");
       //console.log(navigator.geolocation);
 
@@ -93,9 +108,12 @@ search: "",
             return <Loading />;
           }
           console.log("state value new");
+          //alert("Each time this loads");
+          //alert(JSON.stringify(this.state.data));
           console.log(this.state.data);
+          //alert("PROPS!");
+          //alert(JSON.stringify(this.props));
             return (
-    <Page className="main-page">
     <div className="cards">
     {this.state.data.merchants.map( (merchant, index) =>
      <CardRow
@@ -105,10 +123,15 @@ search: "",
       />
   )}
     </div>
-    </Page>
 );
         }
     }
     
   
-    export default withKeycloak(Cards);
+    const mapStateToProps = (state) => {
+      return {
+        router: state.router,
+      };
+    };
+    
+    export default connect(mapStateToProps)(withKeycloak(Cards));
