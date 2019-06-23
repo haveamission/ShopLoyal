@@ -16,7 +16,9 @@ import NotifBubble from './NotifBubble'
 import { withKeycloak } from 'react-keycloak';
 import Loading from './Loading';
 import axiosRetry from 'axios-retry';
+import Hammer from 'hammerjs';
 const format = require('string-format')
+
 
 /*const list = [
     <Card />,
@@ -44,15 +46,17 @@ function rnd(min,max){
 constructor() {
   super();
   this.showPosition = this.showPosition.bind(this);
+  this.state = {
+    data: [],
+    search: "",
+    list: [
+    ],
+    isLoading: true,
+  }
 }
 
-state = {
-  data: [],
-  search: "",
-  list: [
-  ],
-  isLoading: true
-}
+containerRef = React.createRef();
+scrollRef = React.createRef();
 
 configuration =(data) =>  {
   data = loadJSONIntoUI(data);
@@ -63,7 +67,31 @@ configuration =(data) =>  {
   this.setState({data, isLoading: false});
 }
 
-showPosition =(position) =>  {
+showPosition = (position) =>  {
+  //alert("Makes it to show position here");
+  //alert(JSON.stringify(position));
+  this.setState({position: position.coords});
+  if(this.props.keycloak.authenticated) {
+    //alert(JSON.stringify(this.state.position));
+    //alert(JSON.stringify(this.state.latitude))
+    var api = new API(this.props.keycloak);
+    var query = {
+      "lat": this.state.position.latitude,
+      "lng": this.state.position.longitude,
+      "radius": "10.0",
+      "limit": "30",
+      "search": this.props.category.category,
+      "value": this.props.search.search
+    }
+    api.get("merchantNoticesAPI", {"repl_str": this.props.merchant.merchant.id, "query": query}).then(
+      response => this.configuration(response.data)
+      ).catch(function(error) {
+      console.log(error);
+      })
+  }
+}
+
+/*showPosition =(position) =>  {
   this.setState({position: position.coords});
   if(this.props.keycloak.authenticated) {
     let config = {
@@ -82,7 +110,7 @@ showPosition =(position) =>  {
     })
   
   }
-}
+}*/
 
 merchantMessageConfiguration(data) {
 var msg;
@@ -98,7 +126,48 @@ console.log(msg);
 this.setState({"bubblemsg":msg.message, "bubbleid":msg.merchantId});
 }
 
+direction() {
+  console.log("Yeah I got that thing");
+  console.log(this.pageLevelEditorRef);
+  if(this.pageLevelEditorRef !== null) {
+  //this.hammer = Hammer(this.pageLevelEditorRef)
+  //this.hammer.on('swipeleft', () => console.log("swipe left"));
+  //this.hammer.on('swiperight', () => console.log("swipe right"));
+  }
+  if(this.containerRef.current !== null && this.scrollRef.current !== null) {
+    console.log("this gon' be my year");
+        console.log(this.containerRef.current);
+        this.hammer = Hammer(this.containerRef.current)
+        this.hammer.on('swipeleft', () => alert("swipe left"));
+        //this.hammer.on('swipeleft', this.scrollRef.handleArrowClickRight);
+        //this.hammer.on('swiperight', this.scrollRef.handleArrowClick);
+        this.hammer.on('swiperight', () => alert("swipe right"));
+        //this.hammer.on('swiperight', () => new WheelEvent("wheelevent", {deltaX: 500, deltaY: 500}));
+        console.log(this.scrollRef.handleArrowClick);
+        //var wheeleventLeft = new WheelEvent("wheel", {deltaY: -50});
+        //var wheeleventRight = new WheelEvent("wheel", {deltaY: 50});
+        var wheeleventLeft = new WheelEvent("wheel", {deltaX: -50});
+        var wheeleventRight = new WheelEvent("wheel", {deltaX: 50});
+        window.addEventListener('wheel', function (e) {
+          
+          //alert("gets to e listener");
+          //const delta = Math.sign(e.deltaY);
+          //console.info(delta);
+          console.log("Y");
+          console.log(e.deltaY);
+          console.log("X");
+          console.log(e.deltaX);
+        
+        
+        }, false);
+        this.hammer.on('swiperight', () => window.dispatchEvent(wheeleventRight));
+        this.hammer.on('swipeleft', () => window.dispatchEvent(wheeleventLeft));
+        }
+}
+
 componentDidMount() {
+  new WheelEvent("wheelevent", {deltaX: 500, deltaY: 500});
+  this.direction();
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(this.showPosition);
   }
@@ -109,23 +178,60 @@ componentDidMount() {
 
   if(this.props.keycloak.authenticated && this.props.count == 0) {
 var merchant_id = this.props.merchant.merchant.id;
-    let config = {
-      headers: {
-        Authorization: "Bearer " + this.props.keycloak.idToken,
-      }
-    }
-    axiosRetry(axios, { retries: 10 });
-    console.log(API.prodBaseUrlString + format(API.merchantMessages, merchant_id));
-    //alert(API.prodBaseUrlString + format(API.merchantMessages, merchant_id));
-    axios.get(API.prodBaseUrlString + format(API.merchantMessages, merchant_id), config).then(
-      response => this.merchantMessageConfiguration(response.data)
-    ).catch(function(error) {
-      console.log(error);
-      //alert(error);
-    })
-  
+var api = new API(this.props.keycloak);
+api.setRetry(10);
+api.get("merchantMessages", {"repl_str": merchant_id}).then(
+  response => this.merchantMessageConfiguration(response.data)
+  ).catch(function(error) {
+  console.log(error);
+  })
   }
+
+
+  window.addEventListener('scroll', function() {
+   //alert(pageXOffset);
+   //alert(pageYOffset);
+   alert(window.scrollY);
+   alert(window.scrollX);
+  });
+
+
+
 }
+
+componentDidUpdate() {
+  console.log(this.containerRef);
+  if(this.containerRef.current !== null && this.scrollRef.current !== null) {
+console.log("this gon' be my year");
+    console.log(this.containerRef.current);
+    this.hammer = Hammer(this.containerRef.current)
+    this.hammer.on('swipeleft', () => alert("swipe left"));
+    //this.hammer.on('swipeleft', this.scrollRef.handleArrowClickRight);
+    //this.hammer.on('swiperight', this.scrollRef.handleArrowClick);
+    this.hammer.on('swiperight', () => alert("swipe right"));
+    //this.hammer.on('swiperight', () => new WheelEvent("wheelevent", {deltaX: 500, deltaY: 500}));
+    console.log(this.scrollRef.handleArrowClick);
+    //var wheeleventLeft = new WheelEvent("wheel", {deltaY: -50});
+    //var wheeleventRight = new WheelEvent("wheel", {deltaY: 50});
+    var wheeleventLeft = new WheelEvent("wheel", {deltaX: -50});
+    var wheeleventRight = new WheelEvent("wheel", {deltaX: 50});
+    window.addEventListener('wheel', function (e) {
+      
+      //alert("gets to e listener");
+      //const delta = Math.sign(e.deltaY);
+      //console.info(delta);
+      console.log("Y");
+      console.log(e.deltaY);
+      console.log("X");
+      console.log(e.deltaX);
+    
+    
+    }, false);
+    this.hammer.on('swiperight', () => window.dispatchEvent(wheeleventRight));
+    this.hammer.on('swipeleft', () => window.dispatchEvent(wheeleventLeft));
+    }
+}
+
     render() {
 
       if (this.state.isLoading) {
@@ -136,7 +242,7 @@ var merchant_id = this.props.merchant.merchant.id;
     //console.log(JSON.stringify(this.state.list));
    
       return (
-        <div className={"App card-row card-color " + this.props.className}>
+        <div className={"App card-row card-color " + this.props.className} ref={this.containerRef}>
               {this.state.bubblemsg ? (
         <NotifBubble message={this.state.bubblemsg} merchant={this.props.merchant.merchant}/>
       ) : (
@@ -144,8 +250,11 @@ var merchant_id = this.props.merchant.merchant.id;
       )}
           <ScrollMenu
             data={this.state.list}
+            dragging={false}
             inertiaScrolling={true}
             transition={.1}
+            inertiaScrollingSlowdown={.000001}
+            ref={this.scrollRef}
           />
         </div>
       );

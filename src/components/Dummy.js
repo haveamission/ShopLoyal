@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Page from './Page'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 

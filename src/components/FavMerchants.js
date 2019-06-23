@@ -4,7 +4,6 @@ import axios from 'axios';
 import { connect } from "react-redux";
 import Loading from './Loading'
 import { Link } from 'react-router-dom'
-import Page from './Page'
 import UnFavorite from "../img/full_heart_white.png";
 import Favorite from "../img/full_heart_purple.png";
 import Map from "../img/map.png";
@@ -92,7 +91,7 @@ console.log(data);
 var arr = [];
 data.map((item, index) => {
     arr.push(
-        <FavMerchantsItem merchant={item} oidc={this.props.keycloak.authenticated}/>
+        <FavMerchantsItem merchant={item}/>
       )
       
  });
@@ -100,17 +99,20 @@ data.map((item, index) => {
     }
 componentDidMount() {
 
-    let config = {
-        headers: {
-          Authorization: "Bearer " + this.props.keycloak.idToken,
-        }
-      }
-      
-  axios.get(API.prodBaseUrlString + API.favoriteMerchantAPI + "?lat=42.2&limit=30&lng=-83", config).then(
-  response => this.loadFavMerchants(response.data)
-  ).catch(function(error) {
-  console.log(error);
-  })
+  // TODO REPLACE WITH REAL LOCATION
+
+  var query = {
+    "lat": "42.2",
+    "lng": "-83",
+    "limit": "30",
+  }
+
+  var api = new API(this.props.keycloak);
+  api.get("favoriteMerchantAPI", {"query": query}).then(
+    response => this.loadFavMerchants(response.data)
+    ).catch(function(error) {
+    console.log(error);
+    })
 }
 
 render() {

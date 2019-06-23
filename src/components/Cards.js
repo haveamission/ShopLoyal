@@ -6,7 +6,6 @@ import Message from "../img/message.png";
 import Call from "../img/call.png";
 import Map from "../img/map.png";
 import CardRow from "./CardRow";
-import Page from './Page'
 import axios from 'axios';
 import API from './API'
 import { connect } from "react-redux";
@@ -59,26 +58,21 @@ search: "",
             console.log("PROPS KEYCLOAK");
             console.log(this.props.keycloak);
             if(this.props.keycloak.authenticated) {
-              console.log("id token");
-              console.log(this.props.keycloak.idToken);
-              console.log("token");
-              console.log(this.props.keycloak.token)
-              axiosRetry(axios, { retries: 10 });
-              let config = {
-                headers: {
-                  Authorization: "Bearer " + this.props.keycloak.idToken,
-                  //Origin: "App",
-                }
+              var api = new API(this.props.keycloak);
+              api.setRetry(10);
+              var query = {
+                "lat": this.state.position.latitude,
+                "lng": this.state.position.longitude,
+                "radius": "10.0",
+                "limit": "5",
+                // TODO: Change this to be consistent with other search values
+                "search": this.state.search,
               }
-              console.log(API.prodBaseUrlString + API.merchantAPI + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=5&search=" + this.state.search);
-              axios.get(API.prodBaseUrlString + API.merchantAPI + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=5&search=" + this.state.search, config).then(
+              api.get("merchantAPI", {"query": query}).then(
                 response => this.configuration(response.data)
-              ).catch(function(error) {
-                console.log("500 error here???");
+                ).catch(function(error) {
                 console.log(error);
-                //alert(error);
-              })
-            
+                })
             }
           }
     

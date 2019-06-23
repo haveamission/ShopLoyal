@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
-import Page from './Page'
 import Back from './Back'
 
 export default () => (

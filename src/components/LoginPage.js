@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import FBImg from '../resources/img/icon-facebook-white.png';
 import GoogleImg from '../resources/img/icon-googleplus-white.png';
 import { Link } from 'react-router-dom'
-import Page from './Page'
-import userManager from '../config/OIDC';
 import { push } from 'connected-react-router'
 import { withKeycloak } from 'react-keycloak';
 import { connect } from 'react-redux'
@@ -32,11 +30,7 @@ class LoginPage extends React.Component {
     }
 
     const mapStateToProps = (state) => {
-        /*if (Object.keys(state.oidc).length === 0) {
-      state.oidc = {};
-        }*/
         return {
-          //oidc: state.oidc
         };
       };
       

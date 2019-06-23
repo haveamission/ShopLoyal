@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Map, InfoWindow, Marker, GoogleApiWrapper } from "google-maps-react";
 import Business from './Business';
 import SwipeToDismiss from 'react-swipe-to-dismiss';
-import Page from './Page'
 import axios from 'axios';
 import API from './API';
 import { connect } from "react-redux";
@@ -73,28 +72,33 @@ export class MapContainer extends Component {
     this.setState({ showResults: true })
   };
 
+  mapIconLoad() {
+    if(this.props.keycloak.authenticated) {
+      var api = new API(this.props.keycloak);
+      api.setRetry(10);
+      var query = {
+        "lat": this.props.coordinates.coords.latitude,
+        "lng": this.props.coordinates.coords.longitude,
+        "radius": "10.0",
+        "limit": "30",
+        "search": this.props.category.category,
+        "value": this.props.search.search
+      }
+      api.get("merchantAPI", {"query": query}).then(
+        response => this.configuration(response.data)
+        ).catch(function(error) {
+        console.log(error);
+        })
+    }
+  }
+
   componentDidUpdate() {
     console.log("component did update");
     if(this.state.updatedSearch == this.props.search.search && this.state.updatedCategories == this.props.category.category) {
       return;
     }
+this.mapIconLoad();
 
-    if(this.props.keycloak.authenticated) {
-      let config = {
-        headers: {
-          Authorization: "Bearer " + this.props.keycloak.idToken,
-          //Origin: "App",
-        }
-      }
-        console.log("top girl");
-        console.log(this.props);
-        console.log(API.prodBaseUrlString + API.merchantAPI + "?lat=" + this.props.coordinates.coords.latitude + "&lng=" + this.props.coordinates.coords.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search);
-        axios.get(API.prodBaseUrlString + API.merchantAPI + "?lat=" + this.props.coordinates.coords.latitude + "&lng=" + this.props.coordinates.coords.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search, config).then(
-          response => this.configuration(response.data)
-        ).catch(function(error) {
-          console.log(error);
-        })
-    }
 
   }
 
@@ -105,28 +109,7 @@ export class MapContainer extends Component {
   }
 
   componentDidMount() {
-    //alert(JSON.stringify(this.props));
-    console.log("Map props");
-    console.log(this.props);
-    console.log(this.state);
-    //this.props.getLocation();
-    
-    if(this.props.keycloak.authenticated) {
-      let config = {
-        headers: {
-          Authorization: "Bearer " + this.props.keycloak.idToken,
-          //Origin: "App",
-        }
-      }
-        console.log("top girl");
-        console.log(this.props);
-        console.log(API.prodBaseUrlString + API.merchantAPI + "?lat=" + this.props.coordinates.coords.latitude + "&lng=" + this.props.coordinates.coords.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search);
-        axios.get(API.prodBaseUrlString + API.merchantAPI + "?lat=" + this.props.coordinates.coords.latitude + "&lng=" + this.props.coordinates.coords.longitude + "&radius=10.0&limit=30&search=" + this.props.category.category + "&value=" + this.props.search.search, config).then(
-          response => this.configuration(response.data)
-        ).catch(function(error) {
-          console.log(error);
-        })
-    }
+this.mapIconLoad();
  
   }
 

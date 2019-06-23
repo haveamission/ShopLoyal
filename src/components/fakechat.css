@@ -43,3 +43,27 @@ position: fixed;
 width: 100%;
 touch-action: none;
 }
+
+
+/* TEST CODE FOR KEYBOARD */
+
+/*.switch-wrapper {
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}*/
+/*.switch-wrapper > div {
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}*/
+/*.root {
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}*/
+/*.root > div {
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}*/

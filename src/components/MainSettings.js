@@ -20,47 +20,35 @@ class MainSettings extends React.Component {
         event.persist();
   //console.log(event.target.checked);
   this.setState({'notificationEnabled': event.target.checked})
-  let config = {
-    headers: {
-      Authorization: "Bearer " + this.props.keycloak.idToken,
-    }
-  }
 
-  //console.log("Notif CHECKED - true or false?");
-  //console.log(event.target.checked);
-  
   var body = {
     "notificationEnabled": event.target.checked
   }
-  
-  axiosRetry(axios, { retries: 10 });
 
-  axios.post(API.prodBaseUrlString + API.settings, body, config).then(
-    response => console.log(response.data)
-    ).then(data => this.setState({'notificationEnabled': event.target.checked})).catch(function(error) {
-    //console.log(error);
-    })
+  var api = new API(this.props.keycloak);
+  api.setRetry(10);
+  api.post("settings", {"body": body}).then(
+    response => console.log(response.data))
+    .then(data => this.setState({'notificationEnabled': event.target.checked}))
+    .catch(function(error) {
+      //console.log(error);
+      })
     }
   
     handleNotificationEmail = (event) => {
         event.persist();
-  //console.log(event.target.checked);
-  
-  let config = {
-    headers: {
-      Authorization: "Bearer " + this.props.keycloak.idToken,
-    }
-  }
+
   
   var body = {
     "notificationEmailEnabled": event.target.checked
   }
-  
-  axios.post(API.prodBaseUrlString + API.settings, body, config).then(
-    response => console.log(response.data)
-    ).then(data => this.setState({'notificationEmailEnabled': event.target.checked})).catch(function(error) {
-    //console.log(error);
-    })
+  var api = new API(this.props.keycloak);
+  api.post("settings", {"body": body}).then(
+    response => console.log(response.data))
+    .then(data => this.setState({'notificationEmailEnabled': event.target.checked}))
+    .catch(function(error) {
+      //console.log(error);
+      })
     }
   
     render() {

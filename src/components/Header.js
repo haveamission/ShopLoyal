@@ -26,6 +26,18 @@ class Header extends React.Component {
       this.setState({profile: data});
   }
 
+  setHeader() {
+    if(this.props.keycloak.authenticated) {
+
+      var api = new API(this.props.keycloak);
+      api.get("userProfileAPI").then(
+        response => this.configuration(response.data)
+        ).catch(function(error) {
+        console.log(error);
+        })
+    }
+  }
+
 componentDidMount() {
   //console.log("HEADER STATE AND PROPS props");
   //console.log(this.props);
@@ -35,43 +47,13 @@ componentDidMount() {
 
   if(this.props.router.location.pathname === '/' && this.props.keycloak.authenticated) {
 this.setState({headerLoc: true})
-
-if(this.props.keycloak.authenticated) {
-  let config = {
-    headers: {
-      Authorization: "Bearer " + this.props.keycloak.idToken,
-    }
-  }
-    axios.get(API.prodBaseUrlString + API.userProfileAPI, config).then(
-    response => this.configuration(response.data)
-  ).catch(function(error) {
-    //console.log("500 error here???");
-    //console.log(error);
-    //alert(error);
-  });
-
-}
-
+this.setHeader();
   }
 }
 
 componentDidUpdate(prevProps, prevState) {
   if(this.props.router.location.pathname === '/' && this.state.headerLoc == false) {
-    if(this.props.keycloak.authenticated) {
-      let config = {
-        headers: {
-          Authorization: "Bearer " + this.props.keycloak.idToken,
-        }
-      }
-        axios.get(API.prodBaseUrlString + API.userProfileAPI, config).then(
-        response => this.configuration(response.data)
-      ).catch(function(error) {
-        //console.log("500 error here???");
-        //console.log(error);
-        //alert(error);
-      });
-    
-    }
+    this.setHeader();
     this.setState({headerLoc: true})
     
     }

@@ -15,13 +15,13 @@ import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 //export const history = createBrowserHistory()
 
 export const history = createHashHistory()
-
+/*
 history.listen( location =>  {
   window.NativeKeyboard.hideMessenger({
     animated: true // default false
   });
  });
-
+*/
 
 const persistConfig = {
   key: 'root',

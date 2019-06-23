@@ -42,22 +42,26 @@ class Promotions extends Component {
         console.log(position);
         this.setState({position: position.coords});
         console.log(this.props);
+
+
         if(this.props.keycloak.authenticated) {
+          var api = new API(this.props.keycloak);
           var merchant_id = this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1);
-          let config = {
-            headers: {
-              Authorization: "Bearer " + this.props.keycloak.idToken,
-              //Origin: "App",
-            }
+          console.log("PROMO PROPS");
+          console.log(this.props);
+          var query = {
+            "lat": this.state.position.latitude,
+            "lng": this.state.position.longitude,
+            "radius": "10.0",
+            "limit": "30",
+            //"search": this.props.category.category,
+            "search": this.props.search
           }
-          console.log("top girl");
-          console.log(API.prodBaseUrlString + format(API.merchantNoticesAPI, merchant_id) + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search);
-          axios.get(API.prodBaseUrlString + format(API.merchantNoticesAPI, merchant_id) + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search, config).then(
+          api.get("merchantNoticesAPI", {"repl_str": merchant_id, "query": query}).then(
             response => this.configuration(response.data)
-          ).catch(function(error) {
+            ).catch(function(error) {
             console.log(error);
-          })
-        
+            })
         }
       }
 
@@ -65,24 +69,6 @@ componentDidMount() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(this.showPosition);
   }
-    /*
-    if(this.props.keycloak.authenticated) {
-        var merchant_id = this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1);
-        let config = {
-          headers: {
-            Authorization: "Bearer " + this.props.keycloak.idToken,
-            //Origin: "App",
-          }
-        }
-        console.log("top girl");
-        console.log(API.prodBaseUrlString + format(API.merchantNoticesAPI, merchant_id) + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search);
-        axios.get(API.prodBaseUrlString + format(API.merchantNoticesAPI, merchant_id) + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search, config).then(
-          response => this.configuration(response.data)
-        ).catch(function(error) {
-          console.log(error);
-        })
-      
-      }*/
 }
 
     render() {

@@ -103,11 +103,35 @@ header {
     z-index: 100;
           }
 
+          .titlecard {
+            -webkit-backdrop-filter: blur(5px); /* Use for Safari 9+, Edge 17+ (not a mistake) and iOS Safari 9.2+ */
+            backdrop-filter: blur(5px); /* No one supports non prefixed yet */
+          }
+
           .card-color .layer {
             z-index: 30;
-            opacity: .7;
+            opacity: .9;
           }
-    
+          .titlecard::before {
+            position: inherit;
+            left: inherit;
+            top: inherit;
+            /* width: inherit; */
+            /* height: inherit; */
+            background-size: cover;
+            content: "";
+            -webkit-filter: blur(3px);
+            -moz-filter: blur(3px);
+            -o-filter: blur(3px);
+            -ms-filter: blur(3px);
+            filter: blur(3px);
+            background-image: inherit;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            position: absolute;
+          }
+    /*
           .card-color-0 .layer {
             background-color: #536DFE;
           }
@@ -125,7 +149,7 @@ header {
           }
           .card-color-5 .layer {
             background-color: #DDDDDD;
-          }
+          }*/
 
 .cards .card {
     overflow: hidden;

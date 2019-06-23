@@ -16,13 +16,12 @@ import Map from './components/Map';
 import Cards from './components/Cards';
 import CardRow from './components/CardRow';
 import PrivateRoute from './containers/PrivateRoute';
-import NewChat from './components/NewChat';
+//import NewChat from './components/NewChat';
 import FakeChat from './components/FakeChat';
 import Detail from './components/Detail';
 import Loading from './components/Loading';
 import LoginPage from './components/LoginPage';
 import Settings from './components/Settings';
-import Callback from './components/Callback';
 import Support from './components/Support';
 import Privacy from './components/Privacy';
 import Error from './components/Error';
@@ -130,7 +129,6 @@ render(
                       className="switch-wrapper"
                     >
         <Route exact path="/login" component={LoginPage} />
-        <Route path="/callback/" component={Callback} />
         <Route path="/error/" component={Error} />
         <PrivateRoute exact path="/settings" component={Settings} />
         <PrivateRoute exact path="/" component={Cards} />

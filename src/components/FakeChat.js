@@ -7,7 +7,9 @@ import axios from 'axios'
 import API from './API'
 import {bindActionCreators} from 'redux'
 import { withKeycloak } from 'react-keycloak';
-import NewAPI from './NewAPI';
+/*import NativeKeyboard from './NativeKeyboard'
+import cordova from '../cordova'
+window.cordova = cordova;*/
 const format = require('string-format')
 
 const messages = [];
@@ -46,35 +48,19 @@ class FakeChat extends Component {
     this.onSend = this.onSend.bind(this);
   }
 
-  openChannelNew() {
-    var newAPI = new NewAPI(this.props.keycloak);
+  openChannel() {
+    var api = new API(this.props.keycloak);
     var merchant_id = this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1);
-    newAPI.post("openChannel", {}, merchant_id).then(
+    api.post("openChannel", {"repl_str": merchant_id}).then(
       response => console.log(response.data)
       ).catch(function(error) {
       console.log(error);
       })
   }
 
-  openChannel() {
-    let config = {
-      headers: {
-        Authorization: "Bearer " + this.props.keycloak.idToken,
-      }
-    }
-
-var merchant_id = this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1);
-
-var body = {};
-axios.post(API.prodBaseUrlString + format(API.openChannel, merchant_id), body, config).then(
-response => alert(JSON.stringify(response.data))
-).catch(function(error) {
-console.log(error);
-})
-  }
 
       loadChannels(data) {
-        this.pullChannel(data.userId);
+        this.createChannel(data.userId);
           }
         
           loadMessages(data) {
@@ -101,51 +87,42 @@ console.log(error);
         console.log(data.map(obj => obj.message));
         
           }
-          
+          /*
           loadChannel(data) {
             console.log("messages");
             console.log(this.state);
           console.log(data);
           }
-        
-          pullMessages() {
-            let config = {
-              headers: {
-                Authorization: "Bearer " + this.props.keycloak.idToken,
-              }
-            }
-        
-        console.log("merchant id");
-        console.log(this.state);
-        console.log(this.state.merchant.id);
-        
-        var merchant_id = this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1);
+          */
 
-        axios.get(API.prodBaseUrlString + format(API.merchantMessages, merchant_id), config).then(
-        response => this.loadMessages(response.data)
-        ).catch(function(error) {
-        console.log(error);
-        })
+          pullMessages() {
+            var api = new API(this.props.keycloak);
+            var merchant_id = this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1);
+            api.get("merchantMessages", {"repl_str": merchant_id}).then(
+              response => this.loadMessages(response.data)
+              ).catch(function(error) {
+              console.log(error);
+              })
           }
-          
+
           pullChannels() {
-          
-          let config = {
-                  headers: {
-                    Authorization: "Bearer " + this.props.keycloak.idToken,
-                  }
-                }
-        
-                console.log("pull channels url");
-                console.log(API.prodBaseUrlString + API.channels);
-          
-          axios.get(API.prodBaseUrlString + API.channels, config).then(
-          response => this.loadChannels(response.data)
-          ).catch(function(error) {
-          console.log(error);
-          })
+            var api = new API(this.props.keycloak);
+            api.get("channels").then(
+              response => this.loadChannels(response.data)
+              ).catch(function(error) {
+              console.log(error);
+              })
           }
-          
+
+          createChannel(userId) {
+            var api = new API(this.props.keycloak);
+            api.post("channel", {"repl_str": userId}).then(
+              response => console.log(response.data)
+              ).catch(function(error) {
+              console.log(error);
+              })
+          }
+          /*
           createChannel(userId) {
         
             console.log("makes it in pullChannel");
@@ -166,31 +143,19 @@ console.log(error);
           ).catch(function(error) {
           console.log(error);
           })
-          }
+          }*/
         
           componentWillMount() {
             this.setState({"merchantName": this.props.location.state.merchant.name});
           }
         
           componentDidMount() {
-            //alert(JSON.stringify(NewAPI))
-            this.openChannelNew();
+            this.openChannel();
            
           console.log(this.state);
           console.log(this.props);
-          
-            if(this.props.keycloak.authenticated) {
-              let config = {
-                headers: {
-                  Authorization: "Bearer " + this.props.keycloak.idToken,
-                  //Origin: "App",
-                }
-              }
-              //this.state.merchant.isFavorite
-              console.log("Before favorite send");
-        this.pullMessages();
-            
-            }
+
+          this.pullMessages();
           
           }
 
@@ -216,6 +181,21 @@ console.log(error);
         }
           }
 
+          saveMessageNew(message) {
+            var body = {
+              "message": message
+            }
+
+            var api = new API(this.props.keycloak);
+        
+        var merchant_id = this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1);
+        api.post("merchantSendMessage", {"body": body}).then(
+          response => alert(response.data)
+          ).catch(function(error) {
+          console.log(error);
+          })
+          }
+/*
           saveMessage(message) {
             let config = {
               headers: {
@@ -240,7 +220,7 @@ console.log(error);
         console.log(error);
         //alert(error);
         })
-          }
+          }*/
 
           goBack() {
             this.props.history.goBack();
@@ -253,6 +233,8 @@ console.log(error);
         return (<Loading />)
         }
         else {
+ // TODO: Figure out a way to emulate this.
+          if(window.NativeKeyboard) {
 
           var that = this;
 
@@ -275,6 +257,7 @@ console.log(error);
               textStyle: 'bold',
             },
           });
+        }
 
         //showMessenger();
                 return (

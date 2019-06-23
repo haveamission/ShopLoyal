@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import Iframe from 'react-iframe'
-import Page from './Page'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBowlingBall } from '@fortawesome/free-solid-svg-icons'
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons'
 import { faImages, faImage } from '@fortawesome/free-solid-svg-icons'
 import Loading from './Loading'
-import userManager from '../config/OIDC';
 import { connect } from "react-redux";
 import API from './API'
 import LogoutSettings from './LogoutSettings'
@@ -52,16 +50,12 @@ this.setState(data);
 
     if(this.props.keycloak.authenticated) {
 
-let config = {
-  headers: {
-    Authorization: "Bearer " + this.props.keycloak.idToken,
-  }
-}
-    
-
-axios.get(API.prodBaseUrlString + API.userProfileAPI, config).then(
-  response => this.configuration(response.data)
-);
+      var api = new API(this.props.keycloak);
+      api.get("userProfileAPI").then(
+        response => this.configuration(response.data)
+        ).catch(function(error) {
+        console.log(error);
+        })
 
 this.getSettings();
 

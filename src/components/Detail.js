@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Card from "./Card";
-import Page from './Page'
 import { connect } from 'react-redux'
 import getLocation from '../actions/location'
 import {bindActionCreators} from 'redux'
@@ -57,19 +56,22 @@ class Detail extends Component {
             this.setState({position: position.coords});
             if(this.props.keycloak.authenticated) {
               var merchant_id = this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1);
-              let config = {
-                headers: {
-                  Authorization: "Bearer " + this.props.keycloak.idToken,
-                  //Origin: "App",
-                }
+              var query = {
+                "lat": this.state.position.latitude,
+                "lng": this.state.position.longitude,
+                "radius": "10.0",
+                "limit": "30",
+                // TODO: Change this to be consistent with other search values
+                "search": this.state.search,
               }
-              console.log("top girl");
-              console.log(API.prodBaseUrlString + API.merchantAPI + "/" + merchant_id + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search);
-              axios.get(API.prodBaseUrlString + API.merchantAPI + "/" + merchant_id + "?lat=" + this.state.position.latitude + "&lng=" + this.state.position.longitude + "&radius=10.0&limit=30&search=" + this.state.search, config).then(
+
+              var api = new API(this.props.keycloak);
+              api.setRetry(10);
+              api.get("merchantDetailAPI", {"repl_str": merchant_id, "query": query}).then(
                 response => this.configuration(response.data)
-              ).catch(function(error) {
+                ).catch(function(error) {
                 console.log(error);
-              })
+                })
             
             }
           }
@@ -105,7 +107,6 @@ console.log(this.state.data);
 
 const mapStateToProps = (state) => {
   return {
-    oidc: state.oidc,
     coordinates: state.coordinates,
   };
 };

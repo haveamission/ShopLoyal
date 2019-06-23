@@ -6,13 +6,11 @@ import Favorite from "../img/full_heart_purple.png";
 import MessageText from "../img/message.png";
 import Call from "../img/call.png";
 import Map from "../img/map.png";
-import withFetching from "./API";
 import {Link} from 'react-router-dom';
 import Background from "../img/fake_background_card.png";
 import { connect } from 'react-redux'
 import {bindActionCreators} from 'redux'
 import saveColor from '../actions/general'
-import SLBubble from './SLBubble'
 import Loading from './Loading'
 import axios from 'axios'
 import API from './API'
@@ -20,56 +18,9 @@ import { push } from 'connected-react-router'
 import { withKeycloak } from 'react-keycloak';
 import axiosRetry from 'axios-retry';
 const format = require('string-format')
-
-
 const getColors = require('get-image-colors')
 
 class Card extends Component {
-
-  routeChange =(e) => {
-    if(e.target.nodeName == "LI" || e.target.nodeName == "a") {
-    return;
-    }
-    let path = "/detail/" + this.state.merchant.id;
-    this.props.dispatch(push(path));
-    }
-
-    configuration(data) {
-      //alert("Completed one round");
-      console.log("pre set state card");
-      console.log(data);
-      var merchant = this.state.merchant;
-      merchant.isFavorite = !merchant.isFavorite;
-      this.setState({merchant: merchant});
-    }
-
-    handleLinks(e) {
-      //e.stopPropagation();
-      console.log("e stop propogation");
-    }
-  
-  handleFavorite(e) {
-    e.stopPropagation();
-    console.log("child");
-    if(this.props.keycloak.authenticated) {
-      let config = {
-        headers: {
-          Authorization: "Bearer " + this.props.keycloak.idToken,
-          //Origin: "App",
-        }
-      }
-      //this.state.merchant.isFavorite
-      console.log("Before favorite send");
-      axiosRetry(axios, { retries: 10 });
-      axios.post(API.prodBaseUrlString + API.favoriteMerchantAPI, {"merchantId": this.state.merchant.id, "status": !this.state.merchant.isFavorite}, config).then(
-        response => this.configuration(response.data)
-      ).catch(function(error) {
-        console.log(error);
-        //alert(error);
-      })
-    }
-  }
-
   constructor() {
     super();
     this.state = {
@@ -95,6 +46,43 @@ class Card extends Component {
       merchant = props.merchant;
     }
     return {"merchant": merchant};
+  }
+
+  routeChange =(e) => {
+    if(e.target.nodeName == "LI" || e.target.nodeName == "a") {
+    return;
+    }
+    let path = "/detail/" + this.state.merchant.id;
+    this.props.dispatch(push(path));
+    }
+
+    configuration(data) {
+      //alert("Completed one round");
+      console.log("pre set state card");
+      console.log(data);
+      var merchant = this.state.merchant;
+      merchant.isFavorite = !merchant.isFavorite;
+      this.setState({merchant: merchant});
+    }
+
+    handleLinks(e) {
+      //e.stopPropagation();
+      console.log("e stop propogation");
+    }
+  
+  handleFavorite(e) {
+    e.stopPropagation();
+    if(this.props.keycloak.authenticated) {
+      var api = new API(this.props.keycloak);
+      var body = {"merchantId": this.state.merchant.id, "status": !this.state.merchant.isFavorite};
+      api.setRetry(10);
+      api.post("favoriteMerchantAPI", {"body": body}).then(
+        response => this.configuration(response.data)
+        ).catch(function(error) {
+        console.log(error);
+        })
+    }
+
   }
 
   lightestColor(colors) {
@@ -158,11 +146,9 @@ componentWillUnmount() {
   //console.log(this.state);
 
     return (
-    <div className="card titlecard" onClick={this.routeChange} style={{backgroundImage: `url(${this.state.merchant.coverPhoto})`}}>
-    {/*<div className="layer" style={{backgroundColor : this.state.cardColor}}></div>*/}
-    <div className="layer"></div>
-    {/* Split off into another component */}
-    {/*<SLBubble />*/}
+    <div className="card titlecard" onClick={this.routeChange} data-image={this.state.merchant.coverPhoto} style={{backgroundImage: `url(${this.state.merchant.coverPhoto})`}}>
+    <div className="layer" style={{backgroundColor : this.state.cardColor}}></div>
+    {/*<div className="layer"></div>*/}
       <div className="card-left">
         <div className="card-logo">
           <img className="card-logo-img" src={this.state.merchant.logo} />
@@ -199,7 +185,6 @@ componentWillUnmount() {
 const mapStateToProps = (state) => {
   return {
     //general: state.general,
-    //oidc: state.oidc,
     color: state.saveColor
   };
 };
