@@ -53,6 +53,7 @@ constructor() {
     ],
     isLoading: true,
   }
+  this.menu = null;
 }
 
 containerRef = React.createRef();
@@ -162,6 +163,9 @@ direction() {
         }, false);
         this.hammer.on('swiperight', () => window.dispatchEvent(wheeleventRight));
         this.hammer.on('swipeleft', () => window.dispatchEvent(wheeleventLeft));
+        window.scrollTop(50);
+        const { leftArrowVisible, rightArrowVisible, selected, translate } = this.scrollRef.state
+        alert(translate);
         }
 }
 
@@ -200,15 +204,16 @@ api.get("merchantMessages", {"repl_str": merchant_id}).then(
 }
 
 componentDidUpdate() {
+  // TODO: Figure out how to fix this lifecycle method
   console.log(this.containerRef);
-  if(this.containerRef.current !== null && this.scrollRef.current !== null) {
+  if(this.containerRef.current !== null && this.menu.current !== null) {
 console.log("this gon' be my year");
     console.log(this.containerRef.current);
     this.hammer = Hammer(this.containerRef.current)
-    this.hammer.on('swipeleft', () => alert("swipe left"));
+    //this.hammer.on('swipeleft', () => alert("swipe left"));
     //this.hammer.on('swipeleft', this.scrollRef.handleArrowClickRight);
     //this.hammer.on('swiperight', this.scrollRef.handleArrowClick);
-    this.hammer.on('swiperight', () => alert("swipe right"));
+    //this.hammer.on('swiperight', () => alert("swipe right"));
     //this.hammer.on('swiperight', () => new WheelEvent("wheelevent", {deltaX: 500, deltaY: 500}));
     console.log(this.scrollRef.handleArrowClick);
     //var wheeleventLeft = new WheelEvent("wheel", {deltaY: -50});
@@ -227,8 +232,15 @@ console.log("this gon' be my year");
     
     
     }, false);
-    this.hammer.on('swiperight', () => window.dispatchEvent(wheeleventRight));
-    this.hammer.on('swipeleft', () => window.dispatchEvent(wheeleventLeft));
+    //this.hammer.on('swiperight', () => window.dispatchEvent(wheeleventRight));
+    //this.hammer.on('swipeleft', () => window.dispatchEvent(wheeleventLeft));
+    this.hammer.on("swiperight", () => this.menu.handleArrowClick());
+    this.hammer.on("swipeleft", () => this.menu.handleArrowClickRight());
+
+    //this.hammer.on("swiperight", () => this.menu.handleArrowClick());
+    //this.hammer.on("swipeleft", () => this.menu.handleArrowClickRight());
+
+
     }
 }
 
@@ -238,8 +250,14 @@ console.log("this gon' be my year");
         return <div/>
     }
 
+    const menu = this.state.list;
+
     //console.log("CARD ITEM FOR LIST");
     //console.log(JSON.stringify(this.state.list));
+var translate = 0;
+    if(this.state.bubblemsg) {
+      translate = 50;
+    }
    
       return (
         <div className={"App card-row card-color " + this.props.className} ref={this.containerRef}>
@@ -250,11 +268,13 @@ console.log("this gon' be my year");
       )}
           <ScrollMenu
             data={this.state.list}
-            dragging={false}
             inertiaScrolling={true}
-            transition={.1}
-            inertiaScrollingSlowdown={.000001}
-            ref={this.scrollRef}
+            dragging={false}
+            transition={.3}
+            scrollBy={1}
+            inertiaScrollingSlowdown={.9}
+            ref={el => (this.menu = el)}
+            translate={translate}
           />
         </div>
       );
