@@ -32,21 +32,17 @@ this.setState({merchant: merchant})
         handleFavorite = (e) =>  {
             e.stopPropagation();
             console.log("child");
+
             if(this.props.keycloak.authenticated) {
-              let config = {
-                headers: {
-                  Authorization: "Bearer " + this.props.keycloak.idToken,
-                  //Origin: "App",
-                }
-              }
-              //this.state.merchant.isFavorite
-              console.log("Before favorite send");
-              axios.post(API.prodBaseUrlString + API.favoriteMerchantAPI, {"merchantId": this.state.merchant.id, "status": !this.state.merchant.isFavorite}, config).then(
+
+              var body = {"merchantId": this.state.merchant.id, "status": !this.state.merchant.isFavorite}
+              var api = new API(this.props.keycloak);
+              api.setRetry(10);
+              api.post("favoriteMerchantAPI", {"body": body}).then(
                 response => this.processFavorite(response.data)
-              ).catch(function(error) {
+                ).catch(function(error) {
                 console.log(error);
-              })
-            
+                })
             }
           }
 
@@ -119,14 +115,12 @@ render() {
     return(
       <div>
 <div className="fav-merchant-list">Favorite Merchants</div>
-<div>
+<div className="fav-merchant-list-parent">
     {this.state.favs}
     </div>
     </div>
     )
 }
-
-
 
 }
   

@@ -8,8 +8,8 @@ import Search from './Search'
 import Categories from './Categories'
 import { connect } from 'react-redux'
 import API from './API'
-import axios from 'axios';
 import { withKeycloak } from 'react-keycloak';
+import Back from './Back'
 
 // The Header creates links that can be used to navigate
 // between routes.
@@ -98,10 +98,15 @@ componentDidUpdate(prevProps, prevState) {
        <div className="fav-merch-text">Add your favorite local merchants</div>
        </div>
       ) : (
-    null
+        null
       )}
     <Search />
     <hr className="hr-header" />
+    {this.state.headerLoc ? (
+      null
+    ): (
+<Back />
+    )}
   </header>
 )
   }

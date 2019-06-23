@@ -139,10 +139,10 @@ direction() {
     console.log("this gon' be my year");
         console.log(this.containerRef.current);
         this.hammer = Hammer(this.containerRef.current)
-        this.hammer.on('swipeleft', () => alert("swipe left"));
+        //this.hammer.on('swipeleft', () => alert("swipe left"));
         //this.hammer.on('swipeleft', this.scrollRef.handleArrowClickRight);
         //this.hammer.on('swiperight', this.scrollRef.handleArrowClick);
-        this.hammer.on('swiperight', () => alert("swipe right"));
+        //this.hammer.on('swiperight', () => alert("swipe right"));
         //this.hammer.on('swiperight', () => new WheelEvent("wheelevent", {deltaX: 500, deltaY: 500}));
         console.log(this.scrollRef.handleArrowClick);
         //var wheeleventLeft = new WheelEvent("wheel", {deltaY: -50});
@@ -165,7 +165,7 @@ direction() {
         this.hammer.on('swipeleft', () => window.dispatchEvent(wheeleventLeft));
         window.scrollTop(50);
         const { leftArrowVisible, rightArrowVisible, selected, translate } = this.scrollRef.state
-        alert(translate);
+        //alert(translate);
         }
 }
 
@@ -180,7 +180,7 @@ componentDidMount() {
   console.log(this.props.merchant);
   this.state.list.push(<Card merchant={this.props.merchant.merchant} key={this.props.merchant.merchant.id} />)
 
-  if(this.props.keycloak.authenticated && this.props.count == 0) {
+  if(this.props.keycloak.authenticated /*&& this.props.count == 0*/) {
 var merchant_id = this.props.merchant.merchant.id;
 var api = new API(this.props.keycloak);
 api.setRetry(10);
@@ -195,8 +195,8 @@ api.get("merchantMessages", {"repl_str": merchant_id}).then(
   window.addEventListener('scroll', function() {
    //alert(pageXOffset);
    //alert(pageYOffset);
-   alert(window.scrollY);
-   alert(window.scrollX);
+   //alert(window.scrollY);
+   //alert(window.scrollX);
   });
 
 

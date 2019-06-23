@@ -23,7 +23,6 @@ class WebPage extends Component {
 
         return (
             <div>
-                <Back />
               {this.state.isLoading ? (
                 <Loading />
               ) : null}

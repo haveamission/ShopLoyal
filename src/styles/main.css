@@ -92,9 +92,9 @@ input[type="text"] {
 }
 /* Check and see if this looks good with different viewports/if you should convert to % */
 header {
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-top: 20px;
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-top: 2em;
 }
 /*
 * Card-specific styles
@@ -501,13 +501,19 @@ top: 38rem;
     padding-left: 1rem;
     padding-right: 1rem;
     position: absolute;
-    margin-top: 1rem;
+    margin-top: 2rem;
     z-index: 10;
     border-bottom: 3px solid #536DFE;
     box-shadow: 1px 1px 11px 6px rgba(83,109,254,0.49);
     text-align: left;
     font-size: 1.5rem;
-    margin-left: 1rem;
+    margin-left: 5rem;
+    min-width: 25rem;
+}
+.card-row >  a {
+    position: relative;
+    z-index: 50;
+    width: 100%;
 }
 
 
@@ -848,7 +854,10 @@ html {
 }
 .fav-merchants-text {
     color: #000;
-    font-size: 10px;
+    font-size: 1rem;
+}
+.fav-merchant-list-parent {
+    margin-top: 2rem;
 }
 .toggle-text {
     margin-left: 5%;
@@ -917,8 +926,9 @@ html {
     -webkit-justify-content: left !important;
     }
     .shoployal-main-logo {
-        width: 15rem;
+        width: 10rem;
         display: block;
+        margin-bottom: .5rem;
     }
     .welcome-text {
         color: #27295F;

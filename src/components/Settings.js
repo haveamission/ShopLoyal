@@ -77,7 +77,6 @@ this.getSettings();
 
     return (
       <div>
-          <Back />
   <div className="settings">
       <ProfileSettings profile={this.state.profile}/>
       <MainSettings data={this.state} />

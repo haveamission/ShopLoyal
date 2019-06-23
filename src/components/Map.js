@@ -14,7 +14,7 @@ import { withKeycloak } from 'react-keycloak';
 
 const mapStyles = {
   width: "100%",
-  height: "40%"
+  height: "100%"
 };
 
 function search(nameKey, myArray){
