@@ -93,19 +93,19 @@ componentDidUpdate(prevProps, prevState) {
        {this.state.profile ? (
        <Link to="/settings"><img className="profile-picture" src={this.state.profile.picture} /></Link> )
        : (
-         null
+        null
        )}
        <div className="fav-merch-text">Add your favorite local merchants</div>
        </div>
       ) : (
-        null
+<Back />
       )}
     <Search />
     <hr className="hr-header" />
     {this.state.headerLoc ? (
       null
     ): (
-<Back />
+null
     )}
   </header>
 )

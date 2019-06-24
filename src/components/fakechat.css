@@ -38,10 +38,17 @@
   background-color: #536DFE;
 }
 #messages-container {
-height: 100vh;
+height: 25vh;
 position: fixed;
 width: 100%;
 touch-action: none;
+}
+
+.msginput {
+  border: 1px solid #d1d4d9;
+    z-index: 100;
+    bottom: 0;
+    position: absolute;
 }
 
 

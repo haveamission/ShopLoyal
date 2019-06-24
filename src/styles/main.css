@@ -96,6 +96,9 @@ header {
     margin-right: 2em;
     margin-top: 2em;
 }
+header .shoployal-main-logo {
+    margin-top: -2em;
+}
 /*
 * Card-specific styles
 */
@@ -112,7 +115,7 @@ header {
             z-index: 30;
             opacity: .9;
           }
-          .titlecard::before {
+          .card-row .titlecard::before {
             position: inherit;
             left: inherit;
             top: inherit;
@@ -422,10 +425,15 @@ top: 38rem;
     float: left;
 }
 .linkback {
-   font-size:12px;
+   font-size:1em;
    font-weight: 900;
-   display: inline-block;
-   position: absolute;
+   /*display: inline-block;*/
+   /*position: absolute;*/
+   /*
+   * Changing to relative for the current back button implementation
+   */
+   position: relative;
+   margin-bottom: .5em;
    z-index: 1;
    margin-top: -0%;
    
@@ -569,11 +577,11 @@ top: 38rem;
     position: relative;
     border-radius: 5px;
     /*background-image: linear-gradient(#335b71 45%, #03324c 55%);*/
-    /*box-shadow: 0 1px 1px #536DFE;*/
+    box-shadow: 0 1px 1px #536DFE;
     /* change to box shadow */
-    border-right: 1px solid #536DFE;
+    /*border-right: 1px solid #536DFE;
     border-left: 1px solid #536DFE;
-    border-bottom: 1px solid #536DFE;
+    border-bottom: 1px solid #536DFE;*/
     margin-right: 1rem;
 }
 .detail .card-nav img {

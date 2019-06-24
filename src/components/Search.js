@@ -63,11 +63,11 @@ this.props.dispatch(push("/map"));
       ) : (
         ""
       )}
-<input className="search-input" onChange={this.handleChange}></input>
+<input ref={(ip) => this.myInp = ip} className="search-input" onChange={this.handleChange}></input>
 {this.state.value ? (
         ""
       ) : (
-        <span className="search-text"><i className="fas fa-search small"></i>Search</span>
+        <span onClick={() => {this.myInp.focus()}} className="search-text"><i className="fas fa-search small"></i>Search</span>
       )}
 
 </span>

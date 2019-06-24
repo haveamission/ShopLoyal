@@ -234,7 +234,7 @@ class FakeChat extends Component {
         }
         else {
  // TODO: Figure out a way to emulate this.
-          if(window.NativeKeyboard) {
+          /*if(window.NativeKeyboard) {
 
           var that = this;
 
@@ -257,10 +257,13 @@ class FakeChat extends Component {
               textStyle: 'bold',
             },
           });
-        }
+        }*/
 
         //showMessenger();
+        window.Keyboard.hideFormAccessoryBar(true);
                 return (
+
+                  <div>
                   
            <div id="messages-container">
            
@@ -280,7 +283,11 @@ class FakeChat extends Component {
 </div>
 )}
                 </div>
+
+                
            
+                </div>
+                <input type="textarea" name="msginput" className="msginput" />
                 </div>
                 )
             }
