@@ -249,6 +249,12 @@ this.scrollToBottom();
             this.props.history.goBack();
           }
 
+          chatClicked = (props) => {
+            if(window.Keyboard) {
+            window.Keyboard.hide();
+            }
+          };
+
           handleChange(event) {
             this.setState({
               text: event.target.value
@@ -278,7 +284,7 @@ this.scrollToBottom();
 
                   <div>
                   
-           <div id="messages-container" style={{transform: 'translate3d(0,0,0)'}}>
+           <div id="messages-container" onClick={() => this.chatClicked()} style={{transform: 'translate3d(0,0,0)'}}>
            
 <div id="messages">
 {this.state.messages.map( (message, index) =>

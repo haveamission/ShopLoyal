@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { ColorExtractor } from 'react-color-extractor';
 import FakeLogo from "../img/fake_test_logo.png";
-import UnFavorite from "../img/full_heart_white.png";
-import Favorite from "../img/full_heart_purple.png";
+import UnFavorite from "../img/full_heart_white.svg";
+import Favorite from "../img/full_heart_purple.svg";
 import MessageText from "../img/message.png";
 import Call from "../img/call.png";
 import Map from "../img/map.png";
