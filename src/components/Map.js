@@ -70,6 +70,9 @@ export class MapContainer extends Component {
       })
     }
     this.setState({ showResults: true })
+    if(window.Keyboard) {
+    window.Keyboard.hide();
+    }
   };
 
   mapIconLoad() {
@@ -127,7 +130,6 @@ this.mapIconLoad();
         google={this.props.google}
         zoom={15}
         style={mapStyles}
-        onClick={this.mapClicked}
         initialCenter={{
           lat: this.props.coordinates.coords.latitude,
           lng: this.props.coordinates.coords.longitude
@@ -137,6 +139,7 @@ this.mapIconLoad();
         streetViewControl={false}
         fullscreenControl={false}
         gestureHandling="greedy"
+        onClick={() => this.onMapClicked()}
       >
         {this.state.data.merchants.map( merchant =>
      <Marker

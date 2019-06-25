@@ -694,6 +694,7 @@ font-size: 2rem;
     margin-left: 5%;
     margin-bottom: 1rem;
     font-size: 1.5rem;
+   color: #455154;
 }
 .card-row .promocard {
 /*height: 19rem !important;*/
@@ -1009,6 +1010,10 @@ html {
         width: 6rem;
         border-radius: 50px;
         margin-top: -7rem;
+        border: 3px solid white;
+        -webkit-box-shadow: 0px 2px 19px -1px rgba(0,0,0,1);
+        -moz-box-shadow: 0px 2px 19px -1px rgba(0,0,0,1);
+        box-shadow: 0px 2px 19px -1px rgba(0,0,0,1);
     }
 
     .fav-merchant-list {

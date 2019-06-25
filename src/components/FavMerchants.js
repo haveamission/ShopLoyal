@@ -51,7 +51,7 @@ this.setState({merchant: merchant})
         console.log(this.state);
 
         if (!this.state.merchant) {
-            return <div />
+            return <Loading />
         }
 
         return(

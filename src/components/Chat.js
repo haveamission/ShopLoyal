@@ -266,31 +266,6 @@ this.scrollToBottom();
         return (<Loading />)
         }
         else {
- // TODO: Figure out a way to emulate this.
-          /*if(window.NativeKeyboard) {
-
-          var that = this;
-
-          window.NativeKeyboard.showMessenger({
-            onSubmit: function(text) {
-              that.onSend([text]);
-              //alert("Show keyboard");
-            },
-            showKeyboard: true,
-            autocorrectionEnabled: true,
-            animated: true,
-            placeholder: 'Message...',
-            autoscrollElement: document.getElementById("messages"), // default unset
-            scrollToBottomAfterMessengerShows: true,
-            keepOpenAfterSubmit: true,
-            rightButton: {
-              color: '#536DFE',
-              type: 'text', // or 'fontawesome' or 'ionicon', default 'text'
-              value: 'SEND', // 'fa-battery-quarter', // '\uf2c3', // 'Send', // default 'Send'
-              textStyle: 'bold',
-            },
-          });
-        }*/
 
         //showMessenger();
         /*console.log(window.Keyboard);
