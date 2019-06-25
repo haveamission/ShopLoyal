@@ -10,6 +10,7 @@ import { withKeycloak } from 'react-keycloak';
 /*import NativeKeyboard from './NativeKeyboard'
 import cordova from '../cordova'
 window.cordova = cordova;*/
+import TextareaAutosize from 'react-autosize-textarea';
 const format = require('string-format')
 
 const messages = [];
@@ -21,7 +22,7 @@ var position = "right";
   }
   else if(message.recipient == 'customer') {
 var idval = 2;
-var position = "left;"
+var position = "left";
   }
   return {
     id: message.id,
@@ -43,10 +44,21 @@ class FakeChat extends Component {
       messages: [{}],
       merchant: {"id": null},
       isLoading: true,
+      text: "",
     }
     this.goBack = this.goBack.bind(this);
     this.onSend = this.onSend.bind(this);
   }
+
+  componentWillMount(){
+    document.body.style.position = "fixed";
+}
+
+componentWillUnmount(){
+    document.body.style.position = "static";
+    this.setState({"merchantName": this.props.location.state.merchant.name});
+    clearInterval(this.interval);
+}
 
   openChannel() {
     var api = new API(this.props.keycloak);
@@ -64,7 +76,6 @@ class FakeChat extends Component {
           }
         
           loadMessages(data) {
-            alert(JSON.stringify(data));
             console.log("loaded messages");
         console.log(data);
         
@@ -145,9 +156,6 @@ class FakeChat extends Component {
           })
           }*/
         
-          componentWillMount() {
-            this.setState({"merchantName": this.props.location.state.merchant.name});
-          }
         
           componentDidMount() {
             this.openChannel();
@@ -156,10 +164,21 @@ class FakeChat extends Component {
           console.log(this.props);
 
           this.pullMessages();
+          this.interval = setInterval(() => this.updateMessages(), 25000);
           
           }
 
-          onSend(messages) {
+          updateMessages() {
+console.log("update messages");
+this.pullMessages();
+          }
+
+          onSend() {
+            if(this.state.text != null) {
+              this.setState({text: ""});
+
+              var messages = [this.state.text];
+            
             this.openChannel();
             // CHANGE WITH REAL VALUE
             var userId = "586";
@@ -169,9 +188,9 @@ class FakeChat extends Component {
               //alert(message);
               this.saveMessage(message);
               var messageHydrated = this.addMessageInfo(message);
-              alert(JSON.stringify(messageHydrated));
               this.setState({messages: [...this.state.messages, messageHydrated]})
             }
+          }
           }
         
           addMessageInfo(message) {
@@ -181,7 +200,7 @@ class FakeChat extends Component {
         }
           }
 
-          saveMessageNew(message) {
+          saveMessage(message) {
             var body = {
               "message": message
             }
@@ -226,6 +245,12 @@ class FakeChat extends Component {
             this.props.history.goBack();
           }
 
+          handleChange(event) {
+            this.setState({
+              text: event.target.value
+            });
+          }
+
     render() {
 
         if(this.state.isLoading) {
@@ -260,12 +285,17 @@ class FakeChat extends Component {
         }*/
 
         //showMessenger();
-        window.Keyboard.hideFormAccessoryBar(true);
+        console.log(window.Keyboard);
+        if(window.Keyboard.hideFormAccessoryBar) {
+        //window.Keyboard.hideFormAccessoryBar(true);
+        //window.Keyboard.shrinkView(true);
+        //window.Keyboard.disableScroll(true);
+        }
                 return (
 
                   <div>
                   
-           <div id="messages-container">
+           <div id="messages-container" style={{transform: 'translate3d(0,0,0)'}}>
            
 <div id="messages">
 <div class="message left"><span>Example merchant message</span>
@@ -276,9 +306,19 @@ class FakeChat extends Component {
   </div>
   <div class="message right"><span>Test 2</span>
   </div>
+  <div class="message left"><span>Example merchant message</span>
+  </div>
+  <div class="message right"><span>Example customer message</span>
+  </div>
+  <div class="message right"><span>Test</span>
+  </div>
+  <div class="message right"><span>Test 2</span>
+  </div>
+  <div class="message left"><span>Example merchant message</span>
+  </div>
 {this.state.messages.map( (message, index) =>
 
-  <div class={"message " + message.position}><span>{message.text}</span>
+  <div className={"message " + message.position}><span>{message.text}</span>
   {/*<div>Delivered</div>*/}
 </div>
 )}
@@ -287,7 +327,10 @@ class FakeChat extends Component {
                 
            
                 </div>
-                <input type="textarea" name="msginput" className="msginput" />
+                <div onClick={() => {this.myInp.focus()}} className="msginput">
+                  <TextareaAutosize ref={(ip) => this.myInp = ip} value={this.state.text} onChange={evt => this.handleChange(evt)} maxRows={3} placeholder="Message..." className="textareainput" onResize={(e) => {}} name="msginput"  />
+<div onClick={this.onSend} className="sendbutton">SEND</div>
+                  </div>
                 </div>
                 )
             }

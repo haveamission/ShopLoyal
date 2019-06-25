@@ -4,7 +4,6 @@ import Back from './Back'
 
 export default () => (
 <div>
-        <Back />
     <div className="settings">
     <ul className="main-settings">
     <li><span className="setting-left">Email</span> <span className="setting-right">contact@shoployal.com</span></li>

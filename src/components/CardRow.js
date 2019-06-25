@@ -270,11 +270,12 @@ var translate = 0;
             data={this.state.list}
             inertiaScrolling={true}
             dragging={false}
-            transition={.3}
+            transition={.2}
             scrollBy={1}
             inertiaScrollingSlowdown={.9}
             ref={el => (this.menu = el)}
             translate={translate}
+            alignCenter={true}
           />
         </div>
       );

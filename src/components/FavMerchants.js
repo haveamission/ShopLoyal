@@ -118,6 +118,9 @@ render() {
 <div className="fav-merchant-list-parent">
     {this.state.favs}
     </div>
+    <Link to='/map'>
+    <button className="fav-merchant-button">Find More Merchants</button>
+    </Link>
     </div>
     )
 }

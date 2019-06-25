@@ -1,3 +1,4 @@
+/* eslint-disable import/first */
 import React, { Component } from 'react'
 import { render } from 'react-dom'
 import { ConnectedRouter } from 'connected-react-router'
@@ -6,6 +7,9 @@ import registerServiceWorker from './registerServiceWorker';
 import { push } from 'connected-react-router'
 import "@babel/polyfill";
 import { AnimatedSwitch } from 'react-router-transition';
+import initReactFastclick from 'react-fastclick';
+
+initReactFastclick();
 //import appsFlyer from 'cordova-plugin-appsflyer-sdk';
 
 // Import Components
@@ -58,6 +62,7 @@ import { addTokens } from './actions/tokens';
 const {store, persistor} = configureStore(history)
 
 const keycloak = new Keycloak(keycloak_config);
+
 
 //userManager.signinRedirect();
 const startApp = () => {

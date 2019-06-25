@@ -25,7 +25,7 @@ class SLAPI {
      }
 
      call = null;
-     env = "prod";
+     env = "local";
      retry = 1;
 
      setRetry(value) {

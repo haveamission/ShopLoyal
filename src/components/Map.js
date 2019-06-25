@@ -136,6 +136,7 @@ this.mapIconLoad();
         mapTypeControl={false}
         streetViewControl={false}
         fullscreenControl={false}
+        gestureHandling="greedy"
       >
         {this.state.data.merchants.map( merchant =>
      <Marker
