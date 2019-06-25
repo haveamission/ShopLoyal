@@ -351,10 +351,18 @@ color: #000;
     border-radius: 5px 5px 5px 5px;
 }
 
-.gmaps div > img:not([role="presentation"]) {
+.gmaps div > div > div > div > div > div > div > div > img:not([role="presentation"]) {
     border-radius: 50px;
     border: 5px solid #00A4FF !important;
+    animation: cssAnimation 0s 5s forwards;
+    opacity: 0; 
 }
+  
+  @keyframes cssAnimation {
+    to   { opacity: 1; }
+  }
+
+
 .gmaps div > img[src="https://maps.gstatic.com/mapfiles/api-3/images/google4_hdpi.png"] {
     border: none !important;
 }
@@ -561,7 +569,7 @@ width: 100%;
     display: none;
 }
 .detail .about {
-    margin-top: 10rem;
+    margin-top: 11rem;
 }
 .detail .card {
     width: 100%;
@@ -579,8 +587,8 @@ width: 100%;
     background-size: cover;
 }
 .detail .card-nav {
-    margin-top: 10.5rem;
-    position: absolute;
+    margin-top: 2rem;
+    /* position: absolute; */
 }
 .detail .card-nav li {
     color: #27295F;
@@ -593,19 +601,24 @@ width: 100%;
     position: relative;
     border-radius: 5px;
     /*background-image: linear-gradient(#335b71 45%, #03324c 55%);*/
-    box-shadow: 0 1px 1px #536DFE;
+    box-shadow: 0px 1px 3px #536DFE;
     /* change to box shadow */
     /*border-right: 1px solid #536DFE;
     border-left: 1px solid #536DFE;
     border-bottom: 1px solid #536DFE;*/
     margin-right: 1rem;
 }
+.detail .card .card-logo-img {
+    -webkit-box-shadow: 0px 2px 0px 2px rgba(83,109,254,1);
+    -moz-box-shadow: 0px 2px 0px 2px rgba(83,109,254,1);
+    box-shadow: 0px 2px 0px 2px rgba(83,109,254,1);
+}
 .detail .card-nav img {
     vertical-align: middle;
 }
 .detail .card-address {
     position: absolute;
-    margin-top: 8rem;
+    /*margin-top: 8rem;*/
     color: #969FA2;
 }
 .detail .card hr {
@@ -613,7 +626,7 @@ width: 100%;
 }
 .detail .card-title {
     margin-top: 6rem;
-    position: absolute;
+    /*position: absolute;*/
     color: #27295F;
     font-weight: bold;
     font-family: "Monserrat"
@@ -641,6 +654,7 @@ width: 100%;
 .detail .card .card-right-bottom {
     top: 10rem;
     position: relative;
+    margin-right: 1rem;
 }
 .detail .about p {
     color: #969fa2;
@@ -687,11 +701,11 @@ vertical-align: middle;
 }
 .promocard .promo-desc {
     /*min-height: 5rem;*/
-    font-weight: bold;
     display: inline-block;
     width: 70%;
     margin-left: 5%;
     color: #969FA2;
+    padding-bottom: 1rem;
 }
 .promocard .promo-name {
     color: #FFF;
@@ -700,7 +714,7 @@ vertical-align: middle;
     padding-bottom:1rem;
     padding-left: 1rem;
     font-weight: bold;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
 }
 .promocard .promo-bottom {
     background-color: #536DFE;

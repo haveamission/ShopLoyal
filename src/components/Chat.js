@@ -50,6 +50,8 @@ class FakeChat extends Component {
     this.onSend = this.onSend.bind(this);
   }
 
+  messagesEndRef = React.createRef();
+
   componentWillMount(){
     document.body.style.position = "fixed";
 }
@@ -165,12 +167,13 @@ componentWillUnmount(){
 
           this.pullMessages();
           this.interval = setInterval(() => this.updateMessages(), 25000);
-          
+          //this.scrollToBottom();
           }
 
           updateMessages() {
 console.log("update messages");
 this.pullMessages();
+this.scrollToBottom();
           }
 
           onSend() {
@@ -190,6 +193,7 @@ this.pullMessages();
               var messageHydrated = this.addMessageInfo(message);
               this.setState({messages: [...this.state.messages, messageHydrated]})
             }
+            this.scrollToBottom();
           }
           }
         
@@ -251,6 +255,10 @@ this.pullMessages();
             });
           }
 
+          scrollToBottom = () => {
+            this.messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+          }
+
     render() {
 
         if(this.state.isLoading) {
@@ -304,6 +312,9 @@ this.pullMessages();
   {/*<div>Delivered</div>*/}
 </div>
 )}
+        <div style={{ float:"left", clear: "both" }}
+             ref={this.messagesEndRef}>
+        </div>
                 </div>
 
                 
