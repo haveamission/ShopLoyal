@@ -59,7 +59,7 @@ search: "",
             console.log(this.props.keycloak);
             if(this.props.keycloak.authenticated) {
               var api = new API(this.props.keycloak);
-              api.setRetry(10);
+              api.setRetry(3);
               var query = {
                 "lat": this.state.position.latitude,
                 "lng": this.state.position.longitude,

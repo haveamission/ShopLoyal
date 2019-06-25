@@ -75,7 +75,7 @@ export class MapContainer extends Component {
   mapIconLoad() {
     if(this.props.keycloak.authenticated) {
       var api = new API(this.props.keycloak);
-      api.setRetry(10);
+      api.setRetry(3);
       var query = {
         "lat": this.props.coordinates.coords.latitude,
         "lng": this.props.coordinates.coords.longitude,

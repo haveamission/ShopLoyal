@@ -317,8 +317,8 @@ if (this.state.isLoading || !this.state.merchantName) {
 
 {this.state.messages.map( (message, index) =>
 
-  <div class={"messages " + message.position}>
-    <div class="message">
+  <div className={"messages " + message.position}>
+    <div className="message">
       {message.text}
     </div>
     </div>

@@ -21,7 +21,7 @@ import Cards from './components/Cards';
 import CardRow from './components/CardRow';
 import PrivateRoute from './containers/PrivateRoute';
 //import NewChat from './components/NewChat';
-import FakeChat from './components/FakeChat';
+import Chat from './components/Chat';
 import Detail from './components/Detail';
 import Loading from './components/Loading';
 import LoginPage from './components/LoginPage';
@@ -140,7 +140,7 @@ render(
         <PrivateRoute exact path="/map/" component={Map} />
         <PrivateRoute exact path="/cards/" component={Cards} />
         <PrivateRoute exact path="/cardrow/" component={CardRow} />
-        <PrivateRoute path="/chat/" component={FakeChat} />
+        <PrivateRoute path="/chat/" component={Chat} />
         <PrivateRoute path="/detail/" component={Detail} />
         <PrivateRoute path="/support/" component={Support} />
         <PrivateRoute path="/privacy/" component={Privacy} />

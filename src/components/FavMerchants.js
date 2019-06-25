@@ -18,7 +18,7 @@ class FavMerchantsItem extends React.Component {
     }
 
     routeChange =() => {
-        let path = "detail/" + this.state.merchant.id;
+        let path = "/detail/" + this.state.merchant.id;
         this.props.dispatch(push(path));
         }
 
@@ -37,7 +37,7 @@ this.setState({merchant: merchant})
 
               var body = {"merchantId": this.state.merchant.id, "status": !this.state.merchant.isFavorite}
               var api = new API(this.props.keycloak);
-              api.setRetry(10);
+              api.setRetry(3);
               api.post("favoriteMerchantAPI", {"body": body}).then(
                 response => this.processFavorite(response.data)
                 ).catch(function(error) {
@@ -70,6 +70,8 @@ this.setState({merchant: merchant})
     }
 }
 
+const FavMerchantsItemRedux = connect()(withKeycloak(FavMerchantsItem));
+
 
 class FavMerchants extends React.Component {
     constructor() {
@@ -87,7 +89,7 @@ console.log(data);
 var arr = [];
 data.map((item, index) => {
     arr.push(
-        <FavMerchantsItem merchant={item}/>
+        <FavMerchantsItemRedux merchant={item}/>
       )
       
  });

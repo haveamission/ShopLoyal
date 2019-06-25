@@ -66,7 +66,7 @@ class Detail extends Component {
               }
 
               var api = new API(this.props.keycloak);
-              api.setRetry(10);
+              api.setRetry(3);
               api.get("merchantDetailAPI", {"repl_str": merchant_id, "query": query}).then(
                 response => this.configuration(response.data)
                 ).catch(function(error) {

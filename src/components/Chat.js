@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import './fakechat.css';
+import './chat.css';
 import Loading from './Loading'
 import axios from 'axios'
 import API from './API'
@@ -83,7 +83,7 @@ componentWillUnmount(){
         
         var messagevals = [];
         
-        data.forEach(function(obj) {
+        data.reverse().forEach(function(obj) {
         console.log(obj.message);
         messagevals.push(generateMessage(obj, count, {}));
         count++;
@@ -175,10 +175,10 @@ this.pullMessages();
 
           onSend() {
             if(this.state.text != null) {
-              this.setState({text: ""});
+              
 
               var messages = [this.state.text];
-            
+              this.setState({text: ""});
             this.openChannel();
             // CHANGE WITH REAL VALUE
             var userId = "586";
@@ -208,8 +208,8 @@ this.pullMessages();
             var api = new API(this.props.keycloak);
         
         var merchant_id = this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1);
-        api.post("merchantSendMessage", {"body": body}).then(
-          response => alert(response.data)
+        api.post("merchantSendMessage", {"body": body, "repl_str": merchant_id}).then(
+          response => console.log(response.data)
           ).catch(function(error) {
           console.log(error);
           })
@@ -285,12 +285,12 @@ this.pullMessages();
         }*/
 
         //showMessenger();
-        console.log(window.Keyboard);
+        /*console.log(window.Keyboard);
         if(window.Keyboard.hideFormAccessoryBar) {
         //window.Keyboard.hideFormAccessoryBar(true);
         //window.Keyboard.shrinkView(true);
         //window.Keyboard.disableScroll(true);
-        }
+        }*/
                 return (
 
                   <div>
@@ -298,24 +298,6 @@ this.pullMessages();
            <div id="messages-container" style={{transform: 'translate3d(0,0,0)'}}>
            
 <div id="messages">
-<div class="message left"><span>Example merchant message</span>
-  </div>
-  <div class="message right"><span>Example customer message</span>
-  </div>
-  <div class="message right"><span>Test</span>
-  </div>
-  <div class="message right"><span>Test 2</span>
-  </div>
-  <div class="message left"><span>Example merchant message</span>
-  </div>
-  <div class="message right"><span>Example customer message</span>
-  </div>
-  <div class="message right"><span>Test</span>
-  </div>
-  <div class="message right"><span>Test 2</span>
-  </div>
-  <div class="message left"><span>Example merchant message</span>
-  </div>
 {this.state.messages.map( (message, index) =>
 
   <div className={"message " + message.position}><span>{message.text}</span>

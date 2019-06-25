@@ -13,7 +13,8 @@ class Search extends Component {
     this.state = {
       text: '',
     typing: false,
-    typingTimeout: 0
+    typingTimeout: 0,
+    value: null,
     }
     this.handleChange = this.handleChange.bind(this);
   }
@@ -41,12 +42,18 @@ this.props.dispatch(push("/map"));
     });
   }
 
+  deleteSearch() {
+    this.setState({value: ""});
+    this.myInp.value = "";
+    this.props.dispatch(push("/"));
+  }
+
 
   /*render(){
     return(
       <span className="search-text">
             {this.state.value ? (
-        <i class="fas fa-times small"></i>
+        <i className="fas fa-times small"></i>
       ) : (
         <i className="fas fa-search small"></i>
       )}
@@ -59,7 +66,7 @@ this.props.dispatch(push("/map"));
     return(
       <span className="search-wrapper">
                   {this.state.value ? (
-        <i className="fas fa-times large"></i>
+        <i onClick={() => this.deleteSearch()} className="fas fa-times large"></i>
       ) : (
         ""
       )}

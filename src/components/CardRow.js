@@ -147,8 +147,8 @@ direction() {
         console.log(this.scrollRef.handleArrowClick);
         //var wheeleventLeft = new WheelEvent("wheel", {deltaY: -50});
         //var wheeleventRight = new WheelEvent("wheel", {deltaY: 50});
-        var wheeleventLeft = new WheelEvent("wheel", {deltaX: -50});
-        var wheeleventRight = new WheelEvent("wheel", {deltaX: 50});
+        //var wheeleventLeft = new WheelEvent("wheel", {deltaX: -50});
+        //var wheeleventRight = new WheelEvent("wheel", {deltaX: 50});
         window.addEventListener('wheel', function (e) {
           
           //alert("gets to e listener");
@@ -161,10 +161,10 @@ direction() {
         
         
         }, false);
-        this.hammer.on('swiperight', () => window.dispatchEvent(wheeleventRight));
-        this.hammer.on('swipeleft', () => window.dispatchEvent(wheeleventLeft));
-        window.scrollTop(50);
-        const { leftArrowVisible, rightArrowVisible, selected, translate } = this.scrollRef.state
+        //this.hammer.on('swiperight', () => window.dispatchEvent(wheeleventRight));
+        //this.hammer.on('swipeleft', () => window.dispatchEvent(wheeleventLeft));
+        //window.scrollTop(50);
+        //const { leftArrowVisible, rightArrowVisible, selected, translate } = this.scrollRef.state
         //alert(translate);
         }
 }
@@ -183,7 +183,7 @@ componentDidMount() {
   if(this.props.keycloak.authenticated /*&& this.props.count == 0*/) {
 var merchant_id = this.props.merchant.merchant.id;
 var api = new API(this.props.keycloak);
-api.setRetry(10);
+api.setRetry(3);
 api.get("merchantMessages", {"repl_str": merchant_id}).then(
   response => this.merchantMessageConfiguration(response.data)
   ).catch(function(error) {

@@ -75,7 +75,7 @@ class Card extends Component {
     if(this.props.keycloak.authenticated) {
       var api = new API(this.props.keycloak);
       var body = {"merchantId": this.state.merchant.id, "status": !this.state.merchant.isFavorite};
-      api.setRetry(10);
+      api.setRetry(3);
       api.post("favoriteMerchantAPI", {"body": body}).then(
         response => this.configuration(response.data)
         ).catch(function(error) {
@@ -252,6 +252,24 @@ function hexToRgbA(hex) {
 }
 
 function RGBAToHSLA(r,g,b,a) {
+
+  r = parseInt(r);
+  g = parseInt(g);
+  b = parseInt(b);
+
+// TODO: Worry about color correction later
+
+
+  //alert(r + g + b);
+
+
+/*if(r + g + b > 650) {
+var colorArr = ['r', 'g', 'b'];
+var rand = colorArr[Math.floor(Math.random() * colorArr.length)];
+window.rand = window.rand - 100;
+}*/
+
+
 
   r /= 255;
   g /= 255;

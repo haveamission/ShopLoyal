@@ -26,7 +26,7 @@ class MainSettings extends React.Component {
   }
 
   var api = new API(this.props.keycloak);
-  api.setRetry(10);
+  api.setRetry(3);
   api.post("settings", {"body": body}).then(
     response => console.log(response.data))
     .then(data => this.setState({'notificationEnabled': event.target.checked}))
@@ -57,7 +57,7 @@ class MainSettings extends React.Component {
       <Link to="/favmerchants/">
       <div className="fav-merchants">
       <span className="merchant-number">{this.props.data.profile.merchantCount}
-      <div class="right-triangle"/>
+      <div className="right-triangle"/>
       </span>
       <div className="fav-merchants-text">Favorite Merchants</div>
       </div>

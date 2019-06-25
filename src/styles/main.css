@@ -1036,7 +1036,7 @@ html {
 user-select: none;
 }
 
-input, textarea
+input, textarea, i
 {
 -webkit-user-select: auto !important;
 -khtml-user-select: auto !important;
