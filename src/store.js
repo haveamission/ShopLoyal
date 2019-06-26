@@ -1,4 +1,4 @@
-import storage from 'redux-persist/es/storage'
+//import storage from 'redux-persist/es/storage'
 import { apiMiddleware } from 'redux-api-middleware';
 import { createFilter   } from 'redux-persist-transform-filter';
 import { persistReducer, persistStore } from 'redux-persist'
@@ -8,6 +8,7 @@ import createRootReducer from './reducers/index'
 import { createBrowserHistory } from 'history'
 import {createHashHistory} from 'history'
 import reducers from './reducers/index'
+import localForage from 'localforage';
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 //import createOidcMiddleware from "redux-oidc";
 //import userManager from './config/OIDC';
@@ -15,17 +16,10 @@ import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
 //export const history = createBrowserHistory()
 
 export const history = createHashHistory()
-/*
-history.listen( location =>  {
-  window.NativeKeyboard.hideMessenger({
-    animated: true // default false
-  });
- });
-*/
 
 const persistConfig = {
   key: 'root',
-  storage,
+  storage: localForage,
 }
 
 const loggerMiddleware = store => next => action => {
@@ -34,6 +28,7 @@ const loggerMiddleware = store => next => action => {
   console.log("State before:", store.getState());
   next(action);
   console.log("State after:", store.getState());
+  //alert(JSON.stringify(store.getState()));
 };
 
 function promiseMiddleware({dispatch}) {
@@ -87,6 +82,7 @@ export default (history) => {
   });*/
   let persistor = persistStore(store)
   store.subscribe( () => {
+   
     console.log('state data\n', store.getState());
     //debugger;
   });

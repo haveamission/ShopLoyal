@@ -152,9 +152,9 @@ componentWillUnmount() {
   //console.log(this.state);
 
     return (
-    <div className="card titlecard" onClick={this.routeChange} data-image={this.state.merchant.coverPhoto} style={{backgroundImage: `#6DB3F2 url(${!bgIsLoaded ? <GrayCard />: this.state.merchant.coverPhoto})`} || <Skeleton />}>
+    <div className="card titlecard" onClick={this.routeChange} data-image={this.state.merchant.coverPhoto} style={{backgroundImage: `url(${!bgIsLoaded ? <GrayCard />: this.state.merchant.coverPhoto})`} || <Skeleton />}>
     <div className="layer" style={{backgroundColor : this.state.cardColor}}></div>
-    <div className="graycard">
+    <div className="graycard"></div>
     {/*<div className="layer"></div>*/}
       <div className="card-left">
         <div className="card-logo">
@@ -184,7 +184,6 @@ componentWillUnmount() {
               </div>
         </div>
         </div>
-      </div>
       <BackgroundImageOnLoad	
             src={this.state.merchant.coverPhoto}	
             onLoadBg={() =>	

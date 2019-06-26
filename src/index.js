@@ -98,7 +98,7 @@ console.log(previousRoute);
 console.log(nextRoute);
 }
 
-var tokens = store.getState().tokens.tokens.tokens;
+var tokens = store.getState().tokens;
 
 //alert(JSON.stringify(tokens));
 
@@ -118,6 +118,7 @@ render(
       onLoad: 'check-sso',
       flow: 'hybrid',
       ...tokens,
+      checkLoginIframe: true,
     }
     }
     onAuthSuccess={event => {

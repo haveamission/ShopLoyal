@@ -82,7 +82,7 @@ search: "",
     componentDidMount() {
 
       if(this.props.tokens !== null) {
-        this.props.addTokens(this.props.tokens);
+        //this.props.addTokens(this.props.tokens);
       }
 
 
