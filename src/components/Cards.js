@@ -12,6 +12,8 @@ import { connect } from "react-redux";
 import Loading from './Loading'
 import axiosRetry from 'axios-retry';
 import { withKeycloak } from 'react-keycloak';
+import {addTokens} from '../actions/tokens';
+import {bindActionCreators} from 'redux'
 
 class Cards extends Component {
     state = {
@@ -79,6 +81,11 @@ search: "",
 
     componentDidMount() {
 
+      if(this.props.tokens !== null) {
+        this.props.addTokens(this.props.tokens);
+      }
+
+
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(this.showPosition);
       }
@@ -125,7 +132,13 @@ search: "",
     const mapStateToProps = (state) => {
       return {
         router: state.router,
+        tokens: state.tokens
       };
     };
+
+    function mapDispatchToProps(dispatch) {
+      let actions =  bindActionCreators({ addTokens }, dispatch);
+      return { ...actions, dispatch };
+    }
     
-    export default connect(mapStateToProps)(withKeycloak(Cards));
+    export default connect(mapStateToProps, mapDispatchToProps)(withKeycloak(Cards));

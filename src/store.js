@@ -87,7 +87,7 @@ export default (history) => {
   });*/
   let persistor = persistStore(store)
   store.subscribe( () => {
-    //console.log('state data\n', store.getState());
+    console.log('state data\n', store.getState());
     //debugger;
   });
 

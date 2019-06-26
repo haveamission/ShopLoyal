@@ -9,7 +9,9 @@ import Categories from './Categories'
 import { connect } from 'react-redux'
 import API from './API'
 import { withKeycloak } from 'react-keycloak';
-import Back from './Back'
+import Back from './Back';
+import {profileSave} from '../actions/profile';
+import {bindActionCreators} from 'redux'
 
 // The Header creates links that can be used to navigate
 // between routes.
@@ -24,10 +26,17 @@ class Header extends React.Component {
     //console.log("set profile");
     //console.log(data);
       this.setState({profile: data});
+      this.props.profileSave(data);
+      
   }
 
   setHeader() {
-    if(this.props.keycloak.authenticated) {
+    if(this.props.keycloak.authenticated && this.props.profile === null) {
+
+      // Combine the props and state things here, as well as elsewhere eventually
+
+      console.log(this.props);
+      //alert(JSON.stringify(this.props.keycloak));
 
       var api = new API(this.props.keycloak);
       api.get("userProfileAPI").then(
@@ -35,6 +44,9 @@ class Header extends React.Component {
         ).catch(function(error) {
         console.log(error);
         })
+    }
+    else if(this.props.keycloak.authenticated && this.props.profile !== null) {
+      this.setState({profile: this.props.profile});
     }
   }
 
@@ -112,11 +124,17 @@ null
   }
 }
 
+
 const mapStateToProps = (state) => {
   return {
-    //oidc: state.oidc,
+    profile: state.profile,
     router: state.router,
   };
 };
 
-export default connect(mapStateToProps)(withKeycloak(Header));
+function mapDispatchToProps(dispatch) {
+  let actions =  bindActionCreators({ profileSave }, dispatch);
+  return { ...actions, dispatch };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withKeycloak(Header));

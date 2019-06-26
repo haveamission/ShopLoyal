@@ -271,6 +271,13 @@ background-color: #FFF;
     margin-left: .5rem;
     vertical-align: middle;
 }
+.graycard {
+    width: 100%;
+    height: 100%;
+    background-color: #969FA2;
+    z-index: -30;
+    position: absolute;
+}
 /*
 * Card-specific styles
 */

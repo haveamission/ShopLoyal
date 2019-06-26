@@ -6,10 +6,12 @@ import LocationReducer from './location.js'
 import search from './search.js'
 import categories from './categories.js'
 import tokens from './tokens';
+import profile from './profile.js'
 export default (history) => combineReducers({
   router: connectRouter(history),
   general: general,
   search: search,
+  profile: profile,
   tokens,
   categories: categories,
   coordinates: LocationReducer,

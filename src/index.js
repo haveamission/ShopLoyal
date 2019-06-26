@@ -98,11 +98,16 @@ console.log(previousRoute);
 console.log(nextRoute);
 }
 
+var tokens = store.getState().tokens.tokens.tokens;
+
+//alert(JSON.stringify(tokens));
+
 render(
   (
 <KeycloakProvider
     keycloak={keycloak}
     onEvent={(event, error) => {
+      //alert(event);
     }}
     onTokens={tokens => {
       store.dispatch(addTokens(tokens));
@@ -111,9 +116,13 @@ render(
     }}
     initConfig={{
       onLoad: 'check-sso',
-      flow: 'hybrid'
+      flow: 'hybrid',
+      ...tokens,
     }
     }
+    onAuthSuccess={event => {
+//alert(event);
+    }}
 
     >
     <Provider store={store} context={ReactReduxContext}>

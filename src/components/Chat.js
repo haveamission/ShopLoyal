@@ -37,7 +37,7 @@ name: "Generic"
   }
 }
 
-class FakeChat extends Component {
+class Chat extends Component {
   constructor() {
     super()
     this.state = {
@@ -199,8 +199,8 @@ this.scrollToBottom();
               var messages = [this.state.text];
               this.setState({text: ""});
             this.openChannel();
-            // CHANGE WITH REAL VALUE
-            var userId = "586";
+            //alert(JSON.stringify(this.props.profile));
+            var userId = this.props.profile.id;
             this.createChannel(userId)
             for(let message of messages){
               console.log(message);
@@ -329,4 +329,10 @@ this.scrollToBottom();
         }
       }
 
-export default withKeycloak(FakeChat);
+      const mapStateToProps = (state) => {
+        return {
+          profile: state.profile,
+        };
+      };
+
+export default connect(mapStateToProps)(withKeycloak(Chat));
