@@ -108,6 +108,7 @@ header {
           }
 
           .titlecard {
+              background-color: gray;
             -webkit-backdrop-filter: blur(5px); /* Use for Safari 9+, Edge 17+ (not a mistake) and iOS Safari 9.2+ */
             backdrop-filter: blur(5px); /* No one supports non prefixed yet */
           }
@@ -355,7 +356,8 @@ color: #000;
     border-radius: 50px;
     border: 5px solid #00A4FF !important;
     animation: cssAnimation 0s 5s forwards;
-    opacity: 0; 
+    opacity: 0;
+    animation-iteration-count: 1
 }
   
   @keyframes cssAnimation {
@@ -383,6 +385,119 @@ top: 38rem;
 /*
 * Styles for cards on the map page
 */
+
+.slide-in {
+    animation: slide-in 5s forwards;
+    -webkit-animation: slide-in 5s forwards;
+}
+
+.slide-out {
+    animation: slide-out 5s forwards;
+    -webkit-animation: slide-out 5s forwards;
+}
+    
+@keyframes slide-in {
+    100% { transform: translateY(0%); }
+}
+
+@-webkit-keyframes slide-in {
+    100% { -webkit-transform: translateY(0%); }
+}
+    
+@keyframes slide-out {
+    0% { transform: translateY(0%); }
+    100% { transform: translateY(10000px); }
+}
+
+@-webkit-keyframes slide-out {
+    0% { -webkit-transform: translateY(0%); }
+    100% { -webkit-transform: translateY(10000px); }
+}
+
+/*
+.test-business-card {
+    color: #000 !important;
+    font-size: 5rem !important;
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: blue;
+    transform: translateY(10000px);
+    -webkit-transform: translateY(10000px);
+}*/
+.gmaps .business {
+    transform: translateY(10000px);
+    -webkit-transform: translateY(10000px); 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.slide-in {
+    animation: slide-in 2s forwards;
+    -webkit-animation: slide-in 2s forwards;
+}
+
+.slide-out {
+    animation: slide-out 2s forwards;
+    -webkit-animation: slide-out 2s forwards;
+}
+    
+@keyframes slide-in {
+    100% { transform: translateY(0%); }
+}
+
+@-webkit-keyframes slide-in {
+    100% { -webkit-transform: translateY(0%); }
+}
+    
+@keyframes slide-out {
+    0% { transform: translateY(0%); }
+    100% { transform: translateY(10000px); }
+}
+
+@-webkit-keyframes slide-out {
+    0% { -webkit-transform: translateY(0%); }
+    100% { -webkit-transform: translateY(10000px); }
+}
+
+.card-row {
+    transform: translateY(10000px);
+    -webkit-transform: translateY(10000px); 
+}
+
+
+
+
+.switch-wrapper {
+    position: relative;
+  }
+   
+  .switch-wrapper > div {
+    position: absolute;
+    width: 100%;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
 .gmaps .business {
     position: absolute;
     color: #fff;
@@ -827,6 +942,12 @@ margin-bottom: 0rem;
 .settings {
     margin-top: 5rem;
 }
+.settings .main-settings {
+    /*
+    * probably restructure this eventually, but it's fine for today
+    */
+    border-bottom: none !important;
+}
 .settings ul {
     background-color: #FFF;
     padding-top: 0em;
@@ -907,7 +1028,7 @@ html {
 }
 .fav-merchant-list-parent {
     margin-top: 2rem;
-}
+}/*
 .fav-merchant-button {
     display: block;
     background: #27295F;
@@ -920,6 +1041,25 @@ html {
     text-shadow: 0 1px 1px #003547;
     background: #27295F;
     margin: 0 auto;
+}*/
+.fav-merchant-button {
+display: block;
+    background: #27295F;
+    padding: 1em;
+    text-align: center;
+    border-radius: 10px;
+    color: white !important;
+    font-weight: bold;
+    color: #fefefe;
+    text-shadow: 0 1px 1px #003547;
+    background: #27295F;
+    /* margin: 0 auto; */
+     bottom: 1rem;
+    position: fixed;
+    margin-right: 10rem;
+    margin-left: 11rem;
+    /* width: 100%; */
+    /* position: fixed; */
 }
 .toggle-text {
     margin-left: 5%;
@@ -938,7 +1078,7 @@ html {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, 250%);
 }
 
 /*
@@ -947,6 +1087,7 @@ html {
 .fav-merchant-item {
     margin-bottom: 2rem;
     color: #000;
+    height: 3rem;
 }
 .fav-merchant-item .favorite {
     width: 3rem;
@@ -955,7 +1096,6 @@ html {
 .fav-merchant-item .fav-logo {
     width: 3rem;
     margin-left: 1rem;
-    height: 3rem;
 }
 .fav-merchant-item .favorite {
     float: right;
@@ -969,7 +1109,7 @@ html {
     font-size: 1rem;
     /* Will accomplish what you want - but maybe a more elegant way? */
     margin-left: 5rem;
-    margin-top: -1rem;
+    margin-top: 0rem;
 }
 .fav-merchant-item .fav-address img {
     width: 1.2rem;
@@ -1006,6 +1146,7 @@ html {
         color: #969FA2;
     }
     .profile-picture {
+        height: 6rem;
         float: right;
         width: 6rem;
         border-radius: 50px;
@@ -1080,6 +1221,14 @@ touch-callout: none;
 
     html, body {
         -webkit-tap-highlight-color: transparent;
+      }
+
+      .card-favorite, .favorite {
+
+        --stroke-pos: 1px;
+        --stroke-neg: -1px;
+        --stroke-color: rgba(0, 0, 0, 0.6);
+        filter: drop-shadow(var(--stroke-pos) 0 0 var(--stroke-color)) drop-shadow(var(--stroke-neg) 0 var(--stroke-color)) drop-shadow(0 var(--stroke-pos) 0 var(--stroke-color)) drop-shadow(0 var(--stroke-neg) 0 var(--stroke-color)) drop-shadow(var(--stroke-pos) var(--stroke-pos) 0 var(--stroke-color)) drop-shadow(var(--stroke-pos) var(--stroke-neg) 0 var(--stroke-color)) drop-shadow(var(--stroke-neg) var(--stroke-pos) 0 var(--stroke-color)) drop-shadow(var(--stroke-neg) var(--stroke-neg) 0 var(--stroke-color));
       }
 
     /*

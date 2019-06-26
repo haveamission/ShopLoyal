@@ -14,13 +14,15 @@ import { withKeycloak } from 'react-keycloak';
 
 const mapStyles = {
   width: "100%",
-  height: "100%"
+  height: "100vh"
 };
 
 function search(nameKey, myArray){
   console.log("my array");
   console.log(myArray);
   for (var i=0; i < myArray.length; i++) {
+    console.log("my array id");
+    console.log(myArray[i].id);
       if (myArray[i].id === nameKey) {
           return myArray[i];
       }
@@ -47,11 +49,8 @@ export class MapContainer extends Component {
   }
 
   onMarkerClick = (props, marker, e) => {
-  console.log(marker);
-  console.log(e);
-  console.log(marker.title);
-  console.log("marker title");
-  console.log(this.state.data);
+    console.log("marker title");
+    console.log(marker.title);
   var selectedMerchant = search(parseInt(marker.title), this.state.data.merchants);
   this.setState({selectedMerchant: selectedMerchant});
     this.setState({
@@ -78,12 +77,12 @@ export class MapContainer extends Component {
   mapIconLoad() {
     if(this.props.keycloak.authenticated) {
       var api = new API(this.props.keycloak);
-      api.setRetry(3);
+      api.setRetry(10);
       var query = {
         "lat": this.props.coordinates.coords.latitude,
         "lng": this.props.coordinates.coords.longitude,
         "radius": "10.0",
-        "limit": "30",
+        "limit": "10",
         "search": this.props.category.category,
         "value": this.props.search.search
       }
@@ -108,7 +107,7 @@ this.mapIconLoad();
   configuration(data) {
     console.log("map configuration");
     console.log(data);
-    this.setState({data: data, updatedSearch: this.props.search.search, updatedCategories: this.props.category.category});
+    this.setState({data: data, updatedSearch: this.props.search.search, updatedCategories: this.props.category.category, selectedMerchant: data.merchants[0]});
   }
 
   componentDidMount() {
@@ -150,6 +149,7 @@ this.mapIconLoad();
      icon={{url: merchant.logo,
       scaledSize: new this.props.google.maps.Size(64,64)
     }}
+    style={{zIndex: 100}}
       />
   )}
 

@@ -173,6 +173,7 @@ componentDidMount() {
   new WheelEvent("wheelevent", {deltaX: 500, deltaY: 500});
   this.direction();
   if (navigator.geolocation) {
+
     navigator.geolocation.getCurrentPosition(this.showPosition);
   }
 
@@ -183,7 +184,7 @@ componentDidMount() {
   if(this.props.keycloak.authenticated /*&& this.props.count == 0*/) {
 var merchant_id = this.props.merchant.merchant.id;
 var api = new API(this.props.keycloak);
-api.setRetry(3);
+api.setRetry(10);
 api.get("merchantMessages", {"repl_str": merchant_id}).then(
   response => this.merchantMessageConfiguration(response.data)
   ).catch(function(error) {
@@ -260,7 +261,7 @@ var translate = 0;
     }
    
       return (
-        <div className={"App card-row card-color " + this.props.className} ref={this.containerRef}>
+        <div className={"App slide-in card-row card-color " + this.props.className} ref={this.containerRef}>
               {this.state.bubblemsg ? (
         <NotifBubble message={this.state.bubblemsg} merchant={this.props.merchant.merchant}/>
       ) : (

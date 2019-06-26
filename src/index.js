@@ -128,8 +128,8 @@ render(
                     location={location}
                     render={() => (
                       <AnimatedSwitch
-                      atEnter={{ opacity: 1 }}
-                      atLeave={{ opacity: 1 }}
+                      atEnter={{ opacity: 0 }}
+                      atLeave={{ opacity: 0}}
                       atActive={{ opacity: 1 }}
                       className="switch-wrapper"
                     >

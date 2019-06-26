@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { ColorExtractor } from 'react-color-extractor';
 import FakeLogo from "../img/fake_test_logo.png";
-import UnFavorite from "../img/full_heart_white.svg";
-import Favorite from "../img/full_heart_purple.svg";
+import UnFavorite from "../img/full_heart_white.png";
+import Favorite from "../img/full_heart_purple.png";
 import MessageText from "../img/message.png";
+import GrayCard from '../img/gray.png';
 import Call from "../img/call.png";
 import Map from "../img/map.png";
 import {Link} from 'react-router-dom';
@@ -17,6 +18,9 @@ import API from './API'
 import { push } from 'connected-react-router'
 import { withKeycloak } from 'react-keycloak';
 import axiosRetry from 'axios-retry';
+import Img from 'react-image'
+import Skeleton from 'react-loading-skeleton';
+import BackgroundImageOnLoad from 'background-image-on-load';
 const format = require('string-format')
 const getColors = require('get-image-colors')
 
@@ -25,6 +29,7 @@ class Card extends Component {
     super();
     this.state = {
       data: {},
+      bgIsLoaded: false
     }
     this.routeChange = this.routeChange.bind(this);
     this.handleFavorite = this.handleFavorite.bind(this);
@@ -75,7 +80,7 @@ class Card extends Component {
     if(this.props.keycloak.authenticated) {
       var api = new API(this.props.keycloak);
       var body = {"merchantId": this.state.merchant.id, "status": !this.state.merchant.isFavorite};
-      api.setRetry(3);
+      api.setRetry(10);
       api.post("favoriteMerchantAPI", {"body": body}).then(
         response => this.configuration(response.data)
         ).catch(function(error) {
@@ -141,12 +146,13 @@ componentWillUnmount() {
     if (!this.state.data) {
       return <div />
   }
+  const { bgIsLoaded } = this.state;
   //console.log("further bad days");
   //console.log(this.props);
   //console.log(this.state);
 
     return (
-    <div className="card titlecard" onClick={this.routeChange} data-image={this.state.merchant.coverPhoto} style={{backgroundImage: `url(${this.state.merchant.coverPhoto})`}}>
+    <div className="card titlecard" onClick={this.routeChange} data-image={this.state.merchant.coverPhoto} style={{backgroundImage: `url(${!bgIsLoaded ? <GrayCard />: this.state.merchant.coverPhoto})`} || <Skeleton />}>
     <div className="layer" style={{backgroundColor : this.state.cardColor}}></div>
     {/*<div className="layer"></div>*/}
       <div className="card-left">
@@ -171,12 +177,20 @@ componentWillUnmount() {
                   pathname: "/chat/" + this.state.merchant.id,
                   state: {merchant: this.state.merchant}
           }}><li>Message<img src={MessageText} /></li></Link>
-          <a href={"tel+" + this.state.merchant.phoneNumber}><li>Call<img src={Call} /></li></a>
+          <a href={"tel:+" + this.state.merchant.phoneNumber}><li>Call<img src={Call} /></li></a>
           <Link to="/map"><li>Map<img src={Map} /></li></Link>
           </ul>
               </div>
         </div>
       </div>
+      <BackgroundImageOnLoad	
+            src={this.state.merchant.coverPhoto}	
+            onLoadBg={() =>	
+              this.setState({	
+              bgIsLoaded: true	
+            })}	
+            onError={err => console.log('error', err)}	
+          />	
     </div>
 );
 }

@@ -45,6 +45,7 @@ class FakeChat extends Component {
       merchant: {"id": null},
       isLoading: true,
       text: "",
+      keyboardVal: 0,
     }
     this.goBack = this.goBack.bind(this);
     this.onSend = this.onSend.bind(this);
@@ -60,6 +61,9 @@ componentWillUnmount(){
     document.body.style.position = "static";
     this.setState({"merchantName": this.props.location.state.merchant.name});
     clearInterval(this.interval);
+
+    window.removeEventListener("keyboardDidShow");
+    window.removeEventListener("keyboardDidHide");
 }
 
   openChannel() {
@@ -168,6 +172,18 @@ componentWillUnmount(){
           this.pullMessages();
           this.interval = setInterval(() => this.updateMessages(), 25000);
           //this.scrollToBottom();
+
+          window.addEventListener('keyboardDidShow', (event) => {
+            // Describe your logic which will be run each time when keyboard is about to be shown.
+            console.log(event.keyboardHeight);
+            this.setState({keyboardVal: event.keyboardHeight});
+        });
+        window.addEventListener('keyboardDidHide', () => {
+          this.setState({keyboardVal: 0});
+          // Describe your logic which will be run each time keyboard is closed.
+      });
+
+
           }
 
           updateMessages() {
@@ -236,7 +252,7 @@ this.scrollToBottom();
             console.log(API.prodBaseUrlString + format(API.merchantSendMessage, this.state.merchant.id));
         
         var merchant_id = this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1);
-        alert(JSON.stringify(config));
+        //alert(JSON.stringify(config));
         axios.post(API.prodBaseUrlString + format(API.merchantSendMessage, merchant_id), body, config).then(
         response => alert(JSON.stringify(response.data))
         ).catch(function(error) {
@@ -267,6 +283,8 @@ this.scrollToBottom();
 
     render() {
 
+      var keyboardStyle = {transform: 'translate3d(0px, ' + this.state.keyboardVal + 'px, 0px)'}
+
         if(this.state.isLoading) {
 
         return (<Loading />)
@@ -293,7 +311,7 @@ this.scrollToBottom();
   {/*<div>Delivered</div>*/}
 </div>
 )}
-        <div style={{ float:"left", clear: "both" }}
+        <div style={{ float:"left", clear: "both", height: '6rem' }}
              ref={this.messagesEndRef}>
         </div>
                 </div>
@@ -301,8 +319,8 @@ this.scrollToBottom();
                 
            
                 </div>
-                <div onClick={() => {this.myInp.focus()}} className="msginput">
-                  <TextareaAutosize ref={(ip) => this.myInp = ip} value={this.state.text} onChange={evt => this.handleChange(evt)} maxRows={3} placeholder="Message..." className="textareainput" onResize={(e) => {}} name="msginput"  />
+                <div style={keyboardStyle} onClick={() => {this.myChat.focus()}} className="msginput">
+                  <TextareaAutosize ref={(ic) => this.myChat = ic} value={this.state.text} onChange={evt => this.handleChange(evt)} maxRows={3} placeholder="Message..." className="textareainput" onResize={(e) => {}} name="msginput"  />
 <div onClick={this.onSend} className="sendbutton">SEND</div>
                   </div>
                 </div>

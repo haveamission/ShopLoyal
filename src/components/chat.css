@@ -53,11 +53,12 @@ transform: translate3d(0,0,0);
     z-index: 100;
     bottom: 0;
     left: 0;
-    position: absolute;
+    position: fixed;
     width: 100%;
     background-color: #f2f2f2;
     padding-bottom: 0px;
     margin-bottom: 0px;
+    transition: transform 0.2s;
     
 }
 .msginput textarea {

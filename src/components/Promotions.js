@@ -53,7 +53,7 @@ class Promotions extends Component {
             "lat": this.state.position.latitude,
             "lng": this.state.position.longitude,
             "radius": "10.0",
-            "limit": "30",
+            "limit": "5",
             //"search": this.props.category.category,
             "search": this.props.search
           }

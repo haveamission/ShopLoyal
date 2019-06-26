@@ -3,6 +3,7 @@ import API from './API'
 import {bindActionCreators} from 'redux'
 import { withKeycloak } from 'react-keycloak';
 import axiosRetry from 'axios-retry';
+import BackgroundImageOnLoad from 'background-image-on-load';
 const format = require('string-format')
 
 class SLAPI {
