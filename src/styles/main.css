@@ -397,11 +397,6 @@ top: 38rem;
     animation: slide-in 5s forwards;
     -webkit-animation: slide-in 5s forwards;
 }
-
-.slide-out {
-    animation: slide-out 5s forwards;
-    -webkit-animation: slide-out 5s forwards;
-}
     
 @keyframes slide-in {
     100% { transform: translateY(0%); }
@@ -410,79 +405,37 @@ top: 38rem;
 @-webkit-keyframes slide-in {
     100% { -webkit-transform: translateY(0%); }
 }
-    
-@keyframes slide-out {
-    0% { transform: translateY(0%); }
-    100% { transform: translateY(10000px); }
-}
 
-@-webkit-keyframes slide-out {
-    0% { -webkit-transform: translateY(0%); }
-    100% { -webkit-transform: translateY(10000px); }
-}
-
-/*
-.test-business-card {
-    color: #000 !important;
-    font-size: 5rem !important;
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    background: blue;
-    transform: translateY(10000px);
-    -webkit-transform: translateY(10000px);
-}*/
 .gmaps .business {
     transform: translateY(10000px);
     -webkit-transform: translateY(10000px); 
 }
 
 
-
-
-
-
-
-
-
-
-
-
-.slide-in {
-    animation: slide-in 2s forwards;
-    -webkit-animation: slide-in 2s forwards;
-}
-
-.slide-out {
-    animation: slide-out 2s forwards;
-    -webkit-animation: slide-out 2s forwards;
+.slide-in-card {
+	-webkit-animation: slide-in-card 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	        animation: slide-in-card 1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
     
-@keyframes slide-in {
-    100% { transform: translateY(0%); }
+@keyframes slide-in-card {
+    100% { transform: translateY(0%);
+     }
 }
 
-@-webkit-keyframes slide-in {
-    100% { -webkit-transform: translateY(0%); }
-}
-    
-@keyframes slide-out {
-    0% { transform: translateY(0%); }
-    100% { transform: translateY(10000px); }
-}
-
-@-webkit-keyframes slide-out {
-    0% { -webkit-transform: translateY(0%); }
-    100% { -webkit-transform: translateY(10000px); }
+@-webkit-keyframes slide-in-card {
+    100% { -webkit-transform: translateY(0%);
+     }
 }
 
 .card-row {
-    transform: translateY(10000px);
-    -webkit-transform: translateY(10000px); 
+    transform: translateY(1000px);
+    -webkit-transform: translateY(1000px); 
 }
 
-
-
+.cards {
+    max-height: 100%;
+    overflow: hidden;
+}
 
 .switch-wrapper {
     position: relative;
@@ -494,23 +447,12 @@ top: 38rem;
   }
 
 
-
-
-
-
-
-
-
-
-
-
-
 .gmaps .business {
     position: absolute;
     color: #fff;
 margin-left: auto;
 margin-right: auto;
-top: 27rem;
+top: 15rem;
 left: 50%;
 margin-left: -45%;
 width: 100%;
@@ -544,6 +486,7 @@ width: 100%;
 .gmaps .business .card .card-favorite {
     /*margin-top: 2rem;*/
     margin-left: 28rem;
+    z-index: 100;
 }
 .gmaps .business .card hr, .gmaps .business .card-nav {
     display: none;
@@ -817,6 +760,7 @@ font-size: 2rem;
     margin-bottom: 1rem;
     font-size: 1.5rem;
    color: #455154;
+   margin-top: .5rem;
 }
 .card-row .promocard {
 /*height: 19rem !important;*/
@@ -829,10 +773,12 @@ vertical-align: middle;
     margin-left: 5%;
     color: #969FA2;
     padding-bottom: 1rem;
+    font-size: 1rem;
+    padding-right: 1rem;
 }
 .promocard .promo-name {
     color: #FFF;
-    background-color: #536DFE;
+    /*background-color: #536DFE;*/
     padding-top:1rem;
     padding-bottom:1rem;
     padding-left: 1rem;
@@ -1191,6 +1137,22 @@ display: block;
         position: relative;
     }
 
+
+#messages, #message-container, .hr-header {
+    transform: translate3d(0px, 0px, 0px);
+}
+
+
+
+
+
+    /*
+    * Ensure gray cards aren't shown on other pages at all
+    */
+    .detail .graycard, .gmaps .graycard {
+        display: none;
+    }
+
     /*
     Native Styles
     */
@@ -1284,7 +1246,16 @@ touch-callout: none;
     position: relative;
 }*/
    
-      
+
+/*
+* Alert override
+*/
+.Toastify__toast--info {
+    background-color: #536DFE !important;
+}
+.find-more a {
+    color: #FFD138;
+}
 
 
 

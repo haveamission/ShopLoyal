@@ -21,26 +21,23 @@ class About extends Component {
 }
 
 class Detail extends Component {
+  constructor() {
+    super();
+    this.goBack = this.goBack.bind(this);
+    this.state = {
+      data: {
+      },
+      search: "",
+    }
+  }
 
-    state = {
-        data: {
-        },
-        search: "",
-      }
 
       goBack() {
         this.props.history.goBack();
       }
 
 
-      constructor() {
-        super();
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(this.showPosition);
-        }
-        this.showPosition = this.showPosition.bind(this);
-        this.goBack = this.goBack.bind(this);
-      }
+ 
 
       configuration(data) {
         console.log("merchant data");
@@ -50,15 +47,12 @@ class Detail extends Component {
         console.log(data);
           }
 
-          showPosition =(position) =>  {
-            console.log("position");
-            console.log(position);
-            this.setState({position: position.coords});
+          componentDidMount() {
             if(this.props.keycloak.authenticated) {
               var merchant_id = this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1);
               var query = {
-                "lat": this.state.position.latitude,
-                "lng": this.state.position.longitude,
+                "lat": this.props.coordinates.coords.latitude,
+                "lng": this.props.coordinates.coords.longitude,
                 "radius": "10.0",
                 "limit": "30",
                 // TODO: Change this to be consistent with other search values

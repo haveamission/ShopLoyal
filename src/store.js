@@ -28,7 +28,6 @@ const loggerMiddleware = store => next => action => {
   console.log("State before:", store.getState());
   next(action);
   console.log("State after:", store.getState());
-  //alert(JSON.stringify(store.getState()));
 };
 
 function promiseMiddleware({dispatch}) {

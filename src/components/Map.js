@@ -201,6 +201,6 @@ const LoadingContainer = (props) => (
 )
 
 export default GoogleApiWrapper({
-  apiKey: "AIzaSyC8ayoSBFNdHdORkbiteD5feHhpLYsToWE",
+  apiKey: "AIzaSyDSeIfu2B3YK6UqWDOTesjX0Y1LVRy7ui8",
   LoadingContainer: LoadingContainer
 })(connect(mapStateToProps, mapDispatchToProps)(withKeycloak(MapContainer)));

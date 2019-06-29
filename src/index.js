@@ -42,6 +42,8 @@ import {
   CSSTransition,
   TransitionGroup
 } from 'react-transition-group';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 //import 'bootstrap/dist/css/bootstrap.css';
 
 // Import Config
@@ -59,6 +61,7 @@ import Keycloak from 'keycloak-js';
 import { KeycloakProvider } from 'react-keycloak';
 import keycloak_config from './keycloak.json';
 import { addTokens } from './actions/tokens';
+import getLocation from './actions/location'
 const {store, persistor} = configureStore(history)
 
 const keycloak = new Keycloak(keycloak_config);
@@ -91,23 +94,26 @@ const onEvent = (event, error) => {
   }
 };
 
+if(window.plugins) {
 appsflyerInit();
-//oneSignal();
+oneSignal();
+}
+
 function myhandler(previousRoute, nextRoute) {
 console.log(previousRoute);
 console.log(nextRoute);
 }
+// Sets initial location state - possibly set as a watch event
+store.dispatch(getLocation());
 
 var tokens = store.getState().tokens;
 
-//alert(JSON.stringify(tokens));
 
 render(
   (
 <KeycloakProvider
     keycloak={keycloak}
     onEvent={(event, error) => {
-      //alert(event);
     }}
     onTokens={tokens => {
       store.dispatch(addTokens(tokens));
@@ -122,7 +128,6 @@ render(
     }
     }
     onAuthSuccess={event => {
-//alert(event);
     }}
 
     >
@@ -131,6 +136,7 @@ render(
     <ConnectedRouter history={history} context={ReactReduxContext}>
     <Layout>
     <Route
+    onChange={pathChange}
           render={({ location }) => {
             const { pathname } = location;
             return (
@@ -161,6 +167,7 @@ render(
             );
           }}
           />
+          <ToastContainer />
       </Layout>
     </ConnectedRouter>
     </PersistGate>
@@ -169,6 +176,10 @@ render(
 
 ), document.getElementById('root'));
 registerServiceWorker();
+}
+
+function pathChange(previousRoute, nextRoute) {
+  //do your logic here
 }
 
 function appsflyerInit() {
@@ -190,14 +201,12 @@ function appsflyerInit() {
     console.log(err);
   }
 
-  //console.log(window.plugins);
-
-  //window.plugins.appsFlyer.initSdk(options, onSuccess, onError);
+  window.plugins.appsFlyer.initSdk(options, onSuccess, onError);
 }
 
 function oneSignal() {
     // Enable to debug issues.
-    // window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
+    window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
 
     var notificationOpenedCallback = function(jsonData) {
       console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));

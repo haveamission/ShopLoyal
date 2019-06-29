@@ -19,8 +19,6 @@ class Promotions extends Component {
 
     constructor() {
         super();
-
-        this.showPosition = this.showPosition.bind(this);
       }
 
     state = {
@@ -37,37 +35,25 @@ class Promotions extends Component {
         this.setState({data, isLoading: false});
     }
 
-    showPosition =(position) =>  {
-        console.log("position");
-        console.log(position);
-        this.setState({position: position.coords});
-        console.log(this.props);
-
-
-        if(this.props.keycloak.authenticated) {
-          var api = new API(this.props.keycloak);
-          var merchant_id = this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1);
-          console.log("PROMO PROPS");
-          console.log(this.props);
-          var query = {
-            "lat": this.state.position.latitude,
-            "lng": this.state.position.longitude,
-            "radius": "10.0",
-            "limit": "5",
-            //"search": this.props.category.category,
-            "search": this.props.search
-          }
-          api.get("merchantNoticesAPI", {"repl_str": merchant_id, "query": query}).then(
-            response => this.configuration(response.data)
-            ).catch(function(error) {
-            console.log(error);
-            })
-        }
-      }
-
 componentDidMount() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(this.showPosition);
+  if(this.props.keycloak.authenticated) {
+    var api = new API(this.props.keycloak);
+    var merchant_id = this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1);
+    console.log("PROMO PROPS");
+    console.log(this.props);
+    var query = {
+      "lat": this.props.coordinates.coords.latitude,
+      "lng": this.props.coordinates.coords.longitude,
+      "radius": "10.0",
+      "limit": "5",
+      //"search": this.props.category.category,
+      "search": this.props.search
+    }
+    api.get("merchantNoticesAPI", {"repl_str": merchant_id, "query": query}).then(
+      response => this.configuration(response.data)
+      ).catch(function(error) {
+      console.log(error);
+      })
   }
 }
 
@@ -93,7 +79,7 @@ componentDidMount() {
 
   const mapStateToProps = (state) => {
     return {
-      //oidc: state.oidc,
+      coordinates: state.coordinates,
     };
   };
 

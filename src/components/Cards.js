@@ -28,8 +28,6 @@ search: "",
       constructor() {
         super();
         //console.log(navigator);
-        //alert(JSON.stringify(navigator));
-        this.showPosition = this.showPosition.bind(this);
         this.unmounted = false;
       }
 
@@ -39,8 +37,6 @@ search: "",
       }
 
       componentDidUpdate(prevProps, prevState) {
-//alert(JSON.stringify(prevProps));
-//alert(JSON.stringify(prevState));
       }
       
 
@@ -51,43 +47,31 @@ search: "",
         console.log("card row data");
         console.log(data);
           }
-
-          showPosition = (position) =>  {
-            if (this.unmounted) { return; }
-            console.log("position");
-            console.log(position);
-            this.setState({position: position.coords});
-            console.log("PROPS KEYCLOAK");
-            console.log(this.props.keycloak);
-            if(this.props.keycloak.authenticated) {
-              var api = new API(this.props.keycloak);
-              api.setRetry(10);
-              var query = {
-                "lat": this.state.position.latitude,
-                "lng": this.state.position.longitude,
-                "radius": "10.0",
-                "limit": "5",
-                // TODO: Change this to be consistent with other search values
-                "search": this.state.search,
-              }
-              api.get("merchantAPI", {"query": query}).then(
-                response => this.configuration(response.data)
-                ).catch(function(error) {
-                console.log(error);
-                })
-            }
-          }
     
 
     componentDidMount() {
-
       if(this.props.tokens !== null) {
         //this.props.addTokens(this.props.tokens);
       }
 
-
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(this.showPosition);
+      console.log("PROPS KEYCLOAK");
+      console.log(this.props.keycloak);
+      if(this.props.keycloak.authenticated) {
+        var api = new API(this.props.keycloak);
+        api.setRetry(10);
+        var query = {
+          "lat": this.props.coordinates.coords.latitude,
+          "lng": this.props.coordinates.coords.longitude,
+          "radius": "10.0",
+          "limit": "5",
+          // TODO: Change this to be consistent with other search values
+          "search": this.state.search,
+        }
+        api.get("merchantAPI", {"query": query}).then(
+          response => this.configuration(response.data)
+          ).catch(function(error) {
+          console.log(error);
+          })
       }
    
 
@@ -109,11 +93,6 @@ search: "",
             return <Loading />;
           }
           console.log("state value new");
-          //alert("Each time this loads");
-          //alert(JSON.stringify(this.state.data));
-          console.log(this.state.data);
-          //alert("PROPS!");
-          //alert(JSON.stringify(this.props));
             return (
     <div className="cards">
     {this.state.data.merchants.map( (merchant, index) =>
@@ -132,7 +111,8 @@ search: "",
     const mapStateToProps = (state) => {
       return {
         router: state.router,
-        tokens: state.tokens
+        tokens: state.tokens,
+        coordinates: state.coordinates,
       };
     };
 

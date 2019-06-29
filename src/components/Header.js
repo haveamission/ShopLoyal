@@ -36,7 +36,6 @@ class Header extends React.Component {
       // Combine the props and state things here, as well as elsewhere eventually
 
       console.log(this.props);
-      //alert(JSON.stringify(this.props.keycloak));
 
       var api = new API(this.props.keycloak);
       api.get("userProfileAPI").then(

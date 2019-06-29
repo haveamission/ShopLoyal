@@ -12,16 +12,17 @@ import {bindActionCreators} from 'redux'
 
 class LoginPage extends React.Component {
 
+  componentDidMount() {
+  }
+
   // TODO: Replace this method of saving the information with JWT from Keycloak when you have time
 
   onFBLoginButtonClick() {
-    //alert(JSON.stringify(window.cordova.plugins));
     this.props.keycloak.login({idpHint: 'facebook', cordovaOptions: { zoom: "no", hardwareback: "yes" }})
     this.props.idprovider("facebook");
   }
 
   onGoogleLoginButtonClick() {
-    //alert(JSON.stringify(window.cordova.plugins));
     this.props.keycloak.login({idpHint: 'google', cordovaOptions: { zoom: "no", hardwareback: "yes" }})
     this.props.idprovider("google");
   }

@@ -13,14 +13,14 @@ import { connect } from 'react-redux'
 import {bindActionCreators} from 'redux'
 import saveColor from '../actions/general'
 import Loading from './Loading'
-import axios from 'axios'
 import API from './API'
 import { push } from 'connected-react-router'
 import { withKeycloak } from 'react-keycloak';
-import axiosRetry from 'axios-retry';
 import Img from 'react-image'
 import Skeleton from 'react-loading-skeleton';
 import BackgroundImageOnLoad from 'background-image-on-load';
+import {firstFavoriteSave} from '../actions/firstFavorite';
+import { toast } from 'react-toastify';
 const format = require('string-format')
 const getColors = require('get-image-colors')
 
@@ -62,7 +62,6 @@ class Card extends Component {
     }
 
     configuration(data) {
-      //alert("Completed one round");
       console.log("pre set state card");
       console.log(data);
       var merchant = this.state.merchant;
@@ -74,10 +73,31 @@ class Card extends Component {
       //e.stopPropagation();
       console.log("e stop propogation");
     }
+
+    launchInsiderModal() {
+      toast.info(<span>Success! You've favorited a merchant. Now <span class='find-more'><Link to="/">find more</Link></span></span>, {
+        position: toast.POSITION.BOTTOM_CENTER,
+        autoClose: 7000,
+      });
+    }
+
+    firstTimeFavoriteCheck() {
+      //alert("First Favorite?");
+      //alert(this.props.firstFavorite);
+      console.log(this.props);
+      if(this.props.router.location.pathname.includes("detail") && this.props.firstFavorite === null) {
+  this.props.firstFavoriteSave(true);
+  this.launchInsiderModal();
+      }
+    }
   
   handleFavorite(e) {
     e.stopPropagation();
     if(this.props.keycloak.authenticated) {
+      //alert(this.state.merchant.isFavorite);
+      if(this.state.merchant.isFavorite !== true) {
+this.firstTimeFavoriteCheck();
+      }
       var api = new API(this.props.keycloak);
       var body = {"merchantId": this.state.merchant.id, "status": !this.state.merchant.isFavorite};
       api.setRetry(10);
@@ -200,13 +220,15 @@ componentWillUnmount() {
 const mapStateToProps = (state) => {
   return {
     //general: state.general,
-    color: state.saveColor
+    color: state.saveColor,
+    firstFavorite: state.firstFavorite,
+    router: state.router,
   };
 };
 
 function mapDispatchToProps(dispatch) {
   //return bindActionCreators({saveColor}, dispatch);
-  let actions = bindActionCreators({ saveColor }, dispatch);
+  let actions = bindActionCreators({ saveColor, firstFavoriteSave }, dispatch);
   return { ...actions, dispatch };
 }
 

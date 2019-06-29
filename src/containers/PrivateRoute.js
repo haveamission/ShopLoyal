@@ -3,9 +3,10 @@ import { Route, Redirect } from 'react-router'
 import { connect } from 'react-redux'
 import * as reducers from '../reducers'
 import { withKeycloak } from 'react-keycloak';
+import searchSave from '../actions/search'
+import {bindActionCreators} from 'redux'
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
-
 
   <Route {...rest} render={props => (
     rest.keycloak.authenticated ? (
@@ -33,4 +34,9 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
         };
       };
 
-export default connect(mapStateToProps)(withKeycloak(PrivateRoute));
+      function mapDispatchToProps(dispatch) {
+        let actions =  bindActionCreators({ searchSave }, dispatch);
+        return { ...actions, dispatch };
+      }
+
+export default connect(mapStateToProps, mapDispatchToProps)(withKeycloak(PrivateRoute));

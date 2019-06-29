@@ -26,7 +26,7 @@ class SLAPI {
      }
 
      call = null;
-     env = "prod";
+     env = "local";
      retry = 1;
 
      setRetry(value) {
@@ -128,7 +128,6 @@ return constructedURL;
           count++;
         }
         constructedURL = constructedURL + argumentStr;
-        //alert(constructedURL);
         return constructedURL;
      }
 

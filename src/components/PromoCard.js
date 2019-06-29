@@ -8,14 +8,20 @@ import Map from "../img/map.png";
 
 class PromoCard extends Component {
 
-    componentDidMount() {
+    componentWillMount() {
         console.log("promo card props");
         console.log(this.props);
+
+
+   
+         var colorArr = ["#536DFE", "#5C6BC0", "#969FA2", "#27295F", "#FFD138", "#DDDDDD"];
+         this.rand = colorArr[Math.floor(Math.random() * colorArr.length)];
+
     }
     render() {
         return(
     <div className={"card promocard promocard-" + this.props.count}>
-    <div className="promo-name"><img src={this.props.data.photo} />{this.props.data.merchant.name}</div>
+    <div className="promo-name" style={{backgroundColor: this.rand}}><img src={this.props.data.photo} />{this.props.data.merchant.name}</div>
     <img className="promo-main-img" src={this.props.data.photo} />
     <div className="promo-title">{this.props.data.title}</div>
     <div className="promo-desc">{this.props.data.text}</div>

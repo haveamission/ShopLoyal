@@ -17,6 +17,7 @@ class Search extends Component {
     value: null,
     }
     this.handleChange = this.handleChange.bind(this);
+    this.keyPress = this.keyPress.bind(this);
   }
 
   searchForText = (text) => {
@@ -25,9 +26,18 @@ this.props.searchSave(text);
 this.props.dispatch(push("/map"));
   }
 
+  keyPress(event) {
+    var code = (event.keyCode ? event.keyCode : event.which);
+if(code == 13) { 
+  this.props.dispatch(push("/map"));
+}
+  }
+
   handleChange (event) {
     this.setState({value: event.target.value});
     const self = this;
+
+
 
     if (self.state.typingTimeout) {
        clearTimeout(self.state.typingTimeout);
@@ -45,7 +55,7 @@ this.props.dispatch(push("/map"));
   deleteSearch() {
     this.setState({value: ""});
     this.myInp.value = "";
-    this.props.dispatch(push("/"));
+    //this.props.dispatch(push("/"));
   }
 
 
@@ -70,7 +80,7 @@ this.props.dispatch(push("/map"));
       ) : (
         ""
       )}
-<input ref={(ip) => this.myInp = ip} className="search-input" onChange={this.handleChange}></input>
+<input ref={(ip) => this.myInp = ip} className="search-input" onKeyPress={this.keyPress} onChange={this.handleChange}></input>
 {this.state.value ? (
         ""
       ) : (

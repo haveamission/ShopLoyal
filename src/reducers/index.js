@@ -8,6 +8,7 @@ import categories from './categories.js'
 import tokens from './tokens';
 import profile from './profile.js'
 import idprovider from './idprovider.js'
+import firstFavorite from './firstFavorite.js'
 export default (history) => combineReducers({
   router: connectRouter(history),
   general: general,
@@ -17,4 +18,5 @@ export default (history) => combineReducers({
   categories: categories,
   coordinates: LocationReducer,
   idprovider: idprovider,
+  firstFavorite: firstFavorite,
 })
