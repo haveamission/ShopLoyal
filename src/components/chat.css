@@ -50,17 +50,19 @@ transform: translate3d(0,0,0);
 .msginput {
   border-top: 1px solid #d1d4d9;
   border-bottom: 1px solid #d1d4d9;
-    z-index: 100;
-    bottom: 0vh;
-    top: 85vh;
-    left: 0;
-    position: fixed;
-    width: 100%;
-    background-color: #f2f2f2;
-    padding-bottom: 0px;
-    margin-bottom: 0px;
-    -webkit-transform: translate3d(0,0,0);
-transform: translate3d(0,0,0);
+  z-index: 100;
+  bottom: 0vh;
+  top: calc(100vh - 6em);
+  left: 0;
+  position: fixed;
+  width: 100%;
+  background-color: #f2f2f2;
+  padding-bottom: 10em;
+  margin-bottom: 0px;
+  -webkit-transform: translate3d(0,0,0);
+  transform: translate3d(0,0,0);
+  height: 5em;
+  transition: .3s;
     
 }
 .msginput textarea {
@@ -100,8 +102,6 @@ transform: translate3d(0,0,0);
 }
 
 .msginput .inner-keyboard {
-  -webkit-transform: translate3d(0,0,0);
-  transform: translate3d(0,0,0);
   background-color: #f2f2f2;
 }
 

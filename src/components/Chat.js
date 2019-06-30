@@ -147,7 +147,7 @@ this.scrollToBottom();
           }
 
           onSend() {
-            if(this.state.text != null) {
+            if(this.state.text !== null || this.state.text !== "") {
               
 
               var messages = [this.state.text];
@@ -232,13 +232,13 @@ this.scrollToBottom();
                       </div>
                   </div>
           
-                  <div onClick={() => {this.myChat.focus()}} className="msginput">
+                  <div /*onClick={() => {this.myChat.focus()}}*/ className="msginput">
                   <div className="inner-keyboard">
                       <TextareaAutosize
-                            ref={(ic) => this.myChat = ic}
+                            //ref={(ic) => this.myChat = ic}
                             value={this.state.text}
                             onChange={evt => this.handleChange(evt)}
-                            maxRows={3}
+                            maxRows={2}
                             placeholder="Message..."
                             className="textareainput"
                             onResize={(e) => {}}
