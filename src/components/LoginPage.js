@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
-import FBImg from '../resources/img/icon-facebook-white.png';
-import GoogleImg from '../resources/img/icon-googleplus-white.png';
+import FBImg from '../resources/img/icon-facebook-purple.png';
+import GoogleImg from '../resources/img/icon-googleplus-purple.png';
 import { Link } from 'react-router-dom'
 import { push } from 'connected-react-router'
 import { withKeycloak } from 'react-keycloak';
 import { connect } from 'react-redux'
 import {idprovider} from '../actions/idprovider';
 import {bindActionCreators} from 'redux'
+import video from '../resources/video/SL-SplashBG.mp4';
+import logo from '../resources/img/combinedShape@3x.png';
+import logotitle from '../resources/img/slLogoFinal@3x.png'
 
 //var ref;
 
@@ -30,13 +33,18 @@ class LoginPage extends React.Component {
       render(){
           return(
     <div className="loginpage">
-<h2 className="login-header">Log In to Your Account</h2>
+    <img className="login-logo-img" src={logo} />
+    <img className="login-logo-img login-logo-img-title" src={logotitle} />
+<div className="login-overlay">
+<video id="background-video" preload="auto" autoPlay loop muted playsinline onplaying="this.controls=false">
+    {/*<source src={video} type='video/mp4' />*/}
+</video>
 <div className="loginbuttongroup">
 {/*<div className="googlered loginbutton" onClick={() => this.props.keycloak.login()}>Log In with Keycloak<img className="login-img" src={GoogleImg} /></div>*/}
-<div className="googlered loginbutton" onClick={() => this.onGoogleLoginButtonClick()}>Log In with Google<img className="login-img" src={GoogleImg} /></div>
-<div className="facebookblue loginbutton" onClick={() => this.onFBLoginButtonClick()}>Log In with Facebook<img className="login-img" src={FBImg} /></div>
+<div className="loginbutton fblogin" onClick={() => this.onFBLoginButtonClick()}>Sign In with Facebook<img className="login-img" src={FBImg} /></div>
+<div className="loginbutton googlelogin" onClick={() => this.onGoogleLoginButtonClick()}>Sign In with Google<img className="login-img" src={GoogleImg} /></div>
 </div>
-{/*<Link to="/signup/"><div className="bottomtext">Don't have an account? Sign Up</div></Link>*/}
+</div>
 </div>
 );
       }

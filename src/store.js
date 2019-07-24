@@ -10,6 +10,8 @@ import {createHashHistory} from 'history'
 import reducers from './reducers/index'
 import localForage from 'localforage';
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
+import getLocation from './actions/location'
+import {engagementSave, openedFromPushSave} from './actions/analytics'
 //import createOidcMiddleware from "redux-oidc";
 //import userManager from './config/OIDC';
 
@@ -23,11 +25,12 @@ const persistConfig = {
 }
 
 const loggerMiddleware = store => next => action => {
-  console.log("Action type:", action.type);
-  console.log("Action payload:", action.payload);
-  console.log("State before:", store.getState());
+  //console.log("Action type:", action.type);
+  //console.log("Action payload:", action.payload);
+  //console.log("State before:", store.getState());
   next(action);
   console.log("State after:", store.getState());
+  //alert(JSON.stringify(store.getState()));
 };
 
 function promiseMiddleware({dispatch}) {
@@ -79,12 +82,26 @@ export default (history) => {
   }).catch((err) => {
     console.log(err);
   });*/
-  let persistor = persistStore(store)
+  let persistor = persistStore(store, {}, () => {
+    // App initialization after store is rehydrated
+    var engagement = store.getState().analytics.engagement + 1;
+    store.dispatch(engagementSave(engagement));
+    store.dispatch(getLocation());
+    if(engagement === 2 || engagement === 4) {
+      trackEngagement();
+      }
+  })
   store.subscribe( () => {
    
-    console.log('state data\n', store.getState());
+    //console.log('state data\n', store.getState());
     //debugger;
   });
 
   return { store, persistor }
+}
+
+function trackEngagement() {
+  if(window.plugins) {
+window.plugins.appsFlyer.trackEvent('af_re_engage', {});
+  }
 }

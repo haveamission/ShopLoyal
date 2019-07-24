@@ -6,6 +6,7 @@ font-family: 'Montserrat', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 /*overflow-y: scroll; /* has to be scroll, not auto */
   -webkit-overflow-scrolling: touch;
   overflow-y: scroll;
+  overflow-x: hidden;
   height: 100vh;
 
 }
@@ -48,6 +49,12 @@ nav {
 .fa-times {
     margin-right: 1rem;
 }
+.search-wrapper {
+    vertical-align: middle;
+    z-index: 100;
+    position: relative;
+    
+}
 .search-wrapper input {
 width: 70%;
 color: #27295F;
@@ -58,8 +65,9 @@ font-size: large;
     border-right: none;
     border-left: none;
     border-bottom: none;
-    margin-bottom: .2em;
-    
+    /*margin-bottom: .2em;*/
+    margin-left: .1em;
+    line-height: .5em;
 }
 .hr-header {
     margin-top: 0px;
@@ -75,7 +83,12 @@ font-size: large;
 outline-width: 0;
 }
 .search-text input::placeholder, .search-wrapper input::placeholder {
-    color: #120533;
+    color: #babbcc;
+    font-size: .7em;
+    vertical-align: middle;
+    /* I don't love this hack, but for some reason iOS won't let me vertically center this */
+    padding-top:.75em;
+    font-weight: 500;
 }
 input[type="text"] {
     font-size: 1.3333333333333333em;
@@ -111,6 +124,7 @@ header {
               background-color: gray;
             -webkit-backdrop-filter: blur(5px); /* Use for Safari 9+, Edge 17+ (not a mistake) and iOS Safari 9.2+ */
             backdrop-filter: blur(5px); /* No one supports non prefixed yet */
+            border-radius: 5px;
           }
 
           .card-color .layer {
@@ -135,6 +149,7 @@ header {
             height: 100%;
             z-index: -1;
             position: absolute;
+            
           }
     /*
           .card-color-0 .layer {
@@ -203,10 +218,12 @@ background-color: #FFF;
 .card .card-address {
     color: #DDD;
     z-index: 50;
+    margin-bottom: .5rem;
 }
 .card .card-title, .card .card-address, .card .card-nav {
-    margin-left: 1rem;
+    margin-left: 2rem;
     z-index: 50;
+    min-height: 1.5rem;
 }
 .card-row .card-nav a {
     color: #FFF;
@@ -221,6 +238,7 @@ background-color: #FFF;
     width: 6rem;
     height: 6rem;
     border-radius: 50%;
+    border: 3px solid #FFF;
 }
 .card .card-favorite {
     width: 3rem;
@@ -231,7 +249,7 @@ background-color: #FFF;
     margin-left: 20rem;
 }
 .card .card-right-bottom {
-    top: 8rem;
+    top: 7rem;
     position: relative;
 }
 .card .layer {
@@ -243,17 +261,25 @@ background-color: #FFF;
     z-index: 50;
 }
 .card-nav li {
+    font-weight: bold;
     display: inline-block;
     margin-right: 1.5rem;
     border-right:1px solid #CCC;
     padding-right: 1.5rem;
     text-transform: uppercase;
-    font-size: 1.2rem;
+    font-size: 1rem;
+    padding-top:.5rem;
+    font-family: 'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
 }
 .detail .card-nav li {
     font-size: 1rem;
 }
 .card-nav li:last-child {
+    border-right: none;
+    padding-right: 0rem;
+    margin-right: 0rem;
+}
+.card-nav a:last-child {
     border-right: none;
     padding-right: 0rem;
     margin-right: 0rem;
@@ -264,10 +290,10 @@ background-color: #FFF;
     opacity: .5;
 }
 .card-nav {
-    margin-top: .25rem;
+    /*margin-top: .25rem;*/
 }
 .card-nav img {
-    width: 1.2rem;
+    width: 1rem;
     margin-left: .5rem;
     vertical-align: middle;
 }
@@ -288,10 +314,10 @@ background-color: #FFF;
     z-index: 20;
 }
 .gmaps .titlecard .layer {
-    background-color: rgba(6, 86, 165, 0.9) !important;
+    /*background-color: rgba(6, 86, 165, 0.9) !important;*/
 }
 .gmaps div > .titlecard img.card-favorite, .gmaps div > .titlecard img.card-logo-img {
-    border: none !important;
+    /*border: none !important;*/
 }
 .promocard .layer {
     background-color: #FFF;
@@ -393,9 +419,77 @@ top: 38rem;
 * Styles for cards on the map page
 */
 
+/*
+* Notification Bubble - this possibly should possibly be refactored to take advantage of SOLID with chat application
+*/
+.bubble {
+    position: absolute;
+    padding: 1em;
+    margin: 2.5em 1rem 3em;
+    color: #536DFE;
+    background: #FFF;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 15px;
+    overflow-wrap: break-word;
+    max-width:75%;
+    overflow:hidden;
+    white-space: normal;
+    font-size:1.5rem;
+    border: 1px solid #536DFE;
+    border-bottom-width: medium;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+}
+.notif-bubble {
+    position: absolute;
+    font-weight: 500;
+    background-color: #FFF;
+    border-radius: 25px;
+    border-top: 1px solid #536DFE;
+    color: #536DFE;
+    border-radius: 15px;
+    width: 75%;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    position: absolute;
+    margin-top: 2rem;
+    z-index: 100;
+    border-bottom: 3px solid #536DFE;
+    box-shadow: 1px 1px 11px 6px rgba(83,109,254,0.49);
+    text-align: left;
+    font-size: 1.5rem;
+    margin-left: 5rem;
+    min-width: 28rem;
+    transform: translateX(-100px);
+    -webkit-transform: translateX(-100px);
+}
+.card-row .horizontal-menu {
+    z-index: 50;
+    position: relative;
+}
+
+.slide-in-right {
+    -webkit-animation: slide-in-card 3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    animation: slide-in-card 3s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    z-index: 100 !important;
+}
+.notif-bubble-link {
+    z-index: 100;
+    /* Necessary to prevent the card from being on top of the notification */
+    transform: translate3d(0px, 0px, 0px)
+}
+
+@keyframes slide-in-right {
+    100% { /*transform: translateX(0%);*/
+        transform: translate3d(0px, 0px, 0px);
+     }
+}
+
 .slide-in {
-    animation: slide-in 5s forwards;
-    -webkit-animation: slide-in 5s forwards;
+	-webkit-animation: slide-in-card 1.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+	        animation: slide-in-card 1.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
 }
     
 @keyframes slide-in {
@@ -406,9 +500,15 @@ top: 38rem;
     100% { -webkit-transform: translateY(0%); }
 }
 
-.gmaps .business {
-    transform: translateY(10000px);
-    -webkit-transform: translateY(10000px); 
+/*.gmaps .business {
+
+}*/
+
+
+
+.slide-in {
+    transform: translateY(80vh);
+    -webkit-transform: translateY(80vh); 
 }
 
 
@@ -418,7 +518,10 @@ top: 38rem;
 }
     
 @keyframes slide-in-card {
-    100% { transform: translateY(0%);
+    100% { 
+
+        z-index: 20;
+        transform: translate3d(0px, 0px, 0px);
      }
 }
 
@@ -436,6 +539,10 @@ top: 38rem;
     max-height: 100%;
     overflow: hidden;
 }
+/*.gmaps {
+    max-height: 100%;
+    height: 100%;
+}*/ 
 
 .switch-wrapper {
     position: relative;
@@ -448,20 +555,26 @@ top: 38rem;
 
 
 .gmaps .business {
-    position: absolute;
+    /*position: absolute;*/
     color: #fff;
 margin-left: auto;
 margin-right: auto;
 top: 15rem;
-left: 50%;
-margin-left: -45%;
 width: 100%;
+}
+.gmaps .business-cards {
+    position: absolute;
+    width: 100%;
+    top: 20rem;
 }
 .gmaps .business .card {
     height: 6.5rem;
     border-radius: 5px;
     width: 90%;
-    margin-top: 4rem;
+    z-index: 100;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
 }
 .gmaps .business .card .card-left {
     top: 1rem;
@@ -511,6 +624,7 @@ width: 100%;
     float: left;
 }
 .linkback {
+    width: 20%;
    font-size:1em;
    font-weight: 900;
    /*display: inline-block;*/
@@ -551,6 +665,36 @@ width: 100%;
     margin-left: 1rem;
     margin-top: 1rem;
 }
+.fav-merchants-text .right-arrow {
+    margin-left: 1rem;
+}
+.right-arrow {
+    height: .3rem;
+    width: 2rem;
+    margin: 0 auto;
+    position: relative;
+    cursor: pointer;
+    background: #969FA2;
+    display: inline-block;
+    vertical-align: middle;
+}
+.right-arrow:before, .right-arrow:after {
+    content: "";
+    position: absolute;
+    height: 3px;
+    width: 15px;
+    background: #969FA2;
+}
+.right-arrow:before {
+    right: -3px;
+    bottom: -4px;
+    transform: rotate(-45deg);
+}
+.right-arrow:after {
+    right: -3px;
+    top: -4px;
+    transform: rotate(45deg);
+}
 .chat ::-webkit-input-placeholder {
     /* placeholder - messes up the 'Search' in the search component. Replace with more stringent styles if needed */
     transform:translate3d(0, 1em,0)
@@ -562,52 +706,14 @@ width: 100%;
      align-items: flex-start;
  }*/
 
-/*
-* Notification Bubble - this possibly should possibly be refactored to take advantage of SOLID with chat application
-*/
-.bubble {
-    position: absolute;
-    padding: 1em;
-    margin: 2.5em 1rem 3em;
-    color: #536DFE;
-    background: #FFF;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-    border-radius: 15px;
-    overflow-wrap: break-word;
-    max-width:75%;
-    overflow:hidden;
-    white-space: normal;
-    font-size:1.5rem;
-    border: 1px solid #536DFE;
-    border-bottom-width: medium;
-    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-}
-.notif-bubble {
-    background-color: #FFF;
-    border-radius: 25px;
-    border-top: 1px solid #536DFE;
-    color: #120533;
-    border-radius: 15px;
-    width: 65%;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    position: absolute;
-    margin-top: 2rem;
-    z-index: 10;
-    border-bottom: 3px solid #536DFE;
-    box-shadow: 1px 1px 11px 6px rgba(83,109,254,0.49);
-    text-align: left;
-    font-size: 1.5rem;
-    margin-left: 5rem;
-    min-width: 25rem;
-}
 .card-row >  a {
     position: relative;
-    z-index: 50;
+    z-index: 100;
     width: 100%;
+}
+.card-row {
+    position: relative;
+    z-index: 50;
 }
 
 
@@ -660,7 +766,7 @@ width: 100%;
     text-decoration: none;
     /*font-family: Helvetica, Arial, sans-serif;*/
     text-align: center;
-    padding: 0 8px;
+    padding: 0 .5em;
     line-height: 20px;
     display: inline-block;
     position: relative;
@@ -679,7 +785,7 @@ width: 100%;
     box-shadow: 0px 2px 0px 2px rgba(83,109,254,1);
 }
 .detail .card-nav img {
-    vertical-align: middle;
+    vertical-align: text-top;
 }
 .detail .card-address {
     position: absolute;
@@ -694,7 +800,6 @@ width: 100%;
     /*position: absolute;*/
     color: #27295F;
     font-weight: bold;
-    font-family: "Monserrat"
 }
 .detail .ico-times {
     position: absolute;
@@ -732,10 +837,12 @@ font-size: 2rem;
 * Promotions
 */
 .promotions .promocard {
-    height: 100% !important;
+    /*height: 100% !important;*/
+    height: 17rem;
     -webkit-box-shadow: 1px 1px 11px 6px rgba(83,109,254,0.49); 
     box-shadow: 1px 1px 11px 6px rgba(83,109,254,0.49);
-    margin-top: -5rem;
+    /*margin-top: -5rem;*/
+    margin-top: 3rem;
 }
 /* Switch from important when there is time */
 .promotions .promocard-0 {
@@ -779,8 +886,8 @@ vertical-align: middle;
 .promocard .promo-name {
     color: #FFF;
     /*background-color: #536DFE;*/
-    padding-top:1rem;
-    padding-bottom:1rem;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
     padding-left: 1rem;
     font-weight: bold;
     margin-bottom: 1rem;
@@ -809,9 +916,11 @@ margin-bottom: 0rem;
     width: 100%;
 }
 .card-row .promocard .promo-name img {
-    width: 10%;
+    width: 3.5rem;
     margin-right: 1rem;
-    height: 3rem;
+    height: 3.5rem;
+    border: 3px solid #FFF;
+    border-radius: 50%;
 }
 .card-row {
     margin-bottom: 2rem !important;
@@ -844,38 +953,58 @@ margin-bottom: 0rem;
     margin-top: 3em;
     /*line-height: 25px;*/
 }
-.facebookblue {
-    background-color: #3b5998;
-    color: #FFF;
+.login-logo-img {
+    width: 8rem;
+    height: 8rem;
+    position: absolute;
+    top: 33%;
+    left: 50%;
+    transform: translate(-50%,0);
+    position: absolute;
+    z-index: 1;
 }
-.googlered {
-    background-color: #db3236;
-    color: #FFF;
+.login-logo-img-title {
+    top: 47% !important;
+    height: auto !important;
+    width: 12rem;
 }
+
 .loginbutton {
-    text-align: center;
     width: 70%;
     margin: 0 auto;
-    padding-left: .5em;
+    padding-left: 1em;
     padding-right: .5em;
-    padding-top: .75em;
-    padding-bottom: .5em;
-    font-size: 14px;
+    padding-top: .75rem;
+    padding-bottom: .75em;
+    font-size: 1.3rem;
     margin-top: .5em;
     display: flex;
     justify-content: center;
     flex-direction: column;
     display: flex;
+    background-color: #fff;
+    border-radius: 10px;
+    font-weight: bold;
+    color: #27295F;
+    border: 1px solid rgba(43, 0, 255, 0.25);
+    text-transform: uppercase;
+    margin-bottom: 2.5rem;
 }
 .loginbuttongroup {
-    margin-top: 10rem;
+    bottom: 2rem;
+    position: fixed;
+    width: 100%;
+}
+.fblogin img {
+    border-radius: 3px;
 }
 .login-img {
-    width: 2em;
-    height: 2em;
+    width: 1.5em;
+    height: 1.5em;
     align-self:flex-end;
     vertical-align: middle;
     margin-top: -1.5em;
+    margin-right: .5rem;
 }
 .bottomtext {
     text-align: center;
@@ -892,8 +1021,87 @@ margin-bottom: 0rem;
 /*
 * Settings pages
 */
+.react-toggle {
+    float: right;
+    margin-right: 1.5rem;
+}
+.toggle-shoployal.react-toggle--checked .react-toggle-track {
+    background-color: #5572FA;
+  }
+  .react-toggle:active:not(.react-toggle--disabled) .react-toggle-thumb {
+      box-shadow: none;
+  }
+  .react-toggle--checked .react-toggle-thumb {
+    border-color: #5572FA;
+  }
+  /* Needs special styles for now to stay above sidebar - look into why later */
+  .support-button {
+    z-index: 100;
+    position: relative;
+  }
+.settings .setting-link {
+    text-transform: uppercase;
+    color: #5572FA;
+    background-color: #DDD;
+    border-radius: 30px 30px 30px 5px;
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    font-size: 1.6rem;
+}
+.settings .fa-times {
+    display: block;
+    position: absolute;
+    z-index: 100;
+    right: 0rem;
+    top: 0rem;
+    color: #5D6DBE;
+    font-size: 2rem;
+}
+.settings .sb-sb {
+    box-shadow: none !important;
+}
+  .settings .toggle-text {
+    font-weight: 400;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+  }
 .settings {
     margin-top: 5rem;
+}
+.hamburger-container {
+width: 100%;
+}
+.fa-bars {
+    float: right;
+    font-size: 3rem;
+}
+.sb-header {
+    color: #5D6DBE;
+    margin-left: 1rem;
+    font-size: 3rem;
+    margin-top: -3rem;
+    font-weight: 500;
+}
+.settings .logout-settings {
+    bottom: 0rem;
+    background-color: #5572FA;
+    position: fixed;
+    left: 0;
+    width: 100%;
+    margin: 0;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-radius: 20px 20px 0px 0px;
+}
+.settings .logout-settings .logout-center {
+    width: 20rem;
+    margin: 0 auto;
+    text-align: center;
+    color: #DDD;
+    text-transform: uppercase;
+    font-size: 2rem;
 }
 .settings .main-settings {
     /*
@@ -902,16 +1110,12 @@ margin-bottom: 0rem;
     border-bottom: none !important;
 }
 .settings ul {
-    background-color: #FFF;
     padding-top: 0em;
     padding-bottom: 0em;
     color: #989ea2;
     margin-bottom: 2em;
-    border-top: 1px solid #e4e3e6;
-    border-bottom: 1px solid #e4e3e6;
 }
 .settings ul li {
-    border-bottom: 1px solid #e4e3e6;
     padding-top:1em;
     padding-bottom:1em;
     margin-left:1em;
@@ -948,36 +1152,37 @@ html {
     display: none;
 }
 .setting-left {
-    font-weight: 900;
-    color: #000;
+    font-weight: 400;
+    color: #7D8689;
+    font-size: 1.4rem;
 }
 .setting-right {
     float: right;
     margin-right: 5%;
 }
 .profile-name {
-    color: #536DFE;
+    color: #5D6DBE;
     text-align: center;
     margin: 0 auto;
-    font-size: 18px;
+    font-size: 2rem;
 }
 .profile-email {
     color: #ACACAC;
     text-align: center;
     margin: 0 auto;
-    font-size: 12px;
+    font-size: 1.2rem;
 }
 .fav-merchants {
     margin: 0 auto;
     text-align: center;
 }
 .merchant-number {
-    color: #000;
-    font-size: 1.75rem;
+    color:#272B5E;
+    font-size: 3rem;
 }
 .fav-merchants-text {
-    color: #000;
-    font-size: 1rem;
+    color: #969FA2;
+    font-size: 2rem;
 }
 .fav-merchant-list-parent {
     margin-top: 2rem;
@@ -995,27 +1200,31 @@ html {
     background: #27295F;
     margin: 0 auto;
 }*/
+
+
 .fav-merchant-button {
-display: block;
-    background: #27295F;
-    padding: 1em;
-    text-align: center;
+    width: 70%;
+    margin: 0 auto;
+    padding-left: 1em;
+    padding-right: .5em;
+    padding-top: .75rem;
+    padding-bottom: .75em;
+    font-size: 1.3rem;
     border-radius: 10px;
-    color: white !important;
     font-weight: bold;
+    color: #27295F;
+    border: 1px solid rgba(43, 0, 255, 0.25);
+    text-transform: uppercase;
+    position: fixed;
+    bottom: 1rem;
+    background: #27295F;
     color: #fefefe;
     text-shadow: 0 1px 1px #003547;
-    background: #27295F;
-    /* margin: 0 auto; */
-     bottom: 1rem;
-    position: fixed;
-    margin-right: 10rem;
-    margin-left: 11rem;
-    /* width: 100%; */
-    /* position: fixed; */
+    left: 15%;
 }
+
+
 .toggle-text {
-    margin-left: 5%;
     vertical-align: super;
 }
 .main-settings label {
@@ -1091,6 +1300,7 @@ display: block;
     }
     .welcome-text-name {
         font-weight: bold;
+        margin-left: .4em;
     }
     .secondary-nav {
         margin-bottom: 1rem;
@@ -1103,7 +1313,7 @@ display: block;
         float: right;
         width: 6rem;
         border-radius: 50px;
-        margin-top: -5rem;
+        margin-top: -7rem;
         border: 3px solid white;
         -webkit-box-shadow: 0px 2px 19px -1px rgba(0,0,0,1);
         -moz-box-shadow: 0px 2px 19px -1px rgba(0,0,0,1);
@@ -1192,11 +1402,19 @@ touch-callout: none;
         -webkit-tap-highlight-color: transparent;
       }
 
-      .card-favorite, .favorite {
+      .white-favorite {
 
         --stroke-pos: 1px;
         --stroke-neg: -1px;
         --stroke-color: rgba(0, 0, 0, 0.6);
+        filter: drop-shadow(var(--stroke-pos) 0 0 var(--stroke-color)) drop-shadow(var(--stroke-neg) 0 var(--stroke-color)) drop-shadow(0 var(--stroke-pos) 0 var(--stroke-color)) drop-shadow(0 var(--stroke-neg) 0 var(--stroke-color)) drop-shadow(var(--stroke-pos) var(--stroke-pos) 0 var(--stroke-color)) drop-shadow(var(--stroke-pos) var(--stroke-neg) 0 var(--stroke-color)) drop-shadow(var(--stroke-neg) var(--stroke-pos) 0 var(--stroke-color)) drop-shadow(var(--stroke-neg) var(--stroke-neg) 0 var(--stroke-color));
+      }
+
+      .purple-favorite {
+
+        --stroke-pos: 1px;
+        --stroke-neg: -1px;
+        --stroke-color: rgba(255, 255, 255, 1);
         filter: drop-shadow(var(--stroke-pos) 0 0 var(--stroke-color)) drop-shadow(var(--stroke-neg) 0 var(--stroke-color)) drop-shadow(0 var(--stroke-pos) 0 var(--stroke-color)) drop-shadow(0 var(--stroke-neg) 0 var(--stroke-color)) drop-shadow(var(--stroke-pos) var(--stroke-pos) 0 var(--stroke-color)) drop-shadow(var(--stroke-pos) var(--stroke-neg) 0 var(--stroke-color)) drop-shadow(var(--stroke-neg) var(--stroke-pos) 0 var(--stroke-color)) drop-shadow(var(--stroke-neg) var(--stroke-neg) 0 var(--stroke-color));
       }
 
@@ -1257,6 +1475,44 @@ touch-callout: none;
     color: #FFD138;
 }
 
+#background-video{
+
+   /* height: 100%;
+    width: 100%;
+    float: left;
+    top: 0;
+    padding: none;
+    position: fixed; /* optional depending on what you want to do in your app */
+    /*z-index: -100;
+*/
+
+
+
+    position: fixed;
+    float: left;
+    height: 100%;
+    width: 100%;
+	z-index: -100;
+    background: url('../resources/video/SL-SplashBG.mp4') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+      
+    }
+
+    .login-overlay {
+        height: 100vh;
+        width: 100%;
+        float: left;
+        top: 0;
+        padding: none;
+        /* position: fixed; */
+        background-image: -webkit-linear-gradient(top, rgba(99, 123, 254), rgba(99, 123, 254,0.06));
+        background-image: linear-gradient(to bottom, rgba(99, 123, 254), rgba(99, 123, 254,0.06));
+        z-index: 50;
+    }
+
 
 
 
@@ -1277,12 +1533,4 @@ touch-callout: none;
       width: 100%;
       height: 100vh;
       margin-top: 200px;
-  }*/
-
-  /*.switch-wrapper {
-    position: relative;
-  }
-  
-  .switch-wrapper > div {
-    position: absolute;
   }*/

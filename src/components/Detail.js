@@ -40,11 +40,11 @@ class Detail extends Component {
  
 
       configuration(data) {
-        console.log("merchant data");
-        console.log(data);
+        //console.log("merchant data");
+        //console.log(data);
         this.setState({data, isLoading: false});
-        console.log("card row data");
-        console.log(data);
+        //console.log("card row data");
+        //console.log(data);
           }
 
           componentDidMount() {
@@ -80,12 +80,12 @@ class Detail extends Component {
           }
 
     render() {
-console.log(this.state.data);
+//console.log(this.state.data);
         if (Object.keys(this.state.data).length == 0) {
             return <div />
         }
-        console.log("not empty");
-        console.log(this.state.data);
+        //console.log("not empty");
+        //console.log(this.state.data);
    
         return (
   

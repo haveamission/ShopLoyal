@@ -32,6 +32,7 @@ import Error from './components/Error';
 import FavMerchants from './components/FavMerchants';
 import Dummy from './components/Dummy';
 import Header from './components/Header';
+import Terms from './components/Terms';
 
 // Import Styles
 import './bootstrap2-toggle.min.css';
@@ -60,11 +61,13 @@ import { PersistGate } from 'redux-persist/es/integration/react'
 import Keycloak from 'keycloak-js';
 import { KeycloakProvider } from 'react-keycloak';
 import keycloak_config from './keycloak.json';
+const {store, persistor} = configureStore(history)
+const keycloak = new Keycloak(keycloak_config);
+
+// Redux Actions
 import { addTokens } from './actions/tokens';
 import getLocation from './actions/location'
-const {store, persistor} = configureStore(history)
-
-const keycloak = new Keycloak(keycloak_config);
+import {engagementSave, openedFromPushSave} from './actions/analytics'
 
 
 //userManager.signinRedirect();
@@ -77,7 +80,7 @@ const startApp = () => {
 //window.cordova.plugins.Keyboard.hideFormAccessoryBar(true);
 
 const onEvent = (event, error) => {
-  console.log('onKeycloakEvent', event, error);
+  //console.log('onKeycloakEvent', event, error);
   if (typeof error !== undefined) {
     switch (event) {
       case 'onAuthSuccess':
@@ -100,11 +103,12 @@ oneSignal();
 }
 
 function myhandler(previousRoute, nextRoute) {
-console.log(previousRoute);
-console.log(nextRoute);
+//console.log(previousRoute);
+//console.log(nextRoute);
 }
 // Sets initial location state - possibly set as a watch event
-store.dispatch(getLocation());
+//store.dispatch(openedFromPushSave(true));
+
 
 var tokens = store.getState().tokens;
 
@@ -136,11 +140,13 @@ render(
     <ConnectedRouter history={history} context={ReactReduxContext}>
     <Layout>
     <Route
+    onUpdate={() => window.scrollTo(0, 0)}
     onChange={pathChange}
           render={({ location }) => {
             const { pathname } = location;
             return (
     <Route
+    onUpdate={() => window.scrollTo(0, 0)}
                     location={location}
                     render={() => (
                       <AnimatedSwitch
@@ -160,6 +166,7 @@ render(
         <PrivateRoute path="/detail/" component={Detail} />
         <PrivateRoute path="/support/" component={Support} />
         <PrivateRoute path="/privacy/" component={Privacy} />
+        <PrivateRoute path="/terms/" component={Terms} />
         <PrivateRoute path="/favmerchants/" component={FavMerchants} />
       </AnimatedSwitch>
     )}
@@ -194,7 +201,7 @@ function appsflyerInit() {
   }
 
   var onSuccess = function(result) {
-    console.log(result);
+    //console.log(result);
   };
 
   function onError(err) {
@@ -206,7 +213,7 @@ function appsflyerInit() {
 
 function oneSignal() {
     // Enable to debug issues.
-    window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
+    //window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
 
     var notificationOpenedCallback = function(jsonData) {
       console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));

@@ -41,7 +41,7 @@ this.setState({profile: data});
   }
 
   loadSettings(data) {
-console.log(data);
+//console.log(data);
 this.setState(data);
   }
 
@@ -66,10 +66,10 @@ this.getSettings();
 }
 
   render() {
-    console.log("state here");
-    console.log(this.state);
+    //console.log("state here");
+    //console.log(this.state);
     if (Object.keys(this.state.profile).length === 0) {
-      console.log("gets triggered");
+      //console.log("gets triggered");
       return (
         <div />
       )
@@ -93,7 +93,7 @@ class ProfileSettings extends React.Component {
 
   render() {
 
-    console.log(this.props);
+    //console.log(this.props);
     return (
 <div>
 <h3 className="profile-name">{this.props.profile.name}</h3>

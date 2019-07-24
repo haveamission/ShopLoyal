@@ -5,6 +5,7 @@ import Background from "../img/fake_background_card.png";
 import Message from "../img/message.png";
 import Call from "../img/call.png";
 import Map from "../img/map.png";
+import ShopLoyalCardLogo from "../img/ShopLoyalLogoIcon.png";
 import ScrollMenu from 'react-horizontal-scrolling-menu';
 import Card from "./Card";
 import PromoCard from "./PromoCard";
@@ -55,13 +56,40 @@ constructor() {
   this.menu = null;
 }
 
+ createIntro() {
+  const promo1 = {
+  id: -1,
+...this.props.merchant,
+photo: ShopLoyalCardLogo,
+title: "These are promotion cards",
+text: "Bring these to your local merchants to redeem promotions or rewards!",
+  }
+  const promo2 = {
+    id: -2,
+  ...this.props.merchant,
+  photo: ShopLoyalCardLogo,
+  title: "Start adding your favorite stores",
+  text: "'Search' up top for your local merchants and 'Favorite' ♥ them to begin receiving personalized promotions and updates!",
+    }
+    console.log(promo1);
+    console.log(promo2);
+    this.state.list.push(<Card merchant={this.props.merchant.merchant} key={this.props.merchant.merchant.id} />)
+    this.state.list.push(<PromoCard data={promo1} key={promo1.id} merchant_id={this.props.merchant.merchant.id}/>)
+    this.state.list.push(<PromoCard data={promo2} key={promo2.id} merchant_id={this.props.merchant.merchant.id}/>)
+    this.setState({isLoading: false});
+    // Switch into a string repo with string formatting after MVP
+    this.setState({"bubblemsg":"Hey " + this.props.profile.givenName + ", Welcome to ShopLoyal! Swipe to learn more!", "bubbleid":0});
+  }
+
 containerRef = React.createRef();
 scrollRef = React.createRef();
 
 configuration =(data) =>  {
   data = loadJSONIntoUI(data);
   data.forEach((promo) => {
-    this.state.list.push(<PromoCard data={promo} key={promo.id}/>);
+    console.log("PROMO");
+    console.log(promo);
+    this.state.list.push(<PromoCard data={promo} key={promo.id} merchant_id={this.props.merchant.merchant.id}/>);
       });
 
   this.setState({data, isLoading: false});
@@ -70,19 +98,27 @@ configuration =(data) =>  {
 merchantMessageConfiguration(data) {
 var msg;
 for (let el of data) {
-  console.log(el);
+  //console.log(el);
   if (el.recipient === "customer") {
     msg = el;
     break;
   }
 }
-console.log("MESSAGE VALUE HERE");
-console.log(msg);
+//console.log("MESSAGE VALUE HERE");
+//console.log(msg);
 this.setState({"bubblemsg":msg.message, "bubbleid":msg.merchantId});
 }
 
 componentDidMount() {
   if(this.props.keycloak.authenticated) {
+    //
+    console.log("THIS PROPS before merchant");
+    console.log(this.props.merchant.merchant);
+    if(this.props.merchant.merchant.id === 0) {
+      console.log("create intro");
+this.createIntro();
+return;
+    }
     var api = new API(this.props.keycloak);
     var query = {
       "lat": this.props.coordinates.coords.latitude,
@@ -99,8 +135,8 @@ componentDidMount() {
       })
   }
 
-  console.log("props merchant");
-  console.log(this.props.merchant);
+  //console.log("props merchant");
+  //console.log(this.props.merchant);
   this.state.list.push(<Card merchant={this.props.merchant.merchant} key={this.props.merchant.merchant.id} />)
 
   if(this.props.keycloak.authenticated /*&& this.props.count == 0*/) {
@@ -124,12 +160,11 @@ api.get("merchantMessages", {"repl_str": merchant_id}).then(
 
 componentDidUpdate() {
   // TODO: Figure out how to fix this lifecycle method
-  console.log(this.containerRef);
+  //console.log(this.containerRef);
   if(this.containerRef.current !== null && this.menu.current !== null) {
-console.log("this gon' be my year");
-    console.log(this.containerRef.current);
+    //console.log(this.containerRef.current);
     this.hammer = Hammer(this.containerRef.current)
-    console.log(this.scrollRef.handleArrowClick);
+    //console.log(this.scrollRef.handleArrowClick);
     this.hammer.on("swiperight", () => this.menu.handleArrowClick());
     this.hammer.on("swipeleft", () => this.menu.handleArrowClickRight());
 
@@ -183,6 +218,7 @@ var translate = 0;
       search: state.search,
       coordinates: state.coordinates,
       category: state.categories,
+      profile: state.profile,
     };
   };
   

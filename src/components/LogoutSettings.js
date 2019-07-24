@@ -13,9 +13,9 @@ if(!this.props) {
 }
 
       return(
-      <ul className="logout-settings">
-  <li className="list-bottom" onClick={() => this.props.keycloak.logout()}>Log Out</li>
-      </ul>
+      <div className="logout-settings">
+  <div className="logout-center" onClick={() => this.props.keycloak.logout()}>Log Out</div>
+      </div>
     )
   }
   }

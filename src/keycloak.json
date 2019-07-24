@@ -1,10 +1,10 @@
 {
-  "realm": "wantify",
+  "realm": "shoployal",
   "ssl-required": "external",
-  "resource": "wantify-app",
+  "resource": "shoployal-app",
   "public-client": true,
   "confidential-port": 0,
-  "clientId": "wantify-app",
-  "url": "https://id.v2.wantify.com/auth",
-  "auth-server-url": "https://id.v2.wantify.com/auth"
+  "clientId": "shoployal-app",
+  "url": "https://id.v2.shoployal.com/auth",
+  "auth-server-url": "https://id.v2.shoployal.com/auth"
 }

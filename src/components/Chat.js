@@ -8,6 +8,7 @@ import API from './API'
 import {bindActionCreators} from 'redux'
 import { withKeycloak } from 'react-keycloak';
 import TextareaAutosize from 'react-autosize-textarea';
+const moment = require('moment');
 const format = require('string-format')
 
 const messages = [];
@@ -43,10 +44,13 @@ class Chat extends Component {
       isLoading: true,
       text: "",
       keyboardVal: 0,
+      date: null,
     }
     this.goBack = this.goBack.bind(this);
     this.onSend = this.onSend.bind(this);
   }
+
+  oldDate = null;
 
   messagesEndRef = React.createRef();
 
@@ -62,8 +66,7 @@ componentWillUnmount(){
 
   openChannel() {
     var api = new API(this.props.keycloak);
-    //alert(this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1));
-    var merchant_id = this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1);
+     var merchant_id = this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1);
     api.post("openChannel", {"repl_str": merchant_id}).then(
       response => console.log(JSON.stringify(response.data))
       ).catch(function(error) {
@@ -77,26 +80,26 @@ componentWillUnmount(){
           }
         
           loadMessages(data) {
-            console.log("loaded messages");
-        console.log(data);
+            //console.log("loaded messages");
+        //console.log(data);
         
         var count = 0;
         
         var messagevals = [];
         
         data.reverse().forEach(function(obj) {
-        console.log(obj.message);
+        //console.log(obj.message);
         messagevals.push(generateMessage(obj, count, {}));
         count++;
         });
         
-        console.log(messagevals);
+        //console.log(messagevals);
         
         this.setState({messages: messagevals});
         
         this.setState({isLoading: false});
         
-        console.log(data.map(obj => obj.message));
+        //console.log(data.map(obj => obj.message));
         
           }
 
@@ -131,9 +134,9 @@ componentWillUnmount(){
           componentDidMount() {
             this.openChannel();
            
-          console.log(this.state);
-          console.log("chat props");
-          console.log(this.props);
+          //console.log(this.state);
+          //console.log("chat props");
+          //console.log(this.props);
 
           this.pullMessages();
           this.interval = setInterval(() => this.updateMessages(), 25000);
@@ -141,7 +144,7 @@ componentWillUnmount(){
           }
 
           updateMessages() {
-console.log("update messages");
+//console.log("update messages");
 this.pullMessages();
 this.scrollToBottom();
           }
@@ -153,15 +156,17 @@ this.scrollToBottom();
               var messages = [this.state.text];
               this.setState({text: ""});
             this.openChannel();
-            //alert(this.props.profile.id);
             var userId = this.props.profile.id;
             this.createChannel(userId)
             for(let message of messages){
-              console.log(message);
+              //console.log(message);
               this.saveMessage(message);
               var messageHydrated = this.addMessageInfo(message);
               this.setState({messages: [...this.state.messages, messageHydrated]})
             }
+            if(window.Keyboard) {
+              window.Keyboard.hide();
+              }
             this.scrollToBottom();
           }
           }
@@ -208,6 +213,29 @@ this.scrollToBottom();
             this.messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
           }
 
+          shouldComponentUpdate(nextProps, nextState) {
+            if(this.state.date !== nextState.date) {
+              return false;
+            }
+            else {
+              return true;
+            }
+          }
+
+          showDate(timestamp) {
+if(this.oldDate !== null) {
+  // Maybe add M calculation as well
+  var newDate = moment(timestamp).format('D');
+  var oldDate = moment(this.oldDate).format('D');
+  if(newDate === oldDate) {
+    this.oldDate = timestamp;
+return false;
+  }
+}
+this.oldDate = timestamp;
+return true;
+          }
+
     render() {
 
       //var keyboardStyle = {transform: 'translate3d(0px, ' + this.state.keyboardVal + 'px, 0px)'}
@@ -217,12 +245,19 @@ this.scrollToBottom();
         return (<Loading />)
         }
         else {
+          console.log(this.state.messages);
                 return (
                   <div>
                   <div id="messages-container" onClick={() => this.chatClicked()} style={{transform: 'translate3d(0,0,0)'}}>
                       <div id="messages">
-                      {this.state.messages.map( (message, index) =>
+                      {
+                        this.state.messages.map( (message, index) =>
                           <div className={"message " + message.position}>
+                          {this.showDate(message.createdAt, this.oldDate) ? (
+                          <div>{moment(message.createdAt).format('ddd, MMM D LT')}</div>
+                          ): (
+                            ""
+                          )}
                           <span>{message.text}</span>
                           </div>
                       )}
@@ -238,13 +273,13 @@ this.scrollToBottom();
                             //ref={(ic) => this.myChat = ic}
                             value={this.state.text}
                             onChange={evt => this.handleChange(evt)}
-                            maxRows={2}
+                            maxRows={3}
                             placeholder="Message..."
                             className="textareainput"
                             onResize={(e) => {}}
                             name="msginput"
                       />
-                      <div onClick={this.onSend} className="sendbutton">SEND</div>
+                      <div onClick={this.onSend} className="sendbutton">Send</div>
                       </div>
                   </div>
             </div>

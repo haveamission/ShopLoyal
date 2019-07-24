@@ -20,10 +20,15 @@ class Search extends Component {
     this.keyPress = this.keyPress.bind(this);
   }
 
+  myInp = {
+    value: ""
+  }
+
   searchForText = (text) => {
 this.props.searchSave(text);
 //this.setState({value: null});
 this.props.dispatch(push("/map"));
+this.deleteSearch();
   }
 
   keyPress(event) {
@@ -48,13 +53,17 @@ if(code == 13) {
        typing: false,
        typingTimeout: setTimeout(function () {
            self.searchForText(self.state.text);
-         }, 1000)
+         }, 2500)
     });
   }
 
   deleteSearch() {
     this.setState({value: ""});
+    console.log("my inp");
+    console.log(this.myInp);
+    if(this.myInp !== null) { 
     this.myInp.value = "";
+    }
     //this.props.dispatch(push("/"));
   }
 
@@ -78,13 +87,13 @@ if(code == 13) {
                   {this.state.value ? (
         <i onClick={() => this.deleteSearch()} className="fas fa-times large"></i>
       ) : (
-        ""
+        <span onClick={() => {this.props.dispatch(push("/map"))}} className="search-text"><i className="fas fa-search small"></i>Search</span>
       )}
-<input ref={(ip) => this.myInp = ip} className="search-input" onKeyPress={this.keyPress} onChange={this.handleChange}></input>
+<input ref={(ip) => this.myInp = ip} className="search-input" onKeyPress={this.keyPress} onChange={this.handleChange} placeholder="for your favorite merchants"></input>
 {this.state.value ? (
         ""
       ) : (
-        <span onClick={() => {this.myInp.focus()}} className="search-text"><i className="fas fa-search small"></i>Search</span>
+        ""
       )}
 
 </span>

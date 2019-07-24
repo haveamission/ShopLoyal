@@ -11,10 +11,11 @@ import getLocation from '../actions/location'
 import Loading from './Loading'
 import Categories from './Categories'
 import { withKeycloak } from 'react-keycloak';
+import { push } from 'connected-react-router'
 
 const mapStyles = {
   width: "100%",
-  height: "100vh"
+  height: "72vh"
 };
 
 function search(nameKey, myArray){
@@ -36,16 +37,36 @@ export class MapContainer extends Component {
       showingInfoWindow: false,
       activeMarker: {},
       selectedPlace: {},
-      search: "",
       data: {merchants: []},
       selectedMerchant: null,
+      rerendered: 0,
     };
    
   }
 
-  getDrivedStateFromProps(props, state) {
-    this.setState({search: this.props.search.search});
-    this.setState({category: this.props.category.category});
+  componentWillUnmount(){
+    /*document.body.style.position = "static";
+    document.getElementById("root").style.overflow = 'visible';
+    document.getElementById("root").style.height = 'height';*/
+}
+
+  componentWillMount() {
+    
+    //document.getElementById("root").style.height = '100vh';
+    //document.body.style.position = "fixed";
+    var centerLat = this.props.coordinates.coords.latitude;
+    var centerLng = this.props.coordinates.coords.longitude;
+  
+    console.log(this.state);
+    console.log(this.props.location);
+  
+    // This should be a good enough check for now about whether latitude and longitude are defined
+    // Possibly make this more robust later
+    if(typeof this.props.location.state !== 'undefined') {
+      centerLat = this.props.location.state.merchant_lat;
+      centerLng = this.props.location.state.merchant_lng;
+    }
+    this.setState({centerLat: centerLat, centerLng: centerLng});
   }
 
   onMarkerClick = (props, marker, e) => {
@@ -69,19 +90,23 @@ export class MapContainer extends Component {
       })
     }
     this.setState({ showResults: true })
-    if(window.Keyboard) {
+    if(typeof window.Keyboard.hide !== 'undefined') {
     window.Keyboard.hide();
     }
   };
 
   mapIconLoad() {
+    var radius = 10.0;
+    if(this.props.search.search !== null) {
+      radius = 30.0;
+    }
     if(this.props.keycloak.authenticated) {
       var api = new API(this.props.keycloak);
-      api.setRetry(10);
+      api.setRetry(3);
       var query = {
-        "lat": this.props.coordinates.coords.latitude,
-        "lng": this.props.coordinates.coords.longitude,
-        "radius": "10.0",
+        "lat": this.state.centerLat,
+        "lng": this.state.centerLng,
+        "radius": radius,
         "limit": "10",
         "search": this.props.category.category,
         "value": this.props.search.search
@@ -96,6 +121,9 @@ export class MapContainer extends Component {
 
   componentDidUpdate() {
     console.log("component did update");
+    if(this.state.rerendered < 2) {
+this.setState({rerendered: this.state.rerendered + 1})
+    }
     if(this.state.updatedSearch == this.props.search.search && this.state.updatedCategories == this.props.category.category) {
       return;
     }
@@ -111,13 +139,17 @@ this.mapIconLoad();
   }
 
   componentDidMount() {
+    window.scrollTo(0, 0);
 this.mapIconLoad();
+if(typeof window.Keyboard.show !== 'undefined') {
+  window.Keyboard.show();
+  }
  
   }
 
   render() {
 
-    if (this.props.coordinates.length == 0) {
+    if (this.state.rerendered < 2) {
       return <Loading />
   }
 
@@ -130,8 +162,8 @@ this.mapIconLoad();
         zoom={15}
         style={mapStyles}
         initialCenter={{
-          lat: this.props.coordinates.coords.latitude,
-          lng: this.props.coordinates.coords.longitude
+          lat: this.state.centerLat,
+          lng: this.state.centerLng,
         }}
         zoomControl={false}
         mapTypeControl={false}
@@ -145,22 +177,30 @@ this.mapIconLoad();
      title={String(merchant.id)}
      name={merchant.name}
      position={{lat: merchant.latitude, lng: merchant.longitude}}
-     onClick={this.onMarkerClick}
+     onClick={() => {this.props.dispatch(push("/detail/" + merchant.id))}}
      icon={{url: merchant.logo,
       scaledSize: new this.props.google.maps.Size(64,64)
     }}
+    key={merchant.id}
     style={{zIndex: 100}}
       />
   )}
 
       </Map>
-<div>
+<div className="business-cards">
 
-        {this.state.selectedMerchant ? (
-        <Business merchant={this.state.selectedMerchant} />
-      ) : (
-        ""
-      )}
+        {
+          this.state.rerendered > 1 && this.state.data.merchants.length !== 0 ? (
+          this.state.data.merchants.slice(0, 2).map( merchant =>
+
+          <Business merchant={merchant} />
+  )):(
+    ""
+  )
+
+}
+
+
 </div>
         <h3>
       { this.state.showResults ? <Results /> : null }
@@ -192,8 +232,8 @@ const mapStateToProps = (state) => {
 };
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ searchSave, getLocation }, dispatch);
-  //return { ...actions, dispatch };
+  let actions = bindActionCreators({ searchSave, getLocation }, dispatch);
+  return { ...actions, dispatch };
 }
 
 const LoadingContainer = (props) => (
@@ -201,6 +241,6 @@ const LoadingContainer = (props) => (
 )
 
 export default GoogleApiWrapper({
-  apiKey: "AIzaSyDSeIfu2B3YK6UqWDOTesjX0Y1LVRy7ui8",
+  apiKey: "AIzaSyC8ayoSBFNdHdORkbiteD5feHhpLYsToWE",
   LoadingContainer: LoadingContainer
 })(connect(mapStateToProps, mapDispatchToProps)(withKeycloak(MapContainer)));

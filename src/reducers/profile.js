@@ -1,8 +1,8 @@
 import Actions from '../actions/profile.js'
 
 export default (state = null, action) => {
-    console.log("action types");
-    console.log(action.type);
+    //console.log("action types");
+    //console.log(action.type);
       switch (action.type) {
         case 'PROFILESAVE':
         return action.payload

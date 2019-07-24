@@ -23,7 +23,7 @@ class FavMerchantsItem extends React.Component {
         }
 
         processFavorite(data) {
-            console.log(data);
+            //console.log(data);
             var merchant = this.state.merchant;
             merchant.isFavorite = !this.state.merchant.isFavorite
 this.setState({merchant: merchant})
@@ -31,7 +31,7 @@ this.setState({merchant: merchant})
 
         handleFavorite = (e) =>  {
             e.stopPropagation();
-            console.log("child");
+            //console.log("child");
 
             if(this.props.keycloak.authenticated) {
 
@@ -48,7 +48,7 @@ this.setState({merchant: merchant})
 
     render() {
 
-        console.log(this.state);
+        //console.log(this.state);
 
         if (!this.state.merchant) {
             return <Loading />
@@ -60,9 +60,9 @@ this.setState({merchant: merchant})
               <div className="fav-item">{this.state.merchant.name}</div>
               
               {this.state.merchant.isFavorite ? (
-                <img className="favorite" onClick={this.handleFavorite} src={Favorite} key={this.state.merchant.id} value={this.state.merchant.isFavorite}/>
+                <img className="purple-favorite favorite" onClick={this.handleFavorite} src={Favorite} key={this.state.merchant.id} value={this.state.merchant.isFavorite}/>
               ) : (
-                <img className="favorite" onClick={this.handleFavorite} src={UnFavorite} key={this.state.merchant.id} value={this.state.merchant.isFavorite}/>
+                <img className="white-favorite favorite" onClick={this.handleFavorite} src={UnFavorite} key={this.state.merchant.id} value={this.state.merchant.isFavorite}/>
               )}
               <div className="fav-address"><img src={Map} />{this.state.merchant.address1}</div>
               </div>
@@ -85,7 +85,7 @@ class FavMerchants extends React.Component {
     * Probably switch this to cards when doing refactor.
     */
     loadFavMerchants(data) {
-console.log(data);
+//console.log(data);
 var arr = [];
 data.map((item, index) => {
     arr.push(
@@ -100,8 +100,8 @@ componentDidMount() {
   // TODO REPLACE WITH REAL LOCATION
 
   var query = {
-    "lat": "42.2",
-    "lng": "-83",
+    "lat": this.props.coordinates.coords.latitude,
+    "lng": this.props.coordinates.coords.longitude,
     "limit": "30",
   }
 
@@ -121,12 +121,18 @@ render() {
     {this.state.favs}
     </div>
     <Link to='/map'>
-    <button className="fav-merchant-button">Find More Merchants</button>
+    <button className="fav-merchant-button">Favorite More Merchants</button>
     </Link>
     </div>
     )
 }
 
 }
+
+const mapStateToProps = (state) => {
+    return {
+      coordinates: state.coordinates,
+    };
+  };
   
-  export default withKeycloak(FavMerchants);
+  export default connect(mapStateToProps)(withKeycloak(FavMerchants));

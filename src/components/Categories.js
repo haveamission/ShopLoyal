@@ -36,13 +36,13 @@ this.props.categories(value);
   }
 
   render(){
-    console.log("states and props categories");
-    console.log(this.state);
-    console.log(this.props);
+    //console.log("states and props categories");
+    //console.log(this.state);
+    //console.log(this.props);
     return(
       <ul className="categories">
           {this.state.cats.map( cat =>
-     <li className={this.rootClassNames(cat)} onClick={() => this.handleClick(cat)}>{cat}</li>
+     <li className={this.rootClassNames(cat)} onClick={() => this.handleClick(cat)} key={cat}>{cat}</li>
   )}
     </ul>
   );

@@ -16,10 +16,10 @@ export function serviceCall() {
     })
       .then(function(response) {
         if (typeof response.data.error === 'undefined') {
-          console.log('response.data ==>' + response.data);
+          //console.log('response.data ==>' + response.data);
         } else {
           const error = 'No User Found';
-          console.log('error ==>' + error);
+          //console.log('error ==>' + error);
         }
       })
       .catch(function(error) {
@@ -29,10 +29,10 @@ export function serviceCall() {
           error.response.status === 400
         ) {
           const message = 'No User Found';
-          console.log('message ==>' + message);
+          //console.log('message ==>' + message);
         } else {
           const message = 'Service is unavailable please try after some time';
-          console.log('message ==>' + message);
+          //console.log('message ==>' + message);
         }
       });
   };

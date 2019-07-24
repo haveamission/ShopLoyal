@@ -26,7 +26,7 @@ class SLAPI {
      }
 
      call = null;
-     env = "prod";
+     env = "local";
      retry = 1;
 
      setRetry(value) {
@@ -34,9 +34,9 @@ class SLAPI {
      }
 
      corsString = "https://cors-anywhere.herokuapp.com/";
-     localBaseUrlString = "https://api.v2.wantify.com/api/v1";
-     devBaseUrlString = "https://dev.apiv2.wantify.com/api/v1";
-     prodBaseUrlString = "https://api.v2.wantify.com/api/v1"; 
+     localBaseUrlString = "https://api.v2.shoployal.com/api/v1";
+     devBaseUrlString = "https://dev.apiv2.shoployal.com/api/v1";
+     prodBaseUrlString = "https://api.v2.shoployal.com/api/v1"; 
   
      userNoticesAPI = "/users/me/notices";
      userPushRegisterAPI = "/users/me/register_device";
@@ -85,8 +85,8 @@ class SLAPI {
      constructURL(API, params) {
          var constructedURL;
          var endpoint;
-         console.log("DEBUG");
-         console.log(API);
+         //console.log("DEBUG");
+         //console.log(API);
          if("repl_str" in params) {
          endpoint = format(this[API], params.repl_str)
          }

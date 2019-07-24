@@ -3,15 +3,19 @@ import { ColorExtractor } from 'react-color-extractor';
 import FakeLogo from "../img/fake_test_logo.png";
 import UnFavorite from "../img/full_heart_white.png";
 import Favorite from "../img/full_heart_purple.png";
-import MessageText from "../img/message.png";
 import GrayCard from '../img/gray.png';
-import Call from "../img/call.png";
-import Map from "../img/map.png";
+import MessageTextWhite from "../img/message.png";
+import MessageTextPurple from '../resources/img/comments@3x.png';
+import CallWhite from "../img/call.png";
+import CallPurple from '../resources/img/call-purple.png'
+import MapWhite from "../img/map.png";
+import MapPurple from '../resources/img/map-purple.png';
 import {Link} from 'react-router-dom';
 import Background from "../img/fake_background_card.png";
 import { connect } from 'react-redux'
 import {bindActionCreators} from 'redux'
-import saveColor from '../actions/general'
+//import saveColor from '../actions/general'
+import {colorSave} from '../actions/color';
 import Loading from './Loading'
 import API from './API'
 import { push } from 'connected-react-router'
@@ -23,6 +27,8 @@ import {firstFavoriteSave} from '../actions/firstFavorite';
 import { toast } from 'react-toastify';
 const format = require('string-format')
 const getColors = require('get-image-colors')
+
+
 
 class Card extends Component {
   constructor() {
@@ -62,8 +68,8 @@ class Card extends Component {
     }
 
     configuration(data) {
-      console.log("pre set state card");
-      console.log(data);
+      //console.log("pre set state card");
+      //console.log(data);
       var merchant = this.state.merchant;
       merchant.isFavorite = !merchant.isFavorite;
       this.setState({merchant: merchant});
@@ -71,22 +77,20 @@ class Card extends Component {
 
     handleLinks(e) {
       //e.stopPropagation();
-      console.log("e stop propogation");
+      //console.log("e stop propogation");
     }
 
     launchInsiderModal() {
-      toast.info(<span>Success! You've favorited a merchant. Now <span class='find-more'><Link to="/">find more</Link></span></span>, {
-        position: toast.POSITION.BOTTOM_CENTER,
+      toast.info(<span>Success! You've favorited a merchant. Now <span class='find-more'><Link to="/">favorite more merchants</Link></span></span>, {
+        position: toast.POSITION.TOP_CENTER,
         autoClose: 7000,
       });
     }
 
     firstTimeFavoriteCheck() {
-      //alert("First Favorite?");
-      //alert(this.props.firstFavorite);
-      console.log(this.props);
-      if(this.props.router.location.pathname.includes("detail") && this.props.firstFavorite === null) {
-  this.props.firstFavoriteSave(true);
+      //console.log(this.props);
+      if(this.props.router.location.pathname.includes("detail") /*&& this.props.firstFavorite === null*/) {
+  //this.props.firstFavoriteSave(true);
   this.launchInsiderModal();
       }
     }
@@ -94,7 +98,6 @@ class Card extends Component {
   handleFavorite(e) {
     e.stopPropagation();
     if(this.props.keycloak.authenticated) {
-      //alert(this.state.merchant.isFavorite);
       if(this.state.merchant.isFavorite !== true) {
 this.firstTimeFavoriteCheck();
       }
@@ -104,7 +107,7 @@ this.firstTimeFavoriteCheck();
       api.post("favoriteMerchantAPI", {"body": body}).then(
         response => this.configuration(response.data)
         ).catch(function(error) {
-        console.log(error);
+        //console.log(error);
         })
     }
 
@@ -115,12 +118,15 @@ this.firstTimeFavoriteCheck();
     var hspHighest = 0;
     colors.forEach(function(color) {
         var lightness = lightOrDark(color);
-        if (lightness > hspHighest) {
+        if (lightness > hspHighest && lightness < 200) {
             hspHighest = lightness;
             highestColor = color;
         }
     });
-    this.setState({cardColor: hexToRgbA(highestColor)});
+    var hsla = hexToRgbA(highestColor);
+    this.setState({cardColor: hsla});
+    var merchantId = this.props.merchant.id;
+    this.props.colorSave({color: hsla, id: merchantId});
   }
 
   if (error) {
@@ -136,8 +142,8 @@ this.firstTimeFavoriteCheck();
 
     // Not ideal - deal with how react does this later
 
-    console.log("THIS MERCHANT!!");
-    console.log(this.props.merchant);
+    //console.log("THIS MERCHANT!!");
+    //console.log(this.props.merchant);
 
     this.lightestColorGen()
     //styleGuideColorGen()
@@ -150,7 +156,9 @@ styleGuideColorGen() {
 
 lightestColorGen() {
   if (typeof this.props.merchant !== 'undefined') {
-    getColors(this.props.merchant.coverPhoto).then(colors => {
+    getColors(this.props.merchant.logo).then(colors => {
+      // Should probably rewrite to make better use of chroma.js functions
+      var colorsHSLA = colors.map(color => color.hsl());
       var colorsHex = colors.map(color => color.hex());
       this.lightestColor(colorsHex);
     })
@@ -163,17 +171,26 @@ componentWillUnmount() {
 
   render() {
 
+ 
     if (!this.state.data) {
       return <div />
   }
+  var MessageText = MessageTextWhite;
+  var Call = CallWhite;
+  var Map = MapWhite
+
+
+
+  if(this.props.router.location.pathname.includes("detail")) {
+    MessageText = MessageTextPurple;
+    Call = CallPurple;
+    Map = MapPurple;
+  }
   const { bgIsLoaded } = this.state;
-  //console.log("further bad days");
-  //console.log(this.props);
-  //console.log(this.state);
 
     return (
     <div className="card titlecard" onClick={this.routeChange} data-image={this.state.merchant.coverPhoto} style={{backgroundImage: `url(${!bgIsLoaded ? <GrayCard />: this.state.merchant.coverPhoto})`} || <Skeleton />}>
-    <div className="layer" style={{backgroundColor : this.state.cardColor}}></div>
+    <div className="layer" style={{backgroundColor : this.state.cardColor}}>{/*this.state.cardColor*/}</div>
     <div className="graycard"></div>
     {/*<div className="layer"></div>*/}
       <div className="card-left">
@@ -183,9 +200,9 @@ componentWillUnmount() {
       </div>
       <div className="card-right">
       {this.state.merchant.isFavorite ? (
-        <img className={`card-favorite`} onClick={this.handleFavorite} src={Favorite} />
+        <img className={`card-favorite purple-favorite`} onClick={this.handleFavorite} src={Favorite} />
       ) : (
-        <img className={`card-favorite`} onClick={this.handleFavorite} src={UnFavorite} />
+        <img className={`card-favorite white-favorite`} onClick={this.handleFavorite} src={UnFavorite} />
       )}
         
         <div className="card-right-bottom">
@@ -199,7 +216,12 @@ componentWillUnmount() {
                   state: {merchant: this.state.merchant}
           }}><li>Message<img src={MessageText} /></li></Link>
           <a href={"tel:+" + this.state.merchant.phoneNumber}><li>Call<img src={Call} /></li></a>
-          <Link to="/map"><li>Map<img src={Map} /></li></Link>
+          <Link to={{
+                  pathname: "/map",
+                  state: {merchant_lat: this.state.merchant.latitude,
+                    merchant_lng: this.state.merchant.longitude
+                  }
+          }}><li>Map<img src={Map} /></li></Link>
           </ul>
               </div>
         </div>
@@ -220,7 +242,7 @@ componentWillUnmount() {
 const mapStateToProps = (state) => {
   return {
     //general: state.general,
-    color: state.saveColor,
+    color: state.color,
     firstFavorite: state.firstFavorite,
     router: state.router,
   };
@@ -228,7 +250,7 @@ const mapStateToProps = (state) => {
 
 function mapDispatchToProps(dispatch) {
   //return bindActionCreators({saveColor}, dispatch);
-  let actions = bindActionCreators({ saveColor, firstFavoriteSave }, dispatch);
+  let actions = bindActionCreators({ colorSave, firstFavoriteSave }, dispatch);
   return { ...actions, dispatch };
 }
 
@@ -283,7 +305,10 @@ function hexToRgbA(hex) {
       rgba = rgba.substring(5, rgba.length-1)
          .replace(/ /g, '')
          .split(',');
-      return RGBAToHSLA(rgba[0], rgba[1], rgba[2], rgba[3]);
+         console.log("HSLA HERE");
+         var hsla = RGBAToHSLA(rgba[0], rgba[1], rgba[2], rgba[3]);
+         console.log(hsla);
+      return hsla;
   }
   throw new Error('Bad Hex');
 }
@@ -294,10 +319,12 @@ function RGBAToHSLA(r,g,b,a) {
   g = parseInt(g);
   b = parseInt(b);
 
+  console.log("red " + r);
+  console.log("green " + g);
+  console.log("blue " + b);
+
 // TODO: Worry about color correction later
 
-
-  //alert(r + g + b);
 
 
 /*if(r + g + b > 650) {
@@ -350,6 +377,11 @@ window.rand = window.rand - 100;
   s = +(s * 100).toFixed(1);
   l = +(l * 100).toFixed(1);
 
-  var hsla = "hsla(" + h + "," + 100 + "%," +l + "%," + a + ")";
+
+  var hsla = "hsla(" + h + "," + "50" + "%," + "50" + "%," + a + ")";
   return hsla;
+}
+
+function generateRandomInteger(min, max) {
+  return Math.floor(min + Math.random()*(max + 1 - min))
 }
