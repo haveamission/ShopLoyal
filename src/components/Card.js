@@ -42,6 +42,32 @@ class Card extends Component {
     this.handleLinks = this.handleLinks.bind(this);
   }
 
+createChatLink() {
+
+var path = "/chat/" + this.state.merchant.id;
+if(this.props.merchant.id === 0) {
+path = "#";
+}
+
+  return path;
+}
+
+createCallLink() {
+var path = "tel:+" + this.state.merchant.phoneNumber;
+if(this.props.merchant.id === 0) {
+path = "#";
+}
+return path;
+}
+
+  createMapLink() {
+  var path = "/map";
+  if(this.props.merchant.id === 0) {
+path = "#";
+  }
+  return path;
+  }
+
   static getDerivedStateFromProps(props, state) {
     // Normalizing the data, as react adds an object wrapper sometimes
 
@@ -60,6 +86,11 @@ class Card extends Component {
   }
 
   routeChange =(e) => {
+    if(this.props.merchant.id === 0) {
+      e.stopPropagation();
+      console.log("prevent propagation");
+      return;
+    }
     if(e.target.nodeName == "LI" || e.target.nodeName == "a") {
     return;
     }
@@ -96,6 +127,9 @@ class Card extends Component {
     }
   
   handleFavorite(e) {
+    if(this.props.merchant.id === 0) {
+return;
+    }
     e.stopPropagation();
     if(this.props.keycloak.authenticated) {
       if(this.state.merchant.isFavorite !== true) {
@@ -212,12 +246,12 @@ componentWillUnmount() {
           <div className="card-nav">
           <ul>
           <Link to={{
-                  pathname: "/chat/" + this.state.merchant.id,
+                  pathname: this.createChatLink(),
                   state: {merchant: this.state.merchant}
           }}><li>Message<img src={MessageText} /></li></Link>
-          <a href={"tel:+" + this.state.merchant.phoneNumber}><li>Call<img src={Call} /></li></a>
+          <a href={this.createCallLink()}><li>Call<img src={Call} /></li></a>
           <Link to={{
-                  pathname: "/map",
+                  pathname: this.createMapLink(),
                   state: {merchant_lat: this.state.merchant.latitude,
                     merchant_lng: this.state.merchant.longitude
                   }

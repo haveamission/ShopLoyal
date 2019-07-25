@@ -78,7 +78,9 @@ text: "Bring these to your local merchants to redeem promotions or rewards!",
     this.state.list.push(<PromoCard data={promo2} key={promo2.id} merchant_id={this.props.merchant.merchant.id}/>)
     this.setState({isLoading: false});
     // Switch into a string repo with string formatting after MVP
+    if(this.props.profile !== null) {
     this.setState({"bubblemsg":"Hey " + this.props.profile.givenName + ", Welcome to ShopLoyal! Swipe to learn more!", "bubbleid":0});
+    }
   }
 
 containerRef = React.createRef();
