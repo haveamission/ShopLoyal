@@ -1,4 +1,4 @@
-#messages {
+/*#messages {
   width: 96%;
   left: 2%;
   right: 2%;
@@ -20,13 +20,13 @@
   border-radius: 5px;
   display: inline-block;
   /*margin: 0 20px;*/
-  text-align: left;
+/*text-align: left;
 }
 .message div {
   padding: 6px 10px;
   display: inline-block;
   margin: 0 2em 1em 2em;
-  color: #BBBBBB;
+  color: #8E8E93;
   font-size: 1em;
 }
 .message.left span {
@@ -35,4 +35,4 @@
 .message.right span {
   color: #FFFFFF;
   background-color: #536DFE;
-}
+}*/

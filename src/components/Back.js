@@ -7,18 +7,18 @@ class Back extends Component {
     constructor() {
         super()
         this.goBack = this.goBack.bind(this);
-      }
+    }
 
     goBack() {
         this.props.goBack();
-      }
+    }
     render() {
-        return(
-<div className="linkback" onClick={this.goBack}>
-<div className="triangle" />
-</div>
-)
+        return (
+            <div className="linkback" onClick={this.goBack}>
+                <div className="triangle" />
+            </div>
+        )
     }
-    }
+}
 
-export default connect(null,{goBack})(Back);
+export default connect(null, { goBack })(Back);

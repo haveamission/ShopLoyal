@@ -4,39 +4,39 @@ import { connect } from 'react-redux'
 import * as reducers from '../reducers'
 import { withKeycloak } from 'react-keycloak';
 import searchSave from '../actions/search'
-import {bindActionCreators} from 'redux'
+import { bindActionCreators } from 'redux'
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
 
   <Route {...rest} render={props => (
     rest.keycloak.authenticated ? (
-      <Component {...props}/>
+      <Component {...props} />
     ) : (
-      // TODO: This logic is tortured, and should be cleaned and refactored time permitting
-      (rest.idprovider ? (
-        rest.keycloak.login({idpHint: rest.idprovider, cordovaOptions: { zoom: "no", hardwareback: "yes" }}),
-        <Redirect to={{
-          pathname: '/login',
-          state: { from: props.location }
-        }}/>
-        ):(
-      <Redirect to={{
-        pathname: '/login',
-        state: { from: props.location }
-      }}/>))
-    )
-  )}/>
+        // TODO: This logic is tortured, and should be cleaned and refactored time permitting
+        (rest.idprovider ? (
+          rest.keycloak.login({ idpHint: rest.idprovider, cordovaOptions: { zoom: "no", hardwareback: "yes" } }),
+          <Redirect to={{
+            pathname: '/login',
+            state: { from: props.location }
+          }} />
+        ) : (
+            <Redirect to={{
+              pathname: '/login',
+              state: { from: props.location }
+            }} />))
+      )
+  )} />
 )
 
-    const mapStateToProps = (state) => {
-        return {
-          idprovider: state.idprovider
-        };
-      };
+const mapStateToProps = (state) => {
+  return {
+    idprovider: state.idprovider
+  };
+};
 
-      function mapDispatchToProps(dispatch) {
-        let actions =  bindActionCreators({ searchSave }, dispatch);
-        return { ...actions, dispatch };
-      }
+function mapDispatchToProps(dispatch) {
+  let actions = bindActionCreators({ searchSave }, dispatch);
+  return { ...actions, dispatch };
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(withKeycloak(PrivateRoute));

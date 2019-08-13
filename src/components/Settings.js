@@ -23,7 +23,7 @@ class Settings extends Component {
   }
 
   configuration(data) {
-this.setState({profile: data});
+    this.setState({ profile: data });
   }
 
   getSettings() {
@@ -35,35 +35,35 @@ this.setState({profile: data});
 
     axios.get(API.prodBaseUrlString + API.settings, config).then(
       response => this.loadSettings(response.data)
-      ).catch(function(error) {
+    ).catch(function (error) {
       console.log(error);
-      })
+    })
   }
 
   loadSettings(data) {
-//console.log(data);
-this.setState(data);
+    //console.log(data);
+    this.setState(data);
   }
 
 
   componentDidMount() {
 
-    if(this.props.keycloak.authenticated) {
+    if (this.props.keycloak.authenticated) {
 
       var api = new API(this.props.keycloak);
       api.get("userProfileAPI").then(
         response => this.configuration(response.data)
-        ).catch(function(error) {
+      ).catch(function (error) {
         console.log(error);
-        })
+      })
 
-this.getSettings();
+      this.getSettings();
 
+    }
+    else {
+      // this.props.dispatch(push("/login"));
+    }
   }
-  else {
-   // this.props.dispatch(push("/login"));
-  }
-}
 
   render() {
     //console.log("state here");
@@ -73,17 +73,17 @@ this.getSettings();
       return (
         <div />
       )
-  }
+    }
 
     return (
       <div>
-  <div className="settings">
-      <ProfileSettings profile={this.state.profile}/>
-      <MainSettings data={this.state} />
-      <LogoutSettings />
-  </div>
-  </div>
-)
+        <div className="settings">
+          <ProfileSettings profile={this.state.profile} />
+          <MainSettings data={this.state} />
+          <LogoutSettings />
+        </div>
+      </div>
+    )
   }
 }
 
@@ -95,19 +95,19 @@ class ProfileSettings extends React.Component {
 
     //console.log(this.props);
     return (
-<div>
-<h3 className="profile-name">{this.props.profile.name}</h3>
-<div className="profile-email">{this.props.profile.email}</div>
-</div>
-  )
+      <div>
+        <h3 className="profile-name">{this.props.profile.name}</h3>
+        <div className="profile-email">{this.props.profile.email}</div>
+      </div>
+    )
+  }
 }
-}
-  
-const Images = (props) => ( 
+
+const Images = (props) => (
   props.images.map((image, i) =>
     <div key={i} className='fadein'>
-      <div 
-        onClick={() => props.removeImage(image.public_id)} 
+      <div
+        onClick={() => props.removeImage(image.public_id)}
         className='delete'
       >
         <FontAwesomeIcon icon={faTimesCircle} size='2x' />
@@ -115,75 +115,75 @@ const Images = (props) => (
       <img src={image.secure_url} alt='' />
     </div>
   )
-  );
-  
+);
+
 const Buttons = (props) => (
   <div className='buttons fadein'>
     <div className='button'>
       <label htmlFor='single'>
         <FontAwesomeIcon icon={faImage} color='#3B5998' size='10x' />
       </label>
-      <input type='file' id='single' onChange={props.onChange} /> 
+      <input type='file' id='single' onChange={props.onChange} />
     </div>
   </div>
-  );
+);
 
- class UploadImage extends Component {
-  
-    state = {
-      uploading: false,
-      images: []
-    }
-  
-    onChange = e => {
-      const files = Array.from(e.target.files)
-      this.setState({ uploading: true })
-  
-      const formData = new FormData()
-  
-      files.forEach((file, i) => {
-        formData.append(i, file)
-      })
-  
-      /*fetch(`${API_URL}/image-upload`, {
-        method: 'POST',
-        body: formData
-      })
-      .then(res => res.json())
-      .then(images => {
-        this.setState({ 
-          uploading: false,
-          images
-        })
-      })*/
-    }
-  
-    removeImage = id => {
-      this.setState({
-        images: this.state.images.filter(image => image.public_id !== id)
-      })
-    }
-    
-    render() {
-      const { uploading, images } = this.state
-  
-      const content = () => {
-        switch(true) {
-          case uploading:
-            return <Loading />
-          case images.length > 0:
-            return <Images images={images} removeImage={this.removeImage} />
-          default:
-            return <Buttons onChange={this.onChange} />
-        }
-      }
-  
-      return (
-        <div>
-          <div className='buttons'>
-            {content()}
-          </div>
-        </div>
-      )
-    }
+class UploadImage extends Component {
+
+  state = {
+    uploading: false,
+    images: []
   }
+
+  onChange = e => {
+    const files = Array.from(e.target.files)
+    this.setState({ uploading: true })
+
+    const formData = new FormData()
+
+    files.forEach((file, i) => {
+      formData.append(i, file)
+    })
+
+    /*fetch(`${API_URL}/image-upload`, {
+      method: 'POST',
+      body: formData
+    })
+    .then(res => res.json())
+    .then(images => {
+      this.setState({ 
+        uploading: false,
+        images
+      })
+    })*/
+  }
+
+  removeImage = id => {
+    this.setState({
+      images: this.state.images.filter(image => image.public_id !== id)
+    })
+  }
+
+  render() {
+    const { uploading, images } = this.state
+
+    const content = () => {
+      switch (true) {
+        case uploading:
+          return <Loading />
+        case images.length > 0:
+          return <Images images={images} removeImage={this.removeImage} />
+        default:
+          return <Buttons onChange={this.onChange} />
+      }
+    }
+
+    return (
+      <div>
+        <div className='buttons'>
+          {content()}
+        </div>
+      </div>
+    )
+  }
+}

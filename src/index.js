@@ -1,50 +1,50 @@
 /* eslint-disable import/first */
-import React, { Component } from 'react'
-import { render } from 'react-dom'
-import { ConnectedRouter } from 'connected-react-router'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import registerServiceWorker from './registerServiceWorker';
-import { push } from 'connected-react-router'
+import React, { Component } from "react";
+import { render } from "react-dom";
+import { ConnectedRouter } from "connected-react-router";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import registerServiceWorker from "./registerServiceWorker";
+import { push } from "connected-react-router";
 import "@babel/polyfill";
-import { AnimatedSwitch } from 'react-router-transition';
-import initReactFastclick from 'react-fastclick';
+import { AnimatedSwitch } from "react-router-transition";
+import initReactFastclick from "react-fastclick";
+import ReactTooltip from "react-tooltip";
 
 initReactFastclick();
 //import appsFlyer from 'cordova-plugin-appsflyer-sdk';
 
 // Import Components
 //import App from './App';
-import Layout from './components/Layout'
-import configureStore, { history } from './store'
-import Map from './components/Map';
-import Cards from './components/Cards';
-import CardRow from './components/CardRow';
-import PrivateRoute from './containers/PrivateRoute';
+import Layout from "./components/Layout";
+import configureStore, { history } from "./store";
+import Map from "./components/Map";
+import Cards from "./components/Cards";
+import CardRow from "./components/CardRow";
+import PrivateRoute from "./containers/PrivateRoute";
 //import NewChat from './components/NewChat';
-import Chat from './components/Chat';
-import Detail from './components/Detail';
-import Loading from './components/Loading';
-import LoginPage from './components/LoginPage';
-import Settings from './components/Settings';
-import Support from './components/Support';
-import Privacy from './components/Privacy';
-import Error from './components/Error';
-import FavMerchants from './components/FavMerchants';
-import Dummy from './components/Dummy';
-import Header from './components/Header';
-import Terms from './components/Terms';
+import Chat from "./components/Chat";
+import Detail from "./components/Detail";
+import Loading from "./components/Loading";
+import LoginPage from "./components/LoginPage";
+import Settings from "./components/Settings";
+import Support from "./components/Support";
+import Privacy from "./components/Privacy";
+import Error from "./components/Error";
+import FavMerchants from "./components/FavMerchants";
+import Dummy from "./components/Dummy";
+import Header from "./components/Header";
+import Terms from "./components/Terms";
+import Contact from "./components/Contact";
+import BackgroundProcess from "./components/BackgroundProcess";
 
 // Import Styles
-import './bootstrap2-toggle.min.css';
-import './index.css';
-import './styles/main.css';
-import Toggle from 'react-bootstrap-toggle';
-import {
-  CSSTransition,
-  TransitionGroup
-} from 'react-transition-group';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import "./bootstrap2-toggle.min.css";
+import "./index.css";
+import "./styles/main.css";
+import Toggle from "react-bootstrap-toggle";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 //import 'bootstrap/dist/css/bootstrap.css';
 
 // Import Config
@@ -54,136 +54,154 @@ import 'react-toastify/dist/ReactToastify.css';
 
 // Redux
 //import { combineReducers } from 'redux'
-import { Provider, ReactReduxContext } from 'react-redux'
-import { PersistGate } from 'redux-persist/es/integration/react'
+import { Provider, ReactReduxContext } from "react-redux";
+import { PersistGate } from "redux-persist/es/integration/react";
 //import createHistory from 'history/createBrowserHistory'
 // Keycloak
-import Keycloak from 'keycloak-js';
-import { KeycloakProvider } from 'react-keycloak';
-import keycloak_config from './keycloak.json';
-const {store, persistor} = configureStore(history)
+import Keycloak from "keycloak-js";
+import { KeycloakProvider } from "react-keycloak";
+import keycloak_config from "./keycloak.json";
+const { store, persistor } = configureStore(history);
 const keycloak = new Keycloak(keycloak_config);
 
 // Redux Actions
-import { addTokens } from './actions/tokens';
-import getLocation from './actions/location'
-import {engagementSave, openedFromPushSave} from './actions/analytics'
+import { addTokens } from "./actions/tokens";
+import getLocation from "./actions/location";
+import { engagementSave, openedFromPushSave } from "./actions/analytics";
 
+//var url = localStorage.getItem("url");
 
 //userManager.signinRedirect();
 const startApp = () => {
-// Initialize
+  // Initialize
 
-//window.open = window.cordova.InAppBrowser.open;
+  //window.open = window.cordova.InAppBrowser.open;
 
+  //window.cordova.plugins.Keyboard.hideFormAccessoryBar(true);
 
-//window.cordova.plugins.Keyboard.hideFormAccessoryBar(true);
-
-const onEvent = (event, error) => {
-  //console.log('onKeycloakEvent', event, error);
-  if (typeof error !== undefined) {
-    switch (event) {
-      case 'onAuthSuccess':
-        break;
-      case 'onAuthLogout':
-        store.dispatch(push("/login"));
-        break;
-      case 'onTokenExpired':
-        break;
-      case 'onAuthError':
-      default:
-        break;
+  const onEvent = (event, error) => {
+    //console.log('onKeycloakEvent', event, error);
+    if (typeof error !== undefined) {
+      switch (event) {
+        case "onAuthSuccess":
+          break;
+        case "onAuthLogout":
+          store.dispatch(push("/login"));
+          break;
+        case "onTokenExpired":
+          break;
+        case "onAuthError":
+        default:
+          break;
+      }
     }
+  };
+
+  if (window.plugins) {
+    appsflyerInit();
+    oneSignal();
   }
-};
 
-if(window.plugins) {
-appsflyerInit();
-oneSignal();
-}
+  var o = XMLHttpRequest.prototype.open;
+  XMLHttpRequest.prototype.open = function() {
+    var res = o.apply(this, arguments);
+    var err = new Error();
+    this.setRequestHeader("Origin", "ShopLoyal");
+    return res;
+  };
 
-function myhandler(previousRoute, nextRoute) {
-//console.log(previousRoute);
-//console.log(nextRoute);
-}
-// Sets initial location state - possibly set as a watch event
-//store.dispatch(openedFromPushSave(true));
+  function myhandler(previousRoute, nextRoute) {
+    //console.log(previousRoute);
+    //console.log(nextRoute);
+  }
+  // Sets initial location state - possibly set as a watch event
+  //store.dispatch(openedFromPushSave(true));
 
+  var tokens = store.getState().tokens;
 
-var tokens = store.getState().tokens;
-
-
-render(
-  (
-<KeycloakProvider
-    keycloak={keycloak}
-    onEvent={(event, error) => {
-    }}
-    onTokens={tokens => {
-      store.dispatch(addTokens(tokens));
-      store.dispatch(push("/"));
-      //history.pushState(null, '/');
-    }}
-    initConfig={{
-      onLoad: 'check-sso',
-      flow: 'hybrid',
-      ...tokens,
-      checkLoginIframe: true,
-    }
-    }
-    onAuthSuccess={event => {
-    }}
-
+  render(
+    <KeycloakProvider
+      keycloak={keycloak}
+      onEvent={(event, error) => {}}
+      onTokens={tokens => {
+        store.dispatch(addTokens(tokens));
+        store.dispatch(push("/"));
+        //history.pushState(null, '/');
+      }}
+      initConfig={{
+        onLoad: "check-sso",
+        flow: "hybrid",
+        ...tokens,
+        checkLoginIframe: true
+      }}
+      onAuthSuccess={event => {}}
     >
-    <Provider store={store} context={ReactReduxContext}>
-    <PersistGate loading={<Loading />} persistor={persistor}>
-    <ConnectedRouter history={history} context={ReactReduxContext}>
-    <Layout>
-    <Route
-    onUpdate={() => window.scrollTo(0, 0)}
-    onChange={pathChange}
-          render={({ location }) => {
-            const { pathname } = location;
-            return (
-    <Route
-    onUpdate={() => window.scrollTo(0, 0)}
-                    location={location}
-                    render={() => (
-                      <AnimatedSwitch
-                      atEnter={{ opacity: 0 }}
-                      atLeave={{ opacity: 0}}
-                      atActive={{ opacity: 1 }}
-                      className="switch-wrapper"
-                    >
-        <Route exact path="/login" component={LoginPage} />
-        <Route path="/error/" component={Error} />
-        <PrivateRoute exact path="/settings" component={Settings} />
-        <PrivateRoute exact path="/" component={Cards} />
-        <PrivateRoute exact path="/map/" component={Map} />
-        <PrivateRoute exact path="/cards/" component={Cards} />
-        <PrivateRoute exact path="/cardrow/" component={CardRow} />
-        <PrivateRoute path="/chat/" component={Chat} />
-        <PrivateRoute path="/detail/" component={Detail} />
-        <PrivateRoute path="/support/" component={Support} />
-        <PrivateRoute path="/privacy/" component={Privacy} />
-        <PrivateRoute path="/terms/" component={Terms} />
-        <PrivateRoute path="/favmerchants/" component={FavMerchants} />
-      </AnimatedSwitch>
-    )}
-    />
-            );
-          }}
-          />
-          <ToastContainer />
-      </Layout>
-    </ConnectedRouter>
-    </PersistGate>
-  </Provider>
-  </KeycloakProvider>
+      <Provider store={store} context={ReactReduxContext}>
+        <PersistGate loading={<Loading />} persistor={persistor}>
+          <ConnectedRouter history={history} context={ReactReduxContext}>
+            <Layout>
+              <Route
+                onUpdate={() => window.scrollTo(0, 0)}
+                onChange={pathChange}
+                render={({ location }) => {
+                  const { pathname } = location;
+                  return (
+                    <Route
+                      onUpdate={() => window.scrollTo(0, 0)}
+                      location={location}
+                      render={() => (
+                        <AnimatedSwitch
+                          atEnter={{ opacity: 0 }}
+                          atLeave={{ opacity: 0 }}
+                          atActive={{ opacity: 1 }}
+                          className="switch-wrapper"
+                        >
+                          <Route exact path="/login" component={LoginPage} />
+                          <Route path="/error/" component={Error} />
+                          <PrivateRoute
+                            exact
+                            path="/settings"
+                            component={Settings}
+                          />
+                          <PrivateRoute exact path="/" component={Cards} />
+                          <PrivateRoute exact path="/map/" component={Map} />
+                          <PrivateRoute
+                            exact
+                            path="/cards/"
+                            component={Cards}
+                          />
+                          <PrivateRoute
+                            exact
+                            path="/cardrow/"
+                            component={CardRow}
+                          />
+                          <PrivateRoute path="/chat/" component={Chat} />
+                          <PrivateRoute path="/detail/" component={Detail} />
+                          <PrivateRoute path="/support/" component={Support} />
+                          <PrivateRoute path="/privacy/" component={Privacy} />
+                          <PrivateRoute path="/contact/" component={Contact} />
+                          <PrivateRoute path="/terms/" component={Terms} />
+                          <PrivateRoute
+                            path="/favmerchants/"
+                            component={FavMerchants}
+                          />
+                        </AnimatedSwitch>
+                      )}
+                    />
+                  );
+                }}
+              />
+              <ToastContainer />
+            </Layout>
+          </ConnectedRouter>
+        </PersistGate>
+      </Provider>
+    </KeycloakProvider>,
 
-), document.getElementById('root'));
-registerServiceWorker();
-}
+    document.getElementById("root")
+  );
+  registerServiceWorker();
+};
 
 function pathChange(previousRoute, nextRoute) {
   //do your logic here
@@ -191,13 +209,13 @@ function pathChange(previousRoute, nextRoute) {
 
 function appsflyerInit() {
   var options = {
-    devKey: '5TgbTvDgXuQkN5sdxBEGa8', // your AppsFlyer devKey
-    isDebug: true,
+    devKey: "5TgbTvDgXuQkN5sdxBEGa8", // your AppsFlyer devKey
+    isDebug: true
   };
 
   var userAgent = window.navigator.userAgent.toLowerCase();
-  if (/iphone|ipad|ipod/.test( userAgent )) {
-    options.appId = '1458126556'; // your ios app id in app store
+  if (/iphone|ipad|ipod/.test(userAgent)) {
+    options.appId = "1458126556"; // your ios app id in app store
   }
 
   var onSuccess = function(result) {
@@ -212,22 +230,24 @@ function appsflyerInit() {
 }
 
 function oneSignal() {
-    // Enable to debug issues.
-    //window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
+  // Enable to debug issues.
+  //window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
 
-    var notificationOpenedCallback = function(jsonData) {
-      console.log('notificationOpenedCallback: ' + JSON.stringify(jsonData));
-    };
+  var notificationOpenedCallback = function(jsonData) {
+    console.log("notificationOpenedCallback: " + JSON.stringify(jsonData));
+  };
 
-    window.plugins.OneSignal
-      .startInit("2f19cafc-d4ab-4b01-aecd-dd7961b3b8e3")
-      .handleNotificationOpened(notificationOpenedCallback)
-      .endInit();
-
+  window.plugins.OneSignal.startInit("2f19cafc-d4ab-4b01-aecd-dd7961b3b8e3")
+    .handleNotificationOpened(notificationOpenedCallback)
+    .inFocusDisplaying("None")
+    .handleNotificationReceived(function(jsonData) {
+      window.cordova.plugins.notification.badge.increase(1, function(badge) {});
+    })
+    .endInit();
 }
 
-if(!window.cordova) {
-  startApp()
+if (!window.cordova) {
+  startApp();
 } else {
-  document.addEventListener('deviceready', startApp, false)
+  document.addEventListener("deviceready", startApp, false);
 }

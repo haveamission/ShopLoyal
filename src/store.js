@@ -1,28 +1,28 @@
 //import storage from 'redux-persist/es/storage'
-import { apiMiddleware } from 'redux-api-middleware';
-import { createFilter   } from 'redux-persist-transform-filter';
-import { persistReducer, persistStore } from 'redux-persist'
-import { routerMiddleware } from 'connected-react-router'
-import rootReducer from './reducers/index'
-import createRootReducer from './reducers/index'
-import { createBrowserHistory } from 'history'
-import {createHashHistory} from 'history'
-import reducers from './reducers/index'
-import localForage from 'localforage';
-import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
-import getLocation from './actions/location'
-import {engagementSave, openedFromPushSave} from './actions/analytics'
+import { apiMiddleware } from "redux-api-middleware";
+import { createFilter } from "redux-persist-transform-filter";
+import { persistReducer, persistStore } from "redux-persist";
+import { routerMiddleware } from "connected-react-router";
+import rootReducer from "./reducers/index";
+import createRootReducer from "./reducers/index";
+import { createBrowserHistory } from "history";
+import { createHashHistory } from "history";
+import reducers from "./reducers/index";
+import localForage from "localforage";
+import { createStore, applyMiddleware, combineReducers, compose } from "redux";
+import getLocation from "./actions/location";
+import { engagementSave, openedFromPushSave } from "./actions/analytics";
 //import createOidcMiddleware from "redux-oidc";
 //import userManager from './config/OIDC';
 
 //export const history = createBrowserHistory()
 
-export const history = createHashHistory()
+export const history = createHashHistory();
 
 const persistConfig = {
-  key: 'root',
-  storage: localForage,
-}
+  key: "root",
+  storage: localForage
+};
 
 const loggerMiddleware = store => next => action => {
   //console.log("Action type:", action.type);
@@ -33,22 +33,25 @@ const loggerMiddleware = store => next => action => {
   //alert(JSON.stringify(store.getState()));
 };
 
-function promiseMiddleware({dispatch}) {
+function promiseMiddleware({ dispatch }) {
   function isPromise(val) {
-    return val && typeof val.then === 'function';
+    return val && typeof val.then === "function";
   }
 
   return next => action => {
     return isPromise(action.payload)
       ? action.payload.then(
-          result => dispatch({...action, payload: result}),
-          error => dispatch({...action, payload: error, error: true })
+          result => dispatch({ ...action, payload: result }),
+          error => dispatch({ ...action, payload: error, error: true })
         )
       : next(action);
   };
 }
 
-const persistedReducer = persistReducer(persistConfig, createRootReducer(history))
+const persistedReducer = persistReducer(
+  persistConfig,
+  createRootReducer(history)
+);
 
 function configureStore(preloadedState) {
   const store = createStore(
@@ -60,15 +63,15 @@ function configureStore(preloadedState) {
         loggerMiddleware,
         routerMiddleware(history),
         apiMiddleware,
-        promiseMiddleware,
-      ),
-    ),
-  )
+        promiseMiddleware
+      )
+    )
+  );
 
-  return store
+  return store;
 }
 
-export default (history) => {
+export default history => {
   let store = configureStore(history);
   /*loadUser(store, userManager)
   .then((user) => {
@@ -86,22 +89,23 @@ export default (history) => {
     // App initialization after store is rehydrated
     var engagement = store.getState().analytics.engagement + 1;
     store.dispatch(engagementSave(engagement));
-    store.dispatch(getLocation());
-    if(engagement === 2 || engagement === 4) {
+    if (window.Cordova) {
+      store.dispatch(getLocation());
+    }
+    if (engagement === 2 || engagement === 4) {
       trackEngagement();
-      }
-  })
-  store.subscribe( () => {
-   
+    }
+  });
+  store.subscribe(() => {
     //console.log('state data\n', store.getState());
     //debugger;
   });
 
-  return { store, persistor }
-}
+  return { store, persistor };
+};
 
 function trackEngagement() {
-  if(window.plugins) {
-window.plugins.appsFlyer.trackEvent('af_re_engage', {});
+  if (window.plugins) {
+    window.plugins.appsFlyer.trackEvent("af_re_engage", {});
   }
 }

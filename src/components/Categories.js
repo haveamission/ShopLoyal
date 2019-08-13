@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import categories from '../actions/categories'
-import {bindActionCreators} from 'redux'
+import { bindActionCreators } from 'redux'
 import { connect } from "react-redux";
 
 class Categories extends Component {
@@ -8,47 +8,47 @@ class Categories extends Component {
     super();
     this.state = {
       cats: ["All", "Shop", "Food", "Fun", "Salon", "Tech", "Health"],
-        }
+    }
   }
 
 
 
   componentDidMount() {
-    this.setState({selectedCat: this.props.category.category});
+    this.setState({ selectedCat: this.props.category.category });
 
   }
   rootClassNames(cat) {
-    if(this.state.selectedCat == "" && cat == "All") {
+    if (this.state.selectedCat == "" && cat == "All") {
       return "selected"
     }
-    else if(cat === this.state.selectedCat) {
+    else if (cat === this.state.selectedCat) {
       return "selected"
     }
   }
 
   handleClick = (cat) => {
-var value = cat;
-if(value === "All") {
-  value = "";
-}
-this.setState({selectedCat: value});
-this.props.categories(value);
+    var value = cat;
+    if (value === "All") {
+      value = "";
+    }
+    this.setState({ selectedCat: value });
+    this.props.categories(value);
   }
 
-  render(){
+  render() {
     //console.log("states and props categories");
     //console.log(this.state);
     //console.log(this.props);
-    return(
+    return (
       <ul className="categories">
-          {this.state.cats.map( cat =>
-     <li className={this.rootClassNames(cat)} onClick={() => this.handleClick(cat)} key={cat}>{cat}</li>
-  )}
-    </ul>
-  );
+        {this.state.cats.map(cat =>
+          <li className={this.rootClassNames(cat)} onClick={() => this.handleClick(cat)} key={cat}>{cat}</li>
+        )}
+      </ul>
+    );
+  }
 }
-}
-  
+
 const mapStateToProps = (state) => {
   return {
     category: state.categories,

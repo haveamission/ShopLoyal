@@ -5,8 +5,21 @@
   bottom: 0;
   overflow-y: scroll;
   overflow-x: hidden;
-  height: 70vh;
-  padding-bottom: 5em;
+  -webkit-overflow-scrolling: touch;
+  height: 75vh;
+  z-index: 100;
+  -webkit-transform: translate3d(0, 0, 0) !important;
+  transform: translate3d(0, 0, 0) !important;
+  cursor: pointer;
+}
+.bottom-scroll {
+  bottom: 0;
+  height: 2rem;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+.bottom-scroll.active {
+  height: 10rem;
 }
 .message {
   width: 100%;
@@ -26,25 +39,26 @@
   padding: 6px 10px;
   display: block;
   margin: 0 20px 8px 20px;
-  color: #BBBBBB;
+  color: #bbbbbb;
   font-size: 1em;
 }
 .message.left span {
-  background-color: #CCCCCC;
+  background-color: #cccccc;
   margin-left: 2em;
 }
 .message.right span {
-  color: #FFFFFF;
+  color: #ffffff;
   margin-right: 2em;
-  background-color: #536DFE;
+  background-color: #536dfe;
 }
 #messages-container {
-height: 50vh;
-position: fixed;
-width: 100%;
-touch-action: none;
--webkit-transform: translate3d(0,0,0);
-transform: translate3d(0,0,0);
+  height: 80vh;
+  position: fixed;
+  width: 100%;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  z-index: 99;
+  cursor: pointer;
 }
 
 .msginput {
@@ -52,6 +66,7 @@ transform: translate3d(0,0,0);
   border-bottom: none;
   z-index: 100;
   bottom: 0vh;
+  /*top: calc(100vh - (6em + env(safe-area-inset-bottom)));*/
   top: calc(100vh - 6em);
   left: 0;
   position: fixed;
@@ -59,12 +74,11 @@ transform: translate3d(0,0,0);
   background-color: #fff;
   padding-bottom: 10em;
   margin-bottom: 0px;
-  -webkit-transform: translate3d(0,0,0);
-  transform: translate3d(0,0,0);
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
   height: 5em;
-  -webkit-transition: .3s;
-  transition: .3s;
-    
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
 }
 .msginput textarea {
   width: 75%;
@@ -78,17 +92,17 @@ transform: translate3d(0,0,0);
   background-color: #fff;
   /* margin-top: 1em; */
   /* margin-bottom: 1em; */
-  margin-left: .5em;
+  margin-left: 0.5em;
   font-size: 1.1em;
   /* padding-top: .5em; */
   /* padding-bottom: .5em; */
   max-height: 7rem;
   min-height: 2rem;
-  -webkit-transform: translate3d(0,0,0);
-  transform: translate3d(0,0,0);
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
 .msginput .sendbutton {
-  color: #536DFE;
+  color: #536dfe;
   font-weight: bold;
   font-size: 1.5em;
   /* height: 1em; */
@@ -98,8 +112,8 @@ transform: translate3d(0,0,0);
   /* position: absolute; */
   /* right: .5em; */
   /* margin-top: 1em; */
-  -webkit-transform: translate3d(0,0,0);
-  transform: translate3d(0,0,0);
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
   /* margin-left: -2rem; */
   /* position: absolute; */
   margin-left: 1rem;
@@ -111,11 +125,9 @@ transform: translate3d(0,0,0);
   border: 1px solid#C7C7CC;
   border-radius: 20px;
   margin: 0 auto;
-  padding-top: .5rem;
-  padding-bottom: .5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }
-
-
 
 /* TEST CODE FOR KEYBOARD */
 
