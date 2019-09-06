@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import WebPage from './WebPage'
 
 export default () => (
-    <WebPage url="https://shoployal.com/contact/" />
+    <WebPage url="https://shoployal.com/contact/" title="Contact" />
 )

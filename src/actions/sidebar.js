@@ -1,6 +1,4 @@
-export const Actions = {
-  OPEN_SIDEBAR: 'OPEN_SIDEBAR',
-};
+import Actions from "./actions.js";
 
 export const openSideBar = (sideBarState) => ({
   type: Actions.OPEN_SIDEBAR,

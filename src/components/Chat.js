@@ -1,25 +1,36 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import "./chat.css";
 import Loading from "./Loading";
-import axios from "axios";
 import API from "./API";
-import { bindActionCreators } from "redux";
 import { withKeycloak } from "react-keycloak";
 import TextareaAutosize from "react-autosize-textarea";
+import { useSpring, animated } from "react-spring";
 const moment = require("moment");
-const format = require("string-format");
 
-const messages = [];
+function SlideUpChat(props) {
+  const animationProps = useSpring({
+    from: { transform: "translate3d(0,30%,0)", opacity: 0.25 },
+    to: { transform: "translate3d(0,0%,0)", opacity: 1 }
+  });
+
+  return (
+    <animated.div style={{ ...animationProps }}>
+      {" "}
+      {props.children}{" "}
+    </animated.div>
+  );
+}
 
 function generateMessage(message, index, additionalData) {
-  if (message.recipient == "merchant") {
-    var idval = 1;
-    var position = "right";
-  } else if (message.recipient == "customer") {
-    var idval = 2;
-    var position = "left";
+  var idval;
+  var position;
+  if (message.recipient === "merchant") {
+    idval = 1;
+    position = "right";
+  } else if (message.recipient === "customer") {
+    idval = 2;
+    position = "left";
   }
   return {
     id: message.id,
@@ -56,8 +67,6 @@ class Chat extends Component {
   messagesEndRef = React.createRef();
 
   componentWillMount() {
-    console.log("THIS PROPS CHAT");
-    console.log(this.props);
     document.body.style.position = "fixed";
     var userId = this.props.profile.id;
     this.createChannel(userId);
@@ -84,7 +93,7 @@ class Chat extends Component {
     api
       .post("openChannel", { repl_str: merchant_id })
       .then(response => console.log(JSON.stringify(response.data)))
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
   }
@@ -94,26 +103,18 @@ class Chat extends Component {
   }
 
   loadMessages(data) {
-    //console.log("loaded messages");
-    //console.log(data);
-
     var count = 0;
 
     var messagevals = [];
 
-    data.reverse().forEach(function(obj) {
-      //console.log(obj.message);
+    data.reverse().forEach(function (obj) {
       messagevals.push(generateMessage(obj, count, {}));
       count++;
     });
 
-    //console.log(messagevals);
-
     this.setState({ messages: messagevals });
 
     this.setState({ isLoading: false });
-
-    //console.log(data.map(obj => obj.message));
   }
 
   pullMessages() {
@@ -129,7 +130,7 @@ class Chat extends Component {
         this.loadMessages(response.data);
         this.scrollToBottom();
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
   }
@@ -139,7 +140,7 @@ class Chat extends Component {
     api
       .get("channels")
       .then(response => this.loadChannels(response.data))
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
   }
@@ -152,14 +153,6 @@ class Chat extends Component {
         .toString() +
       "-" +
       userId.toString();
-    console.log("channelId");
-    console.log(channelId);
-    console.log("merchantId");
-    console.log(
-      this.props.location.pathname.substr(
-        this.props.location.pathname.lastIndexOf("/") + 1
-      )
-    );
     var body = {
       merchantId: this.props.location.pathname.substr(
         this.props.location.pathname.lastIndexOf("/") + 1
@@ -169,7 +162,7 @@ class Chat extends Component {
     api
       .post("channel", { body: body })
       .then(response => console.log(response.data))
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
   }
@@ -185,14 +178,12 @@ class Chat extends Component {
     });
 
     window.addEventListener("keyboardDidShow", event => {
-      this.setState({ className: "active" });
+      this.setState({ className: "active", scrolled: false }, () => {
+        this.scrollToBottom();
+      });
       // Describe your logic which will be run each time when keyboard is about to be shown.
       console.log(event.keyboardHeight);
     });
-
-    console.log("did mount again");
-    console.log("LOCATION VALUES");
-    console.log(this.props.location);
 
     if (this.props.location.state) {
       this.setState({ merchantVal: this.props.location.state.merchant });
@@ -214,14 +205,10 @@ class Chat extends Component {
       api
         .get("merchantDetailAPI", { repl_str: merchant_id, query: query })
         .then(response => this.merchantConfiguration(response.data))
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     }
-
-    //console.log(this.state);
-    //console.log("chat props");
-    //console.log(this.props);
 
     this.pullMessages();
     this.interval = setInterval(() => this.updateMessages(), 25000);
@@ -232,15 +219,10 @@ class Chat extends Component {
   }
 
   merchantConfiguration(data) {
-    //console.log("merchant data");
-    //console.log(data);
     this.setState({ merchantVal: data });
-    //console.log("card row data");
-    //console.log(data);
   }
 
   updateMessages() {
-    console.log("update messages");
     this.pullMessages();
     //this.scrollToBottom();
   }
@@ -251,7 +233,6 @@ class Chat extends Component {
       this.setState({ text: "" });
       this.openChannel();
       for (let message of messages) {
-        //console.log(message);
         this.saveMessage(message);
         var messageHydrated = this.addMessageInfo(message);
         this.setState({ messages: [...this.state.messages, messageHydrated] });
@@ -277,9 +258,6 @@ class Chat extends Component {
       message: message
     };
 
-    console.log("BODY GOES HERE");
-    console.log(body);
-
     var api = new API(this.props.keycloak);
 
     var merchant_id = this.props.location.pathname.substr(
@@ -288,7 +266,7 @@ class Chat extends Component {
     api
       .post("merchantSendMessage", { body: body, repl_str: merchant_id })
       .then(response => console.log(response.data))
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
   }
@@ -312,10 +290,11 @@ class Chat extends Component {
   scrollToBottom = () => {
     // Hack due to reference not working for some reason
     if (this.state.scrolled === false) {
+      console.log("scrolls to bottom!");
+      // TODO switch to react refs
       var bottomele = document.getElementById("bottom-scroll");
       if (bottomele !== null) {
-        console.log(bottomele);
-        console.log("scroll to bottom");
+        console.log("scroll into view!");
         bottomele.scrollIntoView();
         bottomele.focus();
         this.setState({ scrolled: true });
@@ -326,17 +305,6 @@ class Chat extends Component {
   componentDidUpdate() {
     //this.scrollToBottom();
   }
-
-  /*shouldComponentUpdate(nextProps, nextState) {
-    console.log(nextProps);
-    console.log(nextState);
-    if (this.state.date === false) {
-      return false;
-    }
-    else {
-      return true;
-    }
-  }*/
 
   showDate(timestamp) {
     if (this.oldDate !== null) {
@@ -359,10 +327,6 @@ class Chat extends Component {
     if (this.state.isLoading) {
       return <Loading />;
     } else {
-      console.log(this.state.messages);
-      console.log(this.props.location);
-      console.log("router");
-      console.log(this.props.router);
       return (
         <div>
           <div
@@ -379,16 +343,18 @@ class Chat extends Component {
           >
             <div id="messages" style={{ transform: "translate3d(0, 0, 0)" }}>
               {this.state.messages.map((message, index) => (
-                <div className={"message " + message.position} key={index}>
-                  {this.showDate(message.createdAt, this.oldDate) ? (
-                    <div>
-                      {moment(message.createdAt).format("ddd, MMM D LT")}
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                  <span>{message.text}</span>
-                </div>
+                <SlideUpChat>
+                  <div className={"message " + message.position} key={index}>
+                    {this.showDate(message.createdAt, this.oldDate) ? (
+                      <div>
+                        {moment(message.createdAt).format("ddd, MMM D LT")}
+                      </div>
+                    ) : (
+                        ""
+                      )}
+                    <span>{message.text}</span>
+                  </div>
+                </SlideUpChat>
               ))}
               <div
                 className={"bottom-scroll " + this.state.className}
@@ -409,7 +375,7 @@ class Chat extends Component {
                 maxRows={3}
                 placeholder="Message..."
                 className="textareainput"
-                onResize={e => {}}
+                onResize={e => { }}
                 name="msginput"
               />
               <div onClick={this.onSend} className="sendbutton">

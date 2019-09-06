@@ -1,9 +1,9 @@
-import Actions from '../actions/search.js'
+import Actions from '../actions/actions';
 
 export default (state = "", action) => {
-      switch (action.type) {
-        case 'SEARCH':
-        return {search: action.payload}
-      }
-      return state;
-    };
+  switch (action.type) {
+    case Actions.SEARCH:
+      return { search: action.payload }
+  }
+  return state;
+};

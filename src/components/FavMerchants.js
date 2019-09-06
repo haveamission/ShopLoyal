@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import API from "./API";
-import axios from "axios";
 import { connect } from "react-redux";
 import Loading from "./Loading";
 import { Link } from "react-router-dom";
@@ -9,9 +8,8 @@ import Favorite from "../img/full_heart_purple.png";
 import Map from "../img/map.png";
 import { push } from "connected-react-router";
 import { withKeycloak } from "react-keycloak";
-import Back from "./Back";
 
-class FavMerchantsItem extends React.Component {
+class FavMerchantsItem extends Component {
   state = {
     merchant: this.props.merchant
   };
@@ -22,7 +20,6 @@ class FavMerchantsItem extends React.Component {
   };
 
   processFavorite(data) {
-    //console.log(data);
     var merchant = this.state.merchant;
     merchant.isFavorite = !this.state.merchant.isFavorite;
     this.setState({ merchant: merchant });
@@ -30,7 +27,6 @@ class FavMerchantsItem extends React.Component {
 
   handleFavorite = e => {
     e.stopPropagation();
-    //console.log("child");
 
     if (this.props.keycloak.authenticated) {
       var body = {
@@ -42,15 +38,13 @@ class FavMerchantsItem extends React.Component {
       api
         .post("favoriteMerchantAPI", { body: body })
         .then(response => this.processFavorite(response.data))
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     }
   };
 
   render() {
-    //console.log(this.state);
-
     if (!this.state.merchant) {
       return <Loading />;
     }
@@ -69,14 +63,14 @@ class FavMerchantsItem extends React.Component {
             value={this.state.merchant.isFavorite}
           />
         ) : (
-          <img
-            className="white-favorite favorite"
-            onClick={this.handleFavorite}
-            src={UnFavorite}
-            key={this.state.merchant.id}
-            value={this.state.merchant.isFavorite}
-          />
-        )}
+            <img
+              className="white-favorite favorite"
+              onClick={this.handleFavorite}
+              src={UnFavorite}
+              key={this.state.merchant.id}
+              value={this.state.merchant.isFavorite}
+            />
+          )}
         <div className="fav-address">
           <img src={Map} />
           {this.state.merchant.address1}
@@ -100,7 +94,6 @@ class FavMerchants extends React.Component {
    * Probably switch this to cards when doing refactor.
    */
   loadFavMerchants(data) {
-    //console.log(data);
     var arr = [];
     data.map((item, index) => {
       arr.push(<FavMerchantsItemRedux merchant={item} key={index} />);
@@ -120,7 +113,7 @@ class FavMerchants extends React.Component {
     api
       .get("favoriteMerchantAPI", { query: query })
       .then(response => this.loadFavMerchants(response.data))
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
   }

@@ -1,11 +1,9 @@
-import Actions from '../actions/categories.js'
+import Actions from '../actions/actions';
 
-export default (state = {"category": ""}, action) => {
-    //console.log("action types");
-    //console.log(action.type);
-      switch (action.type) {
-        case 'CATEGORIES':
-        return {category: action.payload}
-      }
-      return state;
-    };
+export default (state = { "category": "" }, action) => {
+  switch (action.type) {
+    case Actions.CATEGORIES:
+      return { category: action.payload }
+  }
+  return state;
+};

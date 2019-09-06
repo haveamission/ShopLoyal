@@ -1,11 +1,6 @@
-const Actions = {
-    IDPROVIDER: 'IDPROVIDER',
-  };
-  //
-  //  Action Creators
-  //
+import Actions from "./actions.js";
 
-  export const idprovider = (idprovider) => ({
-    type: Actions.IDPROVIDER,
-    payload: idprovider
-  });
+export const idprovider = (idprovider) => ({
+  type: Actions.IDPROVIDER,
+  payload: idprovider
+});

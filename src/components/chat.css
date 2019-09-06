@@ -20,6 +20,7 @@
 }
 .bottom-scroll.active {
   height: 10rem;
+  transform: translate3d(0, 0, 0) !important;
 }
 .message {
   width: 100%;

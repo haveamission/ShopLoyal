@@ -1,8 +1,8 @@
-import Actions from "../actions/total_messages.js";
+import Actions from '../actions/actions';
 
 export default (state = 0, action) => {
   switch (action.type) {
-    case "SAVE_MESSAGE_TOTAL_NUM":
+    case Actions.SAVE_MESSAGE_TOTAL_NUM:
       return action.payload;
   }
   return state;

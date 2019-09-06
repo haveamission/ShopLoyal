@@ -1,6 +1,4 @@
-export const Actions = {
-  SAVE_MESSAGE_TOTAL_NUM: "SAVE_MESSAGE_TOTAL_NUM"
-};
+import Actions from "./actions.js";
 
 export const saveMessageTotalNum = num => ({
   type: Actions.SAVE_MESSAGE_TOTAL_NUM,

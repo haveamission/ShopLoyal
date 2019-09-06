@@ -1,14 +1,13 @@
 /* eslint-disable import/first */
-import React, { Component } from "react";
+import React from "react";
 import { render } from "react-dom";
 import { ConnectedRouter } from "connected-react-router";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Route } from "react-router-dom";
 import registerServiceWorker from "./registerServiceWorker";
 import { push } from "connected-react-router";
 import "@babel/polyfill";
 import { AnimatedSwitch } from "react-router-transition";
 import initReactFastclick from "react-fastclick";
-import ReactTooltip from "react-tooltip";
 
 initReactFastclick();
 //import appsFlyer from 'cordova-plugin-appsflyer-sdk';
@@ -31,8 +30,6 @@ import Support from "./components/Support";
 import Privacy from "./components/Privacy";
 import Error from "./components/Error";
 import FavMerchants from "./components/FavMerchants";
-import Dummy from "./components/Dummy";
-import Header from "./components/Header";
 import Terms from "./components/Terms";
 import Contact from "./components/Contact";
 import BackgroundProcess from "./components/BackgroundProcess";
@@ -41,9 +38,7 @@ import BackgroundProcess from "./components/BackgroundProcess";
 import "./bootstrap2-toggle.min.css";
 import "./index.css";
 import "./styles/main.css";
-import Toggle from "react-bootstrap-toggle";
-import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 //import 'bootstrap/dist/css/bootstrap.css';
 
@@ -101,28 +96,14 @@ const startApp = () => {
     appsflyerInit();
     oneSignal();
   }
-
-  var o = XMLHttpRequest.prototype.open;
-  XMLHttpRequest.prototype.open = function() {
-    var res = o.apply(this, arguments);
-    var err = new Error();
-    this.setRequestHeader("Origin", "ShopLoyal");
-    return res;
-  };
-
-  function myhandler(previousRoute, nextRoute) {
-    //console.log(previousRoute);
-    //console.log(nextRoute);
-  }
   // Sets initial location state - possibly set as a watch event
-  //store.dispatch(openedFromPushSave(true));
 
   var tokens = store.getState().tokens;
 
   render(
     <KeycloakProvider
       keycloak={keycloak}
-      onEvent={(event, error) => {}}
+      onEvent={(event, error) => { }}
       onTokens={tokens => {
         store.dispatch(addTokens(tokens));
         store.dispatch(push("/"));
@@ -134,7 +115,7 @@ const startApp = () => {
         ...tokens,
         checkLoginIframe: true
       }}
-      onAuthSuccess={event => {}}
+      onAuthSuccess={event => { }}
     >
       <Provider store={store} context={ReactReduxContext}>
         <PersistGate loading={<Loading />} persistor={persistor}>
@@ -210,7 +191,8 @@ function pathChange(previousRoute, nextRoute) {
 function appsflyerInit() {
   var options = {
     devKey: "5TgbTvDgXuQkN5sdxBEGa8", // your AppsFlyer devKey
-    isDebug: true
+    isDebug: true,
+    appId: "1458126556"
   };
 
   var userAgent = window.navigator.userAgent.toLowerCase();
@@ -218,7 +200,7 @@ function appsflyerInit() {
     options.appId = "1458126556"; // your ios app id in app store
   }
 
-  var onSuccess = function(result) {
+  var onSuccess = function (result) {
     //console.log(result);
   };
 
@@ -233,15 +215,16 @@ function oneSignal() {
   // Enable to debug issues.
   //window.plugins.OneSignal.setLogLevel({logLevel: 4, visualLevel: 4});
 
-  var notificationOpenedCallback = function(jsonData) {
+  var notificationOpenedCallback = function (jsonData) {
+    window.plugins.appsFlyer.trackEvent("af_opened_from_push_notification", {});
     console.log("notificationOpenedCallback: " + JSON.stringify(jsonData));
   };
 
   window.plugins.OneSignal.startInit("2f19cafc-d4ab-4b01-aecd-dd7961b3b8e3")
     .handleNotificationOpened(notificationOpenedCallback)
     .inFocusDisplaying("None")
-    .handleNotificationReceived(function(jsonData) {
-      window.cordova.plugins.notification.badge.increase(1, function(badge) {});
+    .handleNotificationReceived(function (jsonData) {
+      window.cordova.plugins.notification.badge.increase(1, function (badge) { });
     })
     .endInit();
 }

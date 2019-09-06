@@ -1,9 +1,9 @@
-import Actions from '../actions/idprovider.js'
+import Actions from '../actions/actions';
 
 export default (state = null, action) => {
-      switch (action.type) {
-        case 'IDPROVIDER':
-        return action.payload
-      }
-      return state;
-    };
+  switch (action.type) {
+    case Actions.IDPROVIDER:
+      return action.payload
+  }
+  return state;
+};

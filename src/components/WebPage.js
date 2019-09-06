@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import Iframe from 'react-iframe'
 import Loading from './Loading'
-import Back from './Back'
 
 class WebPage extends Component {
   constructor(props) {
@@ -34,6 +32,7 @@ class WebPage extends Component {
           frameBorder="0"
           marginHeight="0"
           marginWidth="0"
+          title={this.props.title}
         />
       </div>
     );

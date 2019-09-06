@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import FBImg from "../resources/img/icon-facebook-purple.png";
 import GoogleImg from "../resources/img/icon-googleplus-purple.png";
-import { Link } from "react-router-dom";
 import { push } from "connected-react-router";
 import { withKeycloak } from "react-keycloak";
 import { connect } from "react-redux";
@@ -14,53 +13,24 @@ import { saveMessageTotalNum } from "../actions/total_messages";
 
 //var ref;
 
-class LoginPage extends React.Component {
+class LoginPage extends Component {
   componentDidMount() {
     //alert(JSON.stringify(window.device.cordova));
     this.props.saveMessageTotalNum(0);
     //window.cordova.plugins.notification.badge.set(15);
     if (window.IonicDeeplink) {
       var self = this;
-      window.IonicDeeplink.onDeepLink(function(data) {
-        alert(JSON.stringify(data));
+      window.IonicDeeplink.onDeepLink(function (data) {
         self.processDeeplink(data, self);
       });
     }
-
-    // Replace this with a more direct API call later
-    /*function checkMessages() {
-      console.log("STATE BEFORE ALL");
-      console.log(state);
-      if (this.props.keycloak.authenticated) {
-        var api = new API(this.props.keycloak);
-        var query = {
-          lat: this.props.coordinates.coords.latitude,
-          lng: this.props.coordinates.coords.longitude,
-          radius: "10.0",
-          limit: "5",
-          // TODO: Change this to be consistent with other search values
-          search: this.props.search
-        };
-        api
-          .get("favoriteMerchantAPI", { query: query })
-          .then(response => pullMessages(response.data))
-          .catch(function(error) {
-            console.log(error);
-          });
-      }
-    }
-
-    function pullMessages(data) {
-      console.log("DATA GOES HERE");
-      console.log(data);
-    }*/
   }
 
   // Probably should be done differently, but this is the easiest way to do it right now
   processDeeplink(deeplink, self) {
     console.log("process deep link!!");
     console.log(deeplink);
-    alert(JSON.stringify(deeplink));
+    //alert(JSON.stringify(deeplink));
     self.props.dispatch(push(deeplink.host + deeplink.path));
   }
 
@@ -111,27 +81,27 @@ class LoginPage extends React.Component {
           <div className="loginbuttongroup">
             {/*<div className="googlered loginbutton" onClick={() => this.props.keycloak.login()}>Log In with Keycloak<img className="login-img" src={GoogleImg} /></div>*/}
             <div
-              className="loginbutton fblogin"
+              className="loginbutton fblogin slide-down-fast"
               onClick={() => this.onFBLoginButtonClick()}
             >
               Sign In with Facebook
               <img className="login-img" src={FBImg} />
             </div>
             <div
-              className="loginbutton googlelogin"
+              className="loginbutton googlelogin slide-down-fast"
               onClick={() => this.onGoogleLoginButtonClick()}
             >
               Sign In with Google
               <img className="login-img" src={GoogleImg} />
             </div>
 
-            {/*<div
-              className="loginbutton"
+            <div
+              className="loginbutton slide-down-fast"
               onClick={() => this.onEmailLoginButtonClick()}
             >
               Sign In with Email
-              {/*<img className="login-img" src={GoogleImg} />
-            </div>*/}
+              {/*<img className="login-img" src={GoogleImg} />*/}
+            </div>
           </div>
         </div>
       </div>

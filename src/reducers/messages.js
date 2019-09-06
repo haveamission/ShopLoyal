@@ -1,8 +1,8 @@
-import Actions from "../actions/messages.js";
+import Actions from '../actions/actions';
 
 export default (state = [], action) => {
   switch (action.type) {
-    case "SAVE_MESSAGE_NUM":
+    case Actions.SAVE_MESSAGE_NUM:
       return action.payload;
   }
   return state;

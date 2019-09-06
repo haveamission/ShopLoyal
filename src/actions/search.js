@@ -1,14 +1,6 @@
-//
-//  Actions
-//
-const Actions = {
-    SEARCH: 'SEARCH',
-  };
-  //
-  //  Action Creators
-  //
+import Actions from "./actions.js";
 
-  export default (text) => ({
-    type: Actions.SEARCH,
-    payload: text
-  });
+export default (text) => ({
+  type: Actions.SEARCH,
+  payload: text
+});

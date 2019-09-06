@@ -1,8 +1,6 @@
-export const Actions = {
-    SAVE_COLOR: 'SAVE_COLOR',
-  };
+import Actions from "./actions.js";
 
-  export const colorSave = (color) => ({
-    type: Actions.SAVE_COLOR,
-    payload: color
-  });
+export const colorSave = (color) => ({
+  type: Actions.SAVE_COLOR,
+  payload: color
+});

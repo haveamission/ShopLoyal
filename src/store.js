@@ -1,21 +1,13 @@
-//import storage from 'redux-persist/es/storage'
 import { apiMiddleware } from "redux-api-middleware";
-import { createFilter } from "redux-persist-transform-filter";
 import { persistReducer, persistStore } from "redux-persist";
 import { routerMiddleware } from "connected-react-router";
-import rootReducer from "./reducers/index";
 import createRootReducer from "./reducers/index";
-import { createBrowserHistory } from "history";
 import { createHashHistory } from "history";
 import reducers from "./reducers/index";
 import localForage from "localforage";
-import { createStore, applyMiddleware, combineReducers, compose } from "redux";
+import { createStore, applyMiddleware, compose } from "redux";
 import getLocation from "./actions/location";
-import { engagementSave, openedFromPushSave } from "./actions/analytics";
-//import createOidcMiddleware from "redux-oidc";
-//import userManager from './config/OIDC';
-
-//export const history = createBrowserHistory()
+import { engagementSave } from "./actions/analytics";
 
 export const history = createHashHistory();
 
@@ -30,7 +22,6 @@ const loggerMiddleware = store => next => action => {
   //console.log("State before:", store.getState());
   next(action);
   console.log("State after:", store.getState());
-  //alert(JSON.stringify(store.getState()));
 };
 
 function promiseMiddleware({ dispatch }) {
@@ -41,9 +32,9 @@ function promiseMiddleware({ dispatch }) {
   return next => action => {
     return isPromise(action.payload)
       ? action.payload.then(
-          result => dispatch({ ...action, payload: result }),
-          error => dispatch({ ...action, payload: error, error: true })
-        )
+        result => dispatch({ ...action, payload: result }),
+        error => dispatch({ ...action, payload: error, error: true })
+      )
       : next(action);
   };
 }
@@ -59,7 +50,6 @@ function configureStore(preloadedState) {
     preloadedState,
     compose(
       applyMiddleware(
-        //oidcMiddleware,
         loggerMiddleware,
         routerMiddleware(history),
         apiMiddleware,
@@ -73,20 +63,7 @@ function configureStore(preloadedState) {
 
 export default history => {
   let store = configureStore(history);
-  /*loadUser(store, userManager)
-  .then((user) => {
-    console.log('USER_FOUND', user);
-    if (user) {
-      store.dispatch({
-        type: 'redux-oidc/USER_FOUND',
-        payload: user,
-      });
-    }
-  }).catch((err) => {
-    console.log(err);
-  });*/
   let persistor = persistStore(store, {}, () => {
-    // App initialization after store is rehydrated
     var engagement = store.getState().analytics.engagement + 1;
     store.dispatch(engagementSave(engagement));
     if (window.Cordova) {
@@ -98,7 +75,6 @@ export default history => {
   });
   store.subscribe(() => {
     //console.log('state data\n', store.getState());
-    //debugger;
   });
 
   return { store, persistor };

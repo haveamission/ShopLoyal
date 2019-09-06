@@ -27,8 +27,6 @@ import { firstFavoriteSave } from "../actions/firstFavorite";
 import { toast } from "react-toastify";
 import NotifBubble from "./NotifBubble";
 import axios from "axios";
-import ReactTooltip from "react-tooltip";
-const format = require("string-format");
 const getColors = require("get-image-colors");
 
 class Card extends Component {
@@ -74,12 +72,7 @@ class Card extends Component {
   static getDerivedStateFromProps(props, state) {
     // Normalizing the data, as react adds an object wrapper sometimes
 
-    console.log("will receive props");
-    console.log(props);
     var merchant = {};
-
-    //console.log("CARDS PROPS");
-    //console.log(props);
 
     if (typeof props.merchant.merchant !== "undefined") {
       merchant = props.merchant.merchant;
@@ -90,25 +83,20 @@ class Card extends Component {
   }
 
   routeChange = e => {
-    console.log("ROUTE CHANGE GETS FIRED TOO");
-    console.log(e);
     if (this.props.merchant.id === 0) {
       e.preventDefault();
       e.stopPropagation();
       this.launchErrorModal(
         "Sorry, you can't select that item until you favorite a merchant!"
       );
-      console.log("prevent propagation");
       return;
     }
-    console.log("event for click");
-    console.log(e);
     if (
-      e.target.className == "notif-bubble-link" ||
-      e.target.className == "notif-bubble slide-in-right"
+      e.target.className === "notif-bubble-link" ||
+      e.target.className === "notif-bubble slide-in-right"
     ) {
       return;
-    } else if (e.target.nodeName == "LI" || e.target.nodeName == "a") {
+    } else if (e.target.nodeName === "LI" || e.target.nodeName === "a") {
       return;
     }
 
@@ -117,8 +105,6 @@ class Card extends Component {
   };
 
   configuration(data) {
-    //console.log("pre set state card");
-    //console.log(data);
     var merchant = this.state.merchant;
     merchant.isFavorite = !merchant.isFavorite;
     this.setState({ merchant: merchant });
@@ -126,7 +112,6 @@ class Card extends Component {
 
   handleLinks(e) {
     //e.stopPropagation();
-    //console.log("e stop propogation");
   }
 
   launchInsiderModal() {
@@ -152,21 +137,19 @@ class Card extends Component {
   }
 
   firstTimeFavoriteCheck() {
-    //console.log(this.props);
+    this.launchInsiderModal();
+    /*
     if (
       this.props.router.location.pathname.includes(
         "detail"
       ) /*&& this.props.firstFavorite === null*/
-    ) {
+    /*) {
       //this.props.firstFavoriteSave(true);
       this.launchInsiderModal();
-    }
+    }*/
   }
 
   handleMessageClick(e) {
-    console.log("HANDLE MESSAGE EVENT");
-    console.log(e);
-    console.log(this.state.merchant.isFavorite);
     if (this.state.merchant.isFavorite === false) {
       this.launchErrorModal(
         "You need to favorite this merchant before messaging them"
@@ -174,7 +157,6 @@ class Card extends Component {
       return;
       e.preventDefault();
       e.stopPropagation();
-      e.nativeEvent.preventDefault();
       e.nativeEvent.stopImmediatePropagation();
     }
 
@@ -188,9 +170,6 @@ class Card extends Component {
   }
 
   handleCallClick(e) {
-    console.log("HANDLE MESSAGE EVENT");
-    console.log(e);
-    console.log(this.state.merchant.isFavorite);
     if (this.state.merchant.isFavorite === false) {
       e.preventDefault();
       e.stopPropagation();
@@ -218,8 +197,8 @@ class Card extends Component {
       api
         .post("favoriteMerchantAPI", { body: body })
         .then(response => this.configuration(response.data))
-        .catch(function(error) {
-          //console.log(error);
+        .catch(function (error) {
+          console.log(error);
         });
     }
   }
@@ -227,7 +206,7 @@ class Card extends Component {
   lightestColor(colors) {
     var highestColor;
     var hspHighest = 0;
-    colors.forEach(function(color) {
+    colors.forEach(function (color) {
       var lightness = lightOrDark(color);
       if (lightness > hspHighest && lightness < 200) {
         hspHighest = lightness;
@@ -250,39 +229,32 @@ class Card extends Component {
   }
 
   componentDidMount() {
-    console.log("CARD PROPS");
-    console.log(this.props);
-
     // Not ideal - deal with how react does this later
-
-    //console.log("THIS MERCHANT!!");
-    //console.log(this.props.merchant);
 
     this.lightestColorGen();
     //styleGuideColorGen()
   }
 
-  styleGuideColorGen() {}
+  styleGuideColorGen() { }
 
   lightestColorGen() {
     if (typeof this.props.merchant !== "undefined") {
-      console.log("before hand");
-      console.log(this.props.merchant.logo);
-
-      console.log("after hand");
-
       var that = this;
-      this.getBase64(this.props.merchant.logo).then(function(base64) {
+      getColors(this.props.merchant.logo).then(colors => {
+        // Should probably rewrite to make better use of chroma.js functions
+        var colorsHSLA = colors.map(color => color.hsl());
+        var colorsHex = colors.map(color => color.hex());
+        that.lightestColor(colorsHex);
+      });
+      //TODO: if android, do this:
+      /*this.getBase64(this.props.merchant.logo).then(function(base64) {
         getColors(base64).then(colors => {
-          console.log("COLORS HERE");
-          console.log(colors);
           // Should probably rewrite to make better use of chroma.js functions
           var colorsHSLA = colors.map(color => color.hsl());
           var colorsHex = colors.map(color => color.hex());
-          console.log(colorsHex);
           that.lightestColor(colorsHex);
         });
-      });
+      });*/
     }
   }
 
@@ -298,7 +270,6 @@ class Card extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log("update");
     if (this.state.bubblemsg !== prevState.bubblemsg) {
       this.setState({ bubblemsg: this.props.bubblemsg });
     }
@@ -312,6 +283,7 @@ class Card extends Component {
     if (!this.state.data) {
       return <div />;
     }
+
     var MessageText = MessageTextWhite;
     var Call = CallWhite;
     var Map = MapWhite;
@@ -322,8 +294,6 @@ class Card extends Component {
       Map = MapPurple;
     }
     const { bgIsLoaded } = this.state;
-    console.log("bubblemsg");
-    console.log(this.state.bubblemsg);
 
     return (
       <div
@@ -334,7 +304,7 @@ class Card extends Component {
           {
             backgroundImage: `url(${
               !bgIsLoaded ? <GrayCard /> : this.state.merchant.coverPhoto
-            })`
+              })`
           } || <Skeleton />
         }
       >
@@ -365,12 +335,12 @@ class Card extends Component {
               src={Favorite}
             />
           ) : (
-            <img
-              className={`card-favorite white-favorite`}
-              onClick={this.handleFavorite}
-              src={UnFavorite}
-            />
-          )}
+              <img
+                className={`card-favorite white-favorite`}
+                onClick={this.handleFavorite}
+                src={UnFavorite}
+              />
+            )}
 
           <div className="card-right-bottom">
             <h2 className="card-title">{this.state.merchant.name}</h2>
@@ -489,9 +459,7 @@ function hexToRgbA(hex) {
       .substring(5, rgba.length - 1)
       .replace(/ /g, "")
       .split(",");
-    console.log("HSLA HERE");
     var hsla = RGBAToHSLA(rgba[0], rgba[1], rgba[2], rgba[3]);
-    console.log(hsla);
     return hsla;
   }
   throw new Error("Bad Hex");
@@ -528,11 +496,11 @@ function RGBAToHSLA(r, g, b, a) {
 
   // Calculate hue
   // No difference
-  if (delta == 0) h = 0;
+  if (delta === 0) h = 0;
   // Red is max
-  else if (cmax == r) h = ((g - b) / delta) % 6;
+  else if (cmax === r) h = ((g - b) / delta) % 6;
   // Green is max
-  else if (cmax == g) h = (b - r) / delta + 2;
+  else if (cmax === g) h = (b - r) / delta + 2;
   // Blue is max
   else h = (r - g) / delta + 4;
 

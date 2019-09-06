@@ -1,8 +1,8 @@
 import Actions from '../actions/actions';
 
-export default (state = false, action) => {
+export default (state = true, action) => {
   switch (action.type) {
-    case Actions.OPEN_SIDEBAR:
+    case Actions.FLAG_ONESIGNAL:
       return action.payload;
     default:
       return state;

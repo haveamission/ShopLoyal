@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import Card from "./Card";
-import { connect } from 'react-redux'
-import getLocation from '../actions/location'
-import { bindActionCreators } from 'redux'
-import axios from 'axios';
-import API from './API'
-import Promotions from './Promotions'
-import { withKeycloak } from 'react-keycloak';
-import Loading from './Loading';
+import { connect } from "react-redux";
+import getLocation from "../actions/location";
+import { bindActionCreators } from "redux";
+import API from "./API";
+import Promotions from "./Promotions";
+import { withKeycloak } from "react-keycloak";
+import Loading from "./Loading";
+import searchSave from "../actions/search";
 
 class About extends Component {
   render() {
@@ -25,51 +25,50 @@ class Detail extends Component {
     super();
     this.goBack = this.goBack.bind(this);
     this.state = {
-      data: {
-      },
-      search: "",
-    }
+      data: {},
+      search: ""
+    };
   }
-
 
   goBack() {
     this.props.history.goBack();
   }
 
-
-
-
   configuration(data) {
-    //console.log("merchant data");
-    //console.log(data);
+    console.log("merchant detail api data");
+    console.log(data);
     this.setState({ data, isLoading: false });
-    //console.log("card row data");
-    //console.log(data);
+  }
+
+  componentWillMount() {
+    // Not in love with doing this in each component. Re-factor when time permits
+    this.props.searchSave("");
   }
 
   componentDidMount() {
     if (this.props.keycloak.authenticated) {
-      var merchant_id = this.props.location.pathname.substr(this.props.location.pathname.lastIndexOf('/') + 1);
+      var merchant_id = this.props.location.pathname.substr(
+        this.props.location.pathname.lastIndexOf("/") + 1
+      );
       var query = {
-        "lat": this.props.coordinates.coords.latitude,
-        "lng": this.props.coordinates.coords.longitude,
-        "radius": "10.0",
-        "limit": "30",
+        lat: this.props.coordinates.coords.latitude,
+        lng: this.props.coordinates.coords.longitude,
+        radius: "10.0",
+        limit: "30",
         // TODO: Change this to be consistent with other search values
-        "search": this.state.search,
-      }
+        search: this.state.search
+      };
 
       var api = new API(this.props.keycloak);
       api.setRetry(3);
-      api.get("merchantDetailAPI", { "repl_str": merchant_id, "query": query }).then(
-        response => this.configuration(response.data)
-      ).catch(function (error) {
-        console.log(error);
-      })
-
+      api
+        .get("merchantDetailAPI", { repl_str: merchant_id, query: query })
+        .then(response => this.configuration(response.data))
+        .catch(function (error) {
+          console.log(error);
+        });
     }
   }
-
 
   if(error) {
     return <p>{error.message}</p>;
@@ -80,34 +79,33 @@ class Detail extends Component {
   }
 
   render() {
-    //console.log(this.state.data);
-    if (Object.keys(this.state.data).length == 0) {
-      return <div />
+    if (Object.keys(this.state.data).length === 0) {
+      return <div />;
     }
-    //console.log("not empty");
-    //console.log(this.state.data);
 
     return (
-
       <div className="detail">
         {/*<i onClick={this.goBack} className="ico-times"></i>*/}
         <Card merchant={this.state.data} />
         <About desc={this.state.data.longDescription} />
         <Promotions location={this.props.location} />
       </div>
-    )
+    );
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
-    coordinates: state.coordinates,
+    coordinates: state.coordinates
   };
 };
 
 function mapDispatchToProps(dispatch) {
-  let actions = bindActionCreators({ getLocation }, dispatch);
+  let actions = bindActionCreators({ getLocation, searchSave }, dispatch);
   return { ...actions, dispatch };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withKeycloak(Detail));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withKeycloak(Detail));

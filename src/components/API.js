@@ -1,9 +1,5 @@
 import axios from "axios";
-import API from "./API";
-import { bindActionCreators } from "redux";
-import { withKeycloak } from "react-keycloak";
 import axiosRetry from "axios-retry";
-import BackgroundImageOnLoad from "background-image-on-load";
 const format = require("string-format");
 
 class SLAPI {
@@ -83,9 +79,6 @@ class SLAPI {
     this.call = "POST";
     var constructedURL = this.constructURL(API, params);
     var body = params["body"];
-    console.log("params and body");
-    console.log(constructedURL);
-    console.log(body);
     axiosRetry(axios, { retries: this.retry });
     return axios.post(constructedURL, body, this.config);
   }
@@ -93,8 +86,6 @@ class SLAPI {
   constructURL(API, params) {
     var constructedURL;
     var endpoint;
-    //console.log("DEBUG");
-    //console.log(API);
     if ("repl_str" in params) {
       endpoint = format(this[API], params.repl_str);
     } else {
@@ -102,9 +93,9 @@ class SLAPI {
     }
     if (this.env === "local") {
       // Add some code to invalidate this if the call is POST
-      if (this.call == "GET") {
+      if (this.call === "GET") {
         constructedURL = this.corsString + this.localBaseUrlString + endpoint;
-      } else if (this.call == "POST") {
+      } else if (this.call === "POST") {
         constructedURL = this.localBaseUrlString + endpoint;
       }
     } else if (this.env === "dev") {

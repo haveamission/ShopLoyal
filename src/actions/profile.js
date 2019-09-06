@@ -1,27 +1,19 @@
-const Actions = {
-    PROFILESAVE: 'PROFILESAVE',
-    PROFILEDELETE: 'PROFILEDELETE',
-    KEYCLOAKSAVE: 'KEYCLOAKSAVE',
-    KEYCLOAKDELETE: 'KEYCLOAKDELETE',
-  };
-  //
-  //  Action Creators
-  //
+import Actions from "./actions.js";
 
-  export const profileSave = (profileData) => ({
-    type: Actions.PROFILESAVE,
-    payload: profileData
-  });
+export const profileSave = (profileData) => ({
+  type: Actions.PROFILESAVE,
+  payload: profileData
+});
 
-  export const profileDelete = (profileData) => ({
-    type: Actions.PROFILEDELETE,
-  });
+export const profileDelete = (profileData) => ({
+  type: Actions.PROFILEDELETE,
+});
 
-  export const keycloakSave = (profileData) => ({
-    type: Actions.KEYCLOAKSAVE,
-    payload: profileData
-  });
+export const keycloakSave = (profileData) => ({
+  type: Actions.KEYCLOAKSAVE,
+  payload: profileData
+});
 
-  export const keycloakDelete = (profileData) => ({
-    type: Actions.KEYCLOAKDELETE,
-  });
+export const keycloakDelete = (profileData) => ({
+  type: Actions.KEYCLOAKDELETE,
+});

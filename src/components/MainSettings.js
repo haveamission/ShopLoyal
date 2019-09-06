@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import API from "./API";
-import axios from "axios";
 import { connect } from "react-redux";
 import Loading from "./Loading";
 import Support from "./Support";
@@ -8,29 +7,26 @@ import Toggle from "react-toggle";
 import { Link } from "react-router-dom";
 import "../styles/toggle.css";
 import { withKeycloak } from "react-keycloak";
-import axiosRetry from "axios-retry";
 import Sidebar from "react-sidebar";
 import { openSideBar } from "../actions/sidebar";
+import { oneSignalSave } from "../actions/onesignal";
 import { bindActionCreators } from "redux";
 import { push } from "connected-react-router";
 
 /**
  * Merge into FavMerchantsItem? This is a little more duplication than I am comfortable with
  */
-class FavMerchantsCircle extends React.Component {
+class FavMerchantsCircle extends Component {
   state = {
     merchant: this.props.merchant
   };
 
   routeChange = () => {
-    console.log("route change?");
     let path = "/detail/" + this.state.merchant.id;
     this.props.dispatch(push(path));
   };
 
   render() {
-    //console.log(this.state);
-
     if (!this.state.merchant) {
       return <Loading />;
     }
@@ -46,32 +42,23 @@ class FavMerchantsCircle extends React.Component {
 }
 
 class MainSettings extends React.Component {
-  state = {
-    notificationEnabled: this.props.data.notificationEnabled,
-    notificationEmailEnabled: this.props.data.notificationEmailEnabled,
-    open: false
-  };
+  constructor(props) {
+    super(props);
+    this.onSetOpen = this.onSetOpen.bind(this);
+    this.state = {
+      notificationEmailEnabled: this.props.data.notifications
+        .notificationEmailEnabled,
+      open: false
+    };
+  }
 
   handleNotification = event => {
     event.persist();
-    //console.log(event.target.checked);
-    this.setState({ notificationEnabled: event.target.checked });
-
-    var body = {
-      notificationEnabled: event.target.checked
-    };
-
-    var api = new API(this.props.keycloak);
-    api.setRetry(3);
-    api
-      .post("settings", { body: body })
-      .then(response => console.log(response.data))
-      .then(data =>
-        this.setState({ notificationEnabled: event.target.checked })
-      )
-      .catch(function(error) {
-        //console.log(error);
-      });
+    if (window.plugins) {
+      console.log(event.target.checked);
+      window.plugins.OneSignal.setSubscription(event.target.checked);
+    }
+    this.props.oneSignalSave(event.target.checked);
   };
 
   handleNotificationEmail = event => {
@@ -87,7 +74,7 @@ class MainSettings extends React.Component {
       .then(data =>
         this.setState({ notificationEmailEnabled: event.target.checked })
       )
-      .catch(function(error) {
+      .catch(function (error) {
         //console.log(error);
       });
   };
@@ -100,8 +87,6 @@ class MainSettings extends React.Component {
     var arr = [];
     data.map((item, index) => {
       if (index < 3) {
-        console.log("ITEMS");
-        console.log(item);
         arr.push(
           <FavMerchantsCircle {...this.props} merchant={item} key={item.id} />
         );
@@ -111,14 +96,6 @@ class MainSettings extends React.Component {
   }
 
   componentDidMount() {
-    console.log("MAIN SETTINGS DEEPLINK");
-    if (window.IonicDeeplink) {
-      window.IonicDeeplink.onDeepLink(function(data) {
-        console.log("get my data!");
-        console.log(data);
-      });
-    }
-
     var query = {
       lat: this.props.coordinates.coords.latitude,
       lng: this.props.coordinates.coords.longitude,
@@ -129,15 +106,11 @@ class MainSettings extends React.Component {
     api
       .get("favoriteMerchantAPI", { query: query })
       .then(response => this.loadFavMerchants(response.data))
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
   }
 
-  constructor(props) {
-    super(props);
-    this.onSetOpen = this.onSetOpen.bind(this);
-  }
   onSetOpen(open) {
     this.props.openSideBar(open);
   }
@@ -178,6 +151,9 @@ class MainSettings extends React.Component {
         >
           <span />
         </Sidebar>
+        <div className="fav-merchants-text fav-merchants">
+          Most Recent Merchants
+        </div>
         <div className="fav-merchant-item">{this.state.favs}</div>
         <Link to="/favmerchants/" className="fav-merchant-link">
           <div className="fav-merchants" onClick={this.test}>
@@ -185,7 +161,7 @@ class MainSettings extends React.Component {
               {this.props.data.profile.merchantCount}
             </span>
             <div className="fav-merchants-text">
-              Favorite Merchants
+              All Favorite Merchants
               <div className="right-arrow" />
             </div>
           </div>
@@ -201,7 +177,7 @@ class MainSettings extends React.Component {
                 unchecked: null
               }}
               className="toggle-shoployal"
-              defaultChecked={this.state.notificationEnabled}
+              checked={this.props.onesignal}
               onChange={this.handleNotification}
             />
           </label>
@@ -215,7 +191,7 @@ class MainSettings extends React.Component {
                 unchecked: null
               }}
               className="toggle-shoployal"
-              defaultChecked={this.state.notificationEmailEnabled}
+              checked={this.state.notificationEmailEnabled}
               onChange={this.handleNotificationEmail}
             />
           </label>
@@ -239,12 +215,13 @@ class MainSettings extends React.Component {
 const mapStateToProps = state => {
   return {
     sidebar: state.sidebar,
-    coordinates: state.coordinates
+    coordinates: state.coordinates,
+    onesignal: state.onesignal
   };
 };
 
 function mapDispatchToProps(dispatch) {
-  let actions = bindActionCreators({ openSideBar }, dispatch);
+  let actions = bindActionCreators({ openSideBar, oneSignalSave }, dispatch);
   return { ...actions, dispatch };
 }
 
