@@ -5,7 +5,7 @@ import Loading from "./Loading";
 import Support from "./Support";
 import Toggle from "react-toggle";
 import { Link } from "react-router-dom";
-import "../styles/toggle.css";
+import "../resources/styles/toggle.css";
 import { withKeycloak } from "react-keycloak";
 import Sidebar from "react-sidebar";
 import { openSideBar } from "../actions/sidebar";

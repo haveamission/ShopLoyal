@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import UnFavorite from "../img/full_heart_white.png";
-import Favorite from "../img/full_heart_purple.png";
-import GrayCard from "../img/gray.png";
-import MessageWhite from "../img/message.png";
+import UnFavorite from "../resources/img/full_heart_white.png";
+import Favorite from "../resources/img/full_heart_purple.png";
+import MessageWhite from "../resources/img/message.png";
 import MessagePurple from "../resources/img/comments@3x.png";
-import CallWhite from "../img/call.png";
+import CallWhite from "../resources/img/call.png";
 import CallPurple from "../resources/img/call-purple.png";
-import MapWhite from "../img/map.png";
+import MapWhite from "../resources/img/map.png";
 import MapPurple from "../resources/img/map-purple.png";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
@@ -23,7 +22,7 @@ import { toast } from "react-toastify";
 import NotifBubble from "./NotifBubble";
 import axios from "axios";
 import { FavError, FavSuccess1, FavSuccess2, FavErrorMsg, FavErrorCall, MapText, CallText, MessageText } from "../config/strings";
-const getColors = require("get-image-colors");
+import getColors from "get-image-colors";
 
 class Card extends Component {
     constructor() {

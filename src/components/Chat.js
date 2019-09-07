@@ -1,12 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import "./chat.css";
+import "../resources/styles/chat.css";
 import Loading from "./Loading";
 import API from "./API";
 import { withKeycloak } from "react-keycloak";
 import TextareaAutosize from "react-autosize-textarea";
 import { useSpring, animated } from "react-spring";
-const moment = require("moment");
+import moment from "moment";
 
 function SlideUpChat(props) {
   const animationProps = useSpring({

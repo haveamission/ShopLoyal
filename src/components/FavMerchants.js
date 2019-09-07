@@ -3,9 +3,9 @@ import API from "./API";
 import { connect } from "react-redux";
 import Loading from "./Loading";
 import { Link } from "react-router-dom";
-import UnFavorite from "../img/full_heart_white.png";
-import Favorite from "../img/full_heart_purple.png";
-import Map from "../img/map.png";
+import UnFavorite from "../resources/img/full_heart_white.png";
+import Favorite from "../resources/img/full_heart_purple.png";
+import Map from "../resources/img/map.png";
 import { push } from "connected-react-router";
 import { withKeycloak } from "react-keycloak";
 

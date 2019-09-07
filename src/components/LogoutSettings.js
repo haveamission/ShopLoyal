@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Loading from './Loading'
 import { withKeycloak } from 'react-keycloak';
+import { SignOut } from "../config/strings";
 
 class LogoutSettings extends Component {
 
@@ -11,7 +12,7 @@ class LogoutSettings extends Component {
 
     return (
       <div className="logout-settings">
-        <div className="logout-center" onClick={() => this.props.keycloak.logout()}>Sign Out</div>
+        <div className="logout-center" onClick={() => this.props.keycloak.logout()}>{SignOut}</div>
       </div>
     )
   }

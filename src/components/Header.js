@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import ShopLoyalMainImg from "../img/ShopLoyalMain.png";
-import ProfilePic from "../img/profile-pic.png";
+import ShopLoyalMainImg from "../resources/img/ShopLoyalMain.png";
+import ProfilePic from "../resources/img/profile-pic.png";
 import Search from "./Search";
 import { connect } from "react-redux";
 import API from "./API";

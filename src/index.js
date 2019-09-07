@@ -32,9 +32,8 @@ import Contact from "./components/Contact";
 import BackgroundProcess from "./components/BackgroundProcess";
 
 // Import Styles
-import "./bootstrap2-toggle.min.css";
-import "./index.css";
-import "./styles/main.css";
+//import "./bootstrap2-toggle.min.css";
+import "./resources/styles/main.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
