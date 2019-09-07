@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import ShopLoyalCardLogo from "../img/ShopLoyalLogoIcon.png";
 import ScrollMenu from "react-horizontal-scrolling-menu";
-import Card from "./Card";
+//import Card from "./Card";
+import Card from './NewCard';
 import PromoCard from "./PromoCard";
 //import withFetching from "./API";
 import API from "./API";

@@ -212,10 +212,6 @@ class Chat extends Component {
 
     this.pullMessages();
     this.interval = setInterval(() => this.updateMessages(), 25000);
-    /*this.scrollToBottom();
-    setTimeout(() => {
-      this.scrollToBottom();
-    }, 500);*/
   }
 
   merchantConfiguration(data) {
@@ -224,7 +220,6 @@ class Chat extends Component {
 
   updateMessages() {
     this.pullMessages();
-    //this.scrollToBottom();
   }
 
   onSend() {
@@ -302,10 +297,6 @@ class Chat extends Component {
     }
   };
 
-  componentDidUpdate() {
-    //this.scrollToBottom();
-  }
-
   showDate(timestamp) {
     if (this.oldDate !== null) {
       // Maybe add M calculation as well
@@ -313,7 +304,6 @@ class Chat extends Component {
       var oldDate = moment(this.oldDate).format("D");
       if (newDate === oldDate) {
         this.oldDate = timestamp;
-        //this.setState({ date: true })
         return false;
       }
     }
@@ -322,7 +312,6 @@ class Chat extends Component {
   }
 
   render() {
-    //var keyboardStyle = {transform: 'translate3d(0px, ' + this.state.keyboardVal + 'px, 0px)'}
 
     if (this.state.isLoading) {
       return <Loading />;
@@ -366,10 +355,9 @@ class Chat extends Component {
             </div>
           </div>
 
-          <div /*onClick={() => {this.myChat.focus()}}*/ className="msginput">
+          <div className="msginput">
             <div className="inner-keyboard">
               <TextareaAutosize
-                //ref={(ic) => this.myChat = ic}
                 value={this.state.text}
                 onChange={evt => this.handleChange(evt)}
                 maxRows={3}

@@ -34,15 +34,11 @@ class Search extends Component {
 
   searchForText = text => {
     this.props.searchSave(text);
-    //this.setState({value: null});
     if (typeof window.Keyboard.show !== "undefined") {
       window.Keyboard.hide();
     }
 
     this.props.dispatch(push("/map"));
-    //this.deleteSearch();
-    //alert(JSON.stringify((this.props.search));
-    //this.setState({ value: this.props.search });
   };
 
   keyPress(event) {
@@ -75,21 +71,7 @@ class Search extends Component {
       this.myInp.value = "";
     }
     this.props.searchSave("");
-    //this.props.dispatch(push("/"));
   }
-
-  /*render(){
-    return(
-      <span className="search-text">
-            {this.state.value ? (
-        <i className="fas fa-times small"></i>
-      ) : (
-        <i className="fas fa-search small"></i>
-      )}
-      <input className="" placeholder="Search" onChange={this.handleChange}></input>
-      </span>
-  )
-}*/
 
   render() {
     console.log(this.state.value);
@@ -127,7 +109,6 @@ class Search extends Component {
 
 const mapStateToProps = state => {
   return {
-    //oidc: state.oidc,
     search: state.search,
     router: state.router
   };

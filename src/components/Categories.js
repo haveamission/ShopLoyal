@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 class Categories extends Component {
   constructor() {
     super();
+    // TODO switch over to strings.js for easier future localization
     this.state = {
       cats: ["All", "Shop", "Food", "Fun", "Salon", "Tech", "Health"]
     };

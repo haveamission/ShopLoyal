@@ -11,9 +11,6 @@ import { profileSave } from "../actions/profile";
 import { openSideBar } from "../actions/sidebar";
 import { bindActionCreators } from "redux";
 
-// The Header creates links that can be used to navigate
-// between routes.
-
 class FrontPage extends Component {
   state = {
     picture: ProfilePic,
@@ -30,8 +27,6 @@ class FrontPage extends Component {
   }
 
   componentDidUpdate() {
-    console.log("PROFILE");
-    console.log(this.props.profile);
     if (this.props.profile && this.state.pictureLoaded === false) {
       this.setState({
         picture: this.props.profile.picture,
@@ -113,13 +108,8 @@ const HeaderComponents = {
 class Header extends Component {
   getHeaderComponent() {
     var path = this.props.router.location.pathname;
-    console.log("PATH");
-    console.log(path);
     for (const headerType in HeaderToUrl) {
       if (HeaderToUrl[headerType].includes(path)) {
-        console.log("GETS TO INNER LOOP");
-        console.log(headerType);
-        console.log(HeaderComponents);
         const component = HeaderComponents[headerType];
         return component;
       }
@@ -132,14 +122,8 @@ class Header extends Component {
   };
 
   configuration(data) {
-    //console.log("set profile");
-    //console.log(data);
     this.setState({ profile: data });
     this.props.profileSave(data);
-  }
-
-  componentWillMount() {
-    //this.HeaderComponents();
   }
 
   setHeader() {
@@ -164,12 +148,6 @@ class Header extends Component {
   }
 
   componentDidMount() {
-    //console.log("HEADER STATE AND PROPS props");
-    //console.log(this.props);
-    //console.log(this.state);
-    // Messy probably - clean it later
-    //console.log(window.location.pathname);
-
     if (
       this.props.router.location.pathname === "/" &&
       this.props.keycloak.authenticated
@@ -203,9 +181,6 @@ class Header extends Component {
     };
 
     const ComponentToRender = this.getHeaderComponent();
-    //console.log("state during render");
-    //console.log(this.state);
-
     return (
       <header>
         <ComponentToRender {...this.props} profile={this.state.profile} />

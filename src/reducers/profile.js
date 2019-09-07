@@ -10,6 +10,8 @@ export default (state = null, action) => {
       return action.payload
     case Actions.KEYCLOAKDELETE:
       return action.payload
+    default:
+      return state;
   }
-  return state;
+  //return state;
 };

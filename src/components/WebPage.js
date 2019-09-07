@@ -14,9 +14,6 @@ class WebPage extends Component {
     });
   };
 
-  componentDidMount() {
-  }
-
   render() {
 
     return (

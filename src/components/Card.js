@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { ColorExtractor } from "react-color-extractor";
-import FakeLogo from "../img/fake_test_logo.png";
 import UnFavorite from "../img/full_heart_white.png";
 import Favorite from "../img/full_heart_purple.png";
 import GrayCard from "../img/gray.png";
@@ -11,16 +9,13 @@ import CallPurple from "../resources/img/call-purple.png";
 import MapWhite from "../img/map.png";
 import MapPurple from "../resources/img/map-purple.png";
 import { Link } from "react-router-dom";
-import Background from "../img/fake_background_card.png";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-//import saveColor from '../actions/general'
 import { colorSave } from "../actions/color";
 import Loading from "./Loading";
 import API from "./API";
 import { push } from "connected-react-router";
 import { withKeycloak } from "react-keycloak";
-import Img from "react-image";
 import Skeleton from "react-loading-skeleton";
 import BackgroundImageOnLoad from "background-image-on-load";
 import { firstFavoriteSave } from "../actions/firstFavorite";
@@ -232,10 +227,7 @@ class Card extends Component {
     // Not ideal - deal with how react does this later
 
     this.lightestColorGen();
-    //styleGuideColorGen()
   }
-
-  styleGuideColorGen() { }
 
   lightestColorGen() {
     if (typeof this.props.merchant !== "undefined") {
@@ -449,7 +441,7 @@ function hexToRgbA(hex) {
   var c;
   if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
     c = hex.substring(1).split("");
-    if (c.length == 3) {
+    if (c.length === 3) {
       c = [c[0], c[0], c[1], c[1], c[2], c[2]];
     }
     c = "0x" + c.join("");
@@ -513,7 +505,7 @@ function RGBAToHSLA(r, g, b, a) {
   l = (cmax + cmin) / 2;
 
   // Calculate saturation
-  s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+  s = delta === 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
 
   // Multiply l and s by 100
   s = +(s * 100).toFixed(1);

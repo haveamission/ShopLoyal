@@ -15,9 +15,7 @@ import { saveMessageTotalNum } from "../actions/total_messages";
 
 class LoginPage extends Component {
   componentDidMount() {
-    //alert(JSON.stringify(window.device.cordova));
     this.props.saveMessageTotalNum(0);
-    //window.cordova.plugins.notification.badge.set(15);
     if (window.IonicDeeplink) {
       var self = this;
       window.IonicDeeplink.onDeepLink(function (data) {
@@ -28,9 +26,6 @@ class LoginPage extends Component {
 
   // Probably should be done differently, but this is the easiest way to do it right now
   processDeeplink(deeplink, self) {
-    console.log("process deep link!!");
-    console.log(deeplink);
-    //alert(JSON.stringify(deeplink));
     self.props.dispatch(push(deeplink.host + deeplink.path));
   }
 
@@ -76,10 +71,8 @@ class LoginPage extends Component {
             webkit-playsinline
             onplaying="this.controls=false"
           >
-            {/*<source src={video} type='video/mp4' />*/}
           </video>
           <div className="loginbuttongroup">
-            {/*<div className="googlered loginbutton" onClick={() => this.props.keycloak.login()}>Log In with Keycloak<img className="login-img" src={GoogleImg} /></div>*/}
             <div
               className="loginbutton fblogin slide-down-fast"
               onClick={() => this.onFBLoginButtonClick()}
@@ -100,7 +93,6 @@ class LoginPage extends Component {
               onClick={() => this.onEmailLoginButtonClick()}
             >
               Sign In with Email
-              {/*<img className="login-img" src={GoogleImg} />*/}
             </div>
           </div>
         </div>

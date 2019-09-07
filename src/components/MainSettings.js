@@ -12,6 +12,7 @@ import { openSideBar } from "../actions/sidebar";
 import { oneSignalSave } from "../actions/onesignal";
 import { bindActionCreators } from "redux";
 import { push } from "connected-react-router";
+import { MostRecentMer, AllFavMer, NotificationText, EmailNotificationText, SupportText, TutorialText } from "../config/strings";
 
 /**
  * Merge into FavMerchantsItem? This is a little more duplication than I am comfortable with
@@ -75,7 +76,7 @@ class MainSettings extends React.Component {
         this.setState({ notificationEmailEnabled: event.target.checked })
       )
       .catch(function (error) {
-        //console.log(error);
+        console.log(error);
       });
   };
 
@@ -83,7 +84,6 @@ class MainSettings extends React.Component {
    * Is this very "react"? Possible refactor alongside FavMerchants.js
    */
   loadFavMerchants(data) {
-    //console.log(data);
     var arr = [];
     data.map((item, index) => {
       if (index < 3) {
@@ -152,7 +152,7 @@ class MainSettings extends React.Component {
           <span />
         </Sidebar>
         <div className="fav-merchants-text fav-merchants">
-          Most Recent Merchants
+          {MostRecentMer}
         </div>
         <div className="fav-merchant-item">{this.state.favs}</div>
         <Link to="/favmerchants/" className="fav-merchant-link">
@@ -161,7 +161,7 @@ class MainSettings extends React.Component {
               {this.props.data.profile.merchantCount}
             </span>
             <div className="fav-merchants-text">
-              All Favorite Merchants
+              {AllFavMer}
               <div className="right-arrow" />
             </div>
           </div>
@@ -170,7 +170,7 @@ class MainSettings extends React.Component {
         {/*<li>Waitlist</li>*/}
         <li>
           <label>
-            <span className="toggle-text">Notifications</span>
+            <span className="toggle-text">{NotificationText}</span>
             <Toggle
               icons={{
                 checked: null,
@@ -184,7 +184,7 @@ class MainSettings extends React.Component {
         </li>
         <li>
           <label>
-            <span className="toggle-text">Email Notifications</span>
+            <span className="toggle-text">{EmailNotificationText}</span>
             <Toggle
               icons={{
                 checked: null,
@@ -199,12 +199,12 @@ class MainSettings extends React.Component {
 
         <Link to="/contact/">
           <li className="support-button">
-            <span className="setting-link">Support</span>
+            <span className="setting-link">{SupportText}</span>
           </li>
         </Link>
         <Link to="/tutorial/">
           <li>
-            <span className="setting-link">Tutorial</span>
+            <span className="setting-link">{TutorialText}</span>
           </li>
         </Link>
       </ul>

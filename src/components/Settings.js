@@ -1,8 +1,4 @@
 import React, { Component } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimesCircle } from "@fortawesome/free-solid-svg-icons";
-import { faImage } from "@fortawesome/free-solid-svg-icons";
-import Loading from "./Loading";
 import API from "./API";
 import LogoutSettings from "./LogoutSettings";
 import MainSettings from "./MainSettings";
@@ -29,8 +25,6 @@ class Settings extends Component {
   }
 
   loadSettings(data) {
-    console.log("settings data");
-    console.log(data);
     this.setState({ notifications: data });
   }
 
@@ -45,8 +39,6 @@ class Settings extends Component {
         });
 
       this.getSettings();
-    } else {
-      // this.props.dispatch(push("/login"));
     }
   }
 
@@ -82,27 +74,3 @@ class ProfileSettings extends React.Component {
     );
   }
 }
-
-const Images = props =>
-  props.images.map((image, i) => (
-    <div key={i} className="fadein">
-      <div
-        onClick={() => props.removeImage(image.public_id)}
-        className="delete"
-      >
-        <FontAwesomeIcon icon={faTimesCircle} size="2x" />
-      </div>
-      <img src={image.secure_url} alt="" />
-    </div>
-  ));
-
-const Buttons = props => (
-  <div className="buttons fadein">
-    <div className="button">
-      <label htmlFor="single">
-        <FontAwesomeIcon icon={faImage} color="#3B5998" size="10x" />
-      </label>
-      <input type="file" id="single" onChange={props.onChange} />
-    </div>
-  </div>
-);

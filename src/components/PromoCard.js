@@ -33,7 +33,6 @@ class PromoCard extends Component {
                 <div className="promo-title">{this.props.data.title}</div>
                 <div className="promo-desc">{this.props.data.text}</div>
                 <div className="promo-false-bottom"></div>
-                {/*<div className="promo-bottom"></div>*/}
             </div>
         );
     }

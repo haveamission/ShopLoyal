@@ -9,6 +9,7 @@ import firstFavorite from "./firstFavorite.js";
 import analytics from "./analytics.js";
 import color from "./color.js";
 import sidebar from "./sidebar.js";
+import tokens from "./tokens.js";
 import messages from "./messages.js";
 import total_messages from "./total_messages.js";
 import onesignal from "./onesignal.js";
@@ -26,5 +27,6 @@ export default history =>
     sidebar,
     messages,
     total_messages,
-    onesignal
+    onesignal,
+    tokens
   });

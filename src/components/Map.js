@@ -77,15 +77,10 @@ export class MapContainer extends Component {
   }
 
   componentWillUnmount() {
-    /*document.body.style.position = "static";
-    document.getElementById("root").style.overflow = 'visible';
-    document.getElementById("root").style.height = 'height';*/
     this.props.searchSave("");
   }
 
   componentWillMount() {
-    //document.getElementById("root").style.height = '100vh';
-    //document.body.style.position = "fixed";
     var centerLat = this.props.coordinates.coords.latitude;
     var centerLng = this.props.coordinates.coords.longitude;
 
@@ -142,8 +137,6 @@ export class MapContainer extends Component {
         limit: "10",
         search: search
       };
-      console.log("Query values map");
-      console.log(query);
       api
         .get("merchantAPI", { query: query })
         .then(response => this.configuration(response.data))
@@ -163,9 +156,6 @@ export class MapContainer extends Component {
     ) {
       return;
     }
-    /*if (this.state.businessClass === prevState.businessClass) {
-      return;
-    }*/
     if (
       this.state.updatedSearch !== this.props.search.search &&
       this.state.businessClass !== "slide-underneath"
@@ -176,8 +166,6 @@ export class MapContainer extends Component {
   }
 
   configuration(data) {
-    console.log("MAP MERCH");
-    console.log(data.merchants);
     let filteredMerchants = data.merchants.filter(function (returnableObjects) {
       if (
         returnableObjects.subscriptionStatus === "active" ||
@@ -189,8 +177,6 @@ export class MapContainer extends Component {
     if (filteredMerchants.length === 0) {
       this.launchErrorModal();
     }
-    console.log("filtered merchants");
-    console.log(filteredMerchants);
     data.merchants = filteredMerchants;
     this.setState({
       data: data,
@@ -199,11 +185,7 @@ export class MapContainer extends Component {
       selectedMerchant: data.merchants[0]
     });
     // Separate logic for this, to allow for the animation to proceed
-    console.log("business merchants");
-    console.log(this.state.businessMerchants);
     if (this.state.businessMerchants.length < 2) {
-      console.log("business merchant update");
-      console.log(data.merchants.slice(0, 2));
       this.setState({ businessMerchants: data.merchants.slice(0, 2) });
     }
   }

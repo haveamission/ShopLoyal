@@ -1,0 +1,13 @@
+export const FavError = "Sorry, you can't select that item until you favorite a merchant!";
+export const FavSuccess1 = "Success! You've favorited a merchant. Now ";
+export const FavSuccess2 = "favorite more merchants"
+export const FavErrorMsg = "You need to favorite this merchant before messaging them";
+export const FavErrorCall = "You need to favorite this merchant before calling them";
+export const AboutText = "About";
+export const MostRecentMer = "Most Recent Merchants";
+export const AllFavMer = "All Favorite Merchants";
+export const NotificationText = "Notifications";
+export const EmailNotificationText = "EmailNotifications";
+export const SupportText = "Support";
+export const TutorialText = "Tutorial";
+export const DOCS = "DOCS";

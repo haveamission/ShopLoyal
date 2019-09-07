@@ -3,7 +3,6 @@ import { persistReducer, persistStore } from "redux-persist";
 import { routerMiddleware } from "connected-react-router";
 import createRootReducer from "./reducers/index";
 import { createHashHistory } from "history";
-import reducers from "./reducers/index";
 import localForage from "localforage";
 import { createStore, applyMiddleware, compose } from "redux";
 import getLocation from "./actions/location";

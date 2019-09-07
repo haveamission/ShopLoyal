@@ -8,12 +8,13 @@ import Promotions from "./Promotions";
 import { withKeycloak } from "react-keycloak";
 import Loading from "./Loading";
 import searchSave from "../actions/search";
+import { AboutText } from "../config/strings";
 
 class About extends Component {
   render() {
     return (
       <div className="about">
-        <h3>About</h3>
+        <h3>{AboutText}</h3>
         <p>{this.props.desc}</p>
       </div>
     );
@@ -35,8 +36,6 @@ class Detail extends Component {
   }
 
   configuration(data) {
-    console.log("merchant detail api data");
-    console.log(data);
     this.setState({ data, isLoading: false });
   }
 

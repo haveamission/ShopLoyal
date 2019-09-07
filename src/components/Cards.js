@@ -1,11 +1,9 @@
 import React, { Component } from "react";
-import ShopLoyalIcon from "../img/ShopLoyalIcon.png";
 import CardRow from "./CardRow";
 import API from "./API";
 import { connect } from "react-redux";
 import Loading from "./Loading";
 import { withKeycloak } from "react-keycloak";
-import { addTokens } from "../actions/tokens";
 import { saveMessageNum } from "../actions/messages";
 import { bindActionCreators } from "redux";
 import searchSave from "../actions/search";
@@ -87,8 +85,8 @@ class Cards extends Component {
       var idArray = data.map(a => a.id);
       this.props.saveMessageNum(idArray);
     }
-    for (var merchant in data) {
-    }
+    /*for (var merchant in data) {
+    }*/
     this.setState({ data, isLoading: false });
   }
 
@@ -130,9 +128,6 @@ class Cards extends Component {
   }
 
   componentDidMount() {
-    if (this.props.tokens !== null) {
-      //this.props.addTokens(this.props.tokens);
-    }
 
     if (this.props.keycloak.authenticated) {
       // Likely replace for inside the BackgroundProcess.js/Init/AfterLogin?
@@ -140,7 +135,7 @@ class Cards extends Component {
         window.plugins.OneSignal.getIds(this.extractOneSignalIds);
       }
 
-      if (this.props.analytics.engagement == 1) {
+      if (this.props.analytics.engagement === 1) {
         var api = new API(this.props.keycloak);
         var body = {
           merchantId: 71,
@@ -198,7 +193,7 @@ const mapStateToProps = state => {
 
 function mapDispatchToProps(dispatch) {
   let actions = bindActionCreators(
-    { addTokens, saveMessageNum, searchSave },
+    { saveMessageNum, searchSave },
     dispatch
   );
   return { ...actions, dispatch };
