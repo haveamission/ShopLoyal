@@ -20,7 +20,7 @@ class FavMerchantsItem extends Component {
   };
 
   processFavorite(data) {
-    var merchant = this.state.merchant;
+    let merchant = this.state.merchant;
     merchant.isFavorite = !this.state.merchant.isFavorite;
     this.setState({ merchant: merchant });
   }
@@ -29,11 +29,11 @@ class FavMerchantsItem extends Component {
     e.stopPropagation();
 
     if (this.props.keycloak.authenticated) {
-      var body = {
+      let body = {
         merchantId: this.state.merchant.id,
         status: !this.state.merchant.isFavorite
       };
-      var api = new API(this.props.keycloak);
+      let api = new API(this.props.keycloak);
       api.setRetry(3);
       api
         .post("favoriteMerchantAPI", { body: body })
@@ -94,7 +94,7 @@ class FavMerchants extends React.Component {
    * Probably switch this to cards when doing refactor.
    */
   loadFavMerchants(data) {
-    var arr = [];
+    let arr = [];
     data.map((item, index) => {
       arr.push(<FavMerchantsItemRedux merchant={item} key={index} />);
     });
@@ -103,13 +103,13 @@ class FavMerchants extends React.Component {
   componentDidMount() {
     // TODO REPLACE WITH REAL LOCATION
 
-    var query = {
+    let query = {
       lat: this.props.coordinates.coords.latitude,
       lng: this.props.coordinates.coords.longitude,
       limit: "30"
     };
 
-    var api = new API(this.props.keycloak);
+    let api = new API(this.props.keycloak);
     api
       .get("favoriteMerchantAPI", { query: query })
       .then(response => this.loadFavMerchants(response.data))

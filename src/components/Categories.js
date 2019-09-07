@@ -24,7 +24,7 @@ class Categories extends Component {
   }
 
   handleClick = cat => {
-    var value = cat;
+    let value = cat;
     if (value === "All") {
       value = "";
     }

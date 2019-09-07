@@ -65,10 +65,10 @@ class MainSettings extends React.Component {
   handleNotificationEmail = event => {
     event.persist();
 
-    var body = {
+    let body = {
       notificationEmailEnabled: event.target.checked
     };
-    var api = new API(this.props.keycloak);
+    let api = new API(this.props.keycloak);
     api
       .post("settings", { body: body })
       .then(response => console.log(response.data))
@@ -84,7 +84,7 @@ class MainSettings extends React.Component {
    * Is this very "react"? Possible refactor alongside FavMerchants.js
    */
   loadFavMerchants(data) {
-    var arr = [];
+    let arr = [];
     data.map((item, index) => {
       if (index < 3) {
         arr.push(
@@ -96,13 +96,13 @@ class MainSettings extends React.Component {
   }
 
   componentDidMount() {
-    var query = {
+    let query = {
       lat: this.props.coordinates.coords.latitude,
       lng: this.props.coordinates.coords.longitude,
       limit: "30"
     };
 
-    var api = new API(this.props.keycloak);
+    let api = new API(this.props.keycloak);
     api
       .get("favoriteMerchantAPI", { query: query })
       .then(response => this.loadFavMerchants(response.data))
@@ -166,8 +166,6 @@ class MainSettings extends React.Component {
             </div>
           </div>
         </Link>
-
-        {/*<li>Waitlist</li>*/}
         <li>
           <label>
             <span className="toggle-text">{NotificationText}</span>

@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import searchSave from "../actions/search";
 import { bindActionCreators } from "redux";
 import { push } from "connected-react-router";
+import { SearchInputText1, SearchInputText2 } from "../config/strings";
 
 class Search extends Component {
   constructor(props) {
@@ -42,7 +43,7 @@ class Search extends Component {
   };
 
   keyPress(event) {
-    var code = event.keyCode ? event.keyCode : event.which;
+    let code = event.keyCode ? event.keyCode : event.which;
     if (code === 13) {
       this.props.dispatch(push("/map"));
     }
@@ -90,15 +91,15 @@ class Search extends Component {
               className="search-text"
             >
               <i className="fas fa-search small" />
-              Search
-          </span>
+              {SearchInputText1}
+            </span>
           )}
         <input
           ref={ip => (this.myInp = ip)}
           className="search-input"
           onKeyPress={this.keyPress}
           onChange={this.handleChange}
-          placeholder="to add your favorite merchants"
+          placeholder={SearchInputText2}
           value={this.state.value}
         />
         {this.state.value ? "" : ""}

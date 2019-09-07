@@ -15,7 +15,7 @@ class Settings extends Component {
   }
 
   getSettings() {
-    var api = new API(this.props.keycloak);
+    let api = new API(this.props.keycloak);
     api
       .get("settings")
       .then(response => this.loadSettings(response.data))
@@ -30,7 +30,7 @@ class Settings extends Component {
 
   componentDidMount() {
     if (this.props.keycloak.authenticated) {
-      var api = new API(this.props.keycloak);
+      let api = new API(this.props.keycloak);
       api
         .get("userProfileAPI")
         .then(response => this.configuration(response.data))

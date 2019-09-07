@@ -10,6 +10,7 @@ import Back from "./Back";
 import { profileSave } from "../actions/profile";
 import { openSideBar } from "../actions/sidebar";
 import { bindActionCreators } from "redux";
+import { Welcome } from "../config/strings";
 
 class FrontPage extends Component {
   state = {
@@ -40,19 +41,16 @@ class FrontPage extends Component {
       justifyContent: "left"
     };
 
-    console.log("THIS PROPS HEADER");
-    console.log(this.props.profile);
     return (
       <div>
         <nav style={navStyles}>
-          {/*<img className="profile" src={ProfileImg} />*/}
         </nav>
         <Link to="/">
           <img className="logo shoployal-main-logo" src={ShopLoyalMainImg} />
         </Link>
         <div className="secondary-nav">
           <div className="welcome-text" style={navStyles}>
-            Welcome
+            {Welcome}
             <span className="welcome-text-name">
               {this.props.keycloak.tokenParsed.given_name}
             </span>
@@ -107,7 +105,7 @@ const HeaderComponents = {
 
 class Header extends Component {
   getHeaderComponent() {
-    var path = this.props.router.location.pathname;
+    let path = this.props.router.location.pathname;
     for (const headerType in HeaderToUrl) {
       if (HeaderToUrl[headerType].includes(path)) {
         const component = HeaderComponents[headerType];
@@ -132,7 +130,7 @@ class Header extends Component {
 
       //console.log(this.props);
 
-      var api = new API(this.props.keycloak);
+      let api = new API(this.props.keycloak);
       api
         .get("userProfileAPI")
         .then(response => this.configuration(response.data))

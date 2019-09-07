@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 class PromoCard extends Component {
 
     componentWillMount() {
-        var colorArr = ["#536DFE", "#5C6BC0", "#969FA2", "#27295F", "#FFD138", "#DDDDDD"];
+        let colorArr = ["#536DFE", "#5C6BC0", "#969FA2", "#27295F", "#FFD138", "#DDDDDD"];
         this.rand = colorArr[Math.floor(Math.random() * colorArr.length)];
 
     }

@@ -27,11 +27,11 @@ class Promotions extends Component {
 
   componentDidMount() {
     if (this.props.keycloak.authenticated) {
-      var api = new API(this.props.keycloak);
-      var merchant_id = this.props.location.pathname.substr(
+      let api = new API(this.props.keycloak);
+      let merchant_id = this.props.location.pathname.substr(
         this.props.location.pathname.lastIndexOf("/") + 1
       );
-      var query = {
+      let query = {
         lat: this.props.coordinates.coords.latitude,
         lng: this.props.coordinates.coords.longitude,
         radius: "10.0",

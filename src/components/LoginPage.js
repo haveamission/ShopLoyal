@@ -11,13 +11,11 @@ import logo from "../resources/img/combinedShape@3x.png";
 import logotitle from "../resources/img/slLogoFinal@3x.png";
 import { saveMessageTotalNum } from "../actions/total_messages";
 
-//var ref;
-
 class LoginPage extends Component {
   componentDidMount() {
     this.props.saveMessageTotalNum(0);
     if (window.IonicDeeplink) {
-      var self = this;
+      let self = this;
       window.IonicDeeplink.onDeepLink(function (data) {
         self.processDeeplink(data, self);
       });

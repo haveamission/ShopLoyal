@@ -8,13 +8,13 @@ import { saveMessageTotalNum } from "../actions/total_messages";
 class BackgroundProcess extends Component {
 
   merchantMessageConfiguration(data) {
-    var message_count = data.length;
+    let message_count = data.length;
     this.props.saveMessageTotalNum(this.props.total_messages + message_count);
   }
 
   pullMessages(self) {
     if (self.props.keycloak.authenticated) {
-      var api = new API(self.props.keycloak);
+      let api = new API(self.props.keycloak);
       self.props.merchants.forEach(function (merchant_id) {
         api
           .get("merchantMessages", { repl_str: merchant_id })
@@ -32,8 +32,7 @@ class BackgroundProcess extends Component {
   }
 
   componentDidMount() {
-    //var BackgroundFetch = window.BackgroundFetch;
-    var self = this;
+    const self = this;
     let fetchCallback = function () {
       console.log("[js] BackgroundFetch event received");
       // Required: Signal completion of your task to native code

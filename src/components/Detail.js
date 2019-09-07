@@ -49,7 +49,7 @@ class Detail extends Component {
       var merchant_id = this.props.location.pathname.substr(
         this.props.location.pathname.lastIndexOf("/") + 1
       );
-      var query = {
+      let query = {
         lat: this.props.coordinates.coords.latitude,
         lng: this.props.coordinates.coords.longitude,
         radius: "10.0",
@@ -58,7 +58,7 @@ class Detail extends Component {
         search: this.state.search
       };
 
-      var api = new API(this.props.keycloak);
+      let api = new API(this.props.keycloak);
       api.setRetry(3);
       api
         .get("merchantDetailAPI", { repl_str: merchant_id, query: query })

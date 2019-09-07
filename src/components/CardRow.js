@@ -1,10 +1,8 @@
 import React, { Component } from "react";
 import ShopLoyalCardLogo from "../img/ShopLoyalLogoIcon.png";
 import ScrollMenu from "react-horizontal-scrolling-menu";
-//import Card from "./Card";
-import Card from './NewCard';
+import Card from "./Card";
 import PromoCard from "./PromoCard";
-//import withFetching from "./API";
 import API from "./API";
 import { connect } from "react-redux";
 import { withKeycloak } from "react-keycloak";
@@ -36,49 +34,6 @@ class CardRow extends Component {
     this.animationend = this.animationend.bind(this);
   }
 
-  createIntro() {
-    const promo1 = {
-      id: -1,
-      ...this.props.merchant,
-      photo: ShopLoyalCardLogo,
-      title: "These are promotion cards",
-      text:
-        "Bring these to your local merchants to redeem promotions or rewards!"
-    };
-    const promo2 = {
-      id: -2,
-      ...this.props.merchant,
-      photo: ShopLoyalCardLogo,
-      title: "Start adding your favorite stores",
-      text:
-        "'Search' up top for your local merchants and 'Favorite' ♥ them to begin receiving personalized promotions and updates!"
-    };
-
-    this.state.list.push(
-      <Card
-        merchant={this.props.merchant.merchant}
-        key={this.props.merchant.merchant.id}
-        bubblemsg={this.state.bubblemsg}
-      />
-    );
-    this.state.list.push(
-      <PromoCard
-        data={promo1}
-        key={promo1.id}
-        merchant_id={this.props.merchant.merchant.id}
-      />
-    );
-    this.state.list.push(
-      <PromoCard
-        data={promo2}
-        key={promo2.id}
-        merchant_id={this.props.merchant.merchant.id}
-      />
-    );
-    this.setState({ isLoading: false });
-    // Switch into a string repo with string formatting after MVP
-  }
-
   containerRef = React.createRef();
   scrollRef = React.createRef();
 
@@ -103,11 +58,7 @@ class CardRow extends Component {
     // Leaving the loop for now - can probably remove once we're certain Julie wants to keep last message
     for (let el of data) {
       if (el.recipient === "customer") {
-        text_msg = "From: " + el.message;
-        msg = el;
-        break;
-      } else if (el.recipient === "merchant") {
-        text_msg = "To: " + el.message;
+        text_msg = el.message;
         msg = el;
         break;
       }
@@ -126,20 +77,13 @@ class CardRow extends Component {
   }
 
   componentDidMount() {
-    if (this.props.keycloak.authenticated) {
-      //
-      if (this.props.merchant.merchant.id === 0) {
-        this.createIntro();
-        return;
-      }
-    }
 
     // This is messy due to switchover from , re-architect
 
     if (this.props.keycloak.authenticated /*&& this.props.count == 0*/) {
-      var merchant_id = this.props.merchant.merchant.id;
-      var api = new API(this.props.keycloak);
-      var self = this;
+      let merchant_id = this.props.merchant.merchant.id;
+      let api = new API(this.props.keycloak);
+      let self = this;
       api.setRetry(10);
       api
         .get("merchantMessages", { repl_str: merchant_id })
@@ -157,8 +101,8 @@ class CardRow extends Component {
           );
         })
         .finally(function () {
-          var api = new API(self.props.keycloak);
-          var query = {
+          let api = new API(self.props.keycloak);
+          let query = {
             lat: self.props.coordinates.coords.latitude,
             lng: self.props.coordinates.coords.longitude,
             radius: "10.0",
@@ -195,148 +139,72 @@ class CardRow extends Component {
     }
   }
 
-  handleArrowClick() {
-    console.log("LEFTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
-    console.log("on card");
-    console.log(this.state.onCard);
-    console.log(Date.now());
-    console.log("Diff");
-    console.log(Math.abs(this.state.swipeTimeDiff - Date.now()));
+  swipeRight() {
     if (
       this.state.onCard > 0 &&
       Math.abs(this.state.swipeTimeDiff - Date.now()) > 250
     ) {
       this.setState({ onCard: this.state.onCard - 1 });
-      var fontSize = parseFloat(
+      let fontSize = parseFloat(
         getComputedStyle(document.documentElement).fontSize
       );
-      var menuWrapper = document.querySelectorAll(".menu-wrapper--inner")[
+      let menuWrapper = document.querySelectorAll(".menu-wrapper--inner")[
         this.props.count
       ];
-      var threeDVal = Number(
+      let threeDVal = Number(
         String(menuWrapper.style.transform)
           .split("(")
           .pop()
           .split("px,")[0]
       );
-      console.log("Three d val!");
-      console.log(threeDVal);
-      var transformSize = fontSize * 30 + threeDVal;
-      console.log("transform size");
-      console.log(transformSize);
-      var fullTransformSize = convertRemToPixels(4.5) + transformSize;
-      console.log("FULL TRANSFORM");
-      console.log(fullTransformSize);
-      var translate3d = "translate3d(" + fullTransformSize + "px, 0px, 0px)";
-
-      // TODO Add calculation to prevent scroll if card is past limit
-
-      console.log("handlerightarrowclick: " + translate3d);
+      let transformSize = fontSize * 30 + threeDVal;
+      let fullTransformSize = convertRemToPixels(4.5) + transformSize;
+      let translate3d = "translate3d(" + fullTransformSize + "px, 0px, 0px)";
       this.setState({ swipeTimeDiff: Date.now() });
       menuWrapper.style.transform = translate3d;
     }
   }
-  handleArrowClickRight() {
-    console.log("RIGHTTTTTTTTTTTTTTTTTTTTTTTTTTTTT");
-    console.log("on card");
-    console.log(this.state.onCard);
-    console.log(Date.now());
-    console.log("Diff");
-    console.log(Math.abs(this.state.swipeTimeDiff - Date.now()));
+  swipeLeft() {
     if (
       this.state.onCard + 1 < this.state.list.length &&
       Math.abs(this.state.swipeTimeDiff - Date.now()) > 250
     ) {
       this.setState({ onCard: this.state.onCard + 1 });
-      var fontSize = parseFloat(
+      let fontSize = parseFloat(
         getComputedStyle(document.documentElement).fontSize
       );
-      var menuWrapper = document.querySelectorAll(".menu-wrapper--inner")[
+      let menuWrapper = document.querySelectorAll(".menu-wrapper--inner")[
         this.props.count
       ];
-      var threeDVal = Number(
+      let threeDVal = Number(
         String(menuWrapper.style.transform)
           .split("(")
           .pop()
           .split("px,")[0]
       );
-      console.log("Three d val!");
-      console.log(threeDVal);
-      var transformSize = fontSize * 30 - threeDVal;
-      console.log("transform size");
-      console.log(transformSize);
-      var fullTransformSize = convertRemToPixels(4.5) + transformSize;
-      console.log("FULL TRANSFORM");
-      console.log(fullTransformSize);
-      var translate3d = "translate3d(" + -fullTransformSize + "px, 0px, 0px)";
+      let transformSize = fontSize * 30 - threeDVal;
+      let fullTransformSize = convertRemToPixels(4.5) + transformSize;
+      let translate3d = "translate3d(" + -fullTransformSize + "px, 0px, 0px)";
 
-      // TODO Add calculation to prevent scroll if card is past limit
-
-      console.log("handlerightarrowclick: " + translate3d);
       this.setState({ swipeTimeDiff: Date.now() });
       menuWrapper.style.transform = translate3d;
     }
   }
 
-  swipeRight() {
-    this.handleArrowClick();
-    console.log("handle arrow click props");
-    console.log(this.props);
-    var menuWrapper = document.querySelectorAll(".menu-wrapper--inner")[
-      this.props.count
-    ];
-    console.log("COMPARISON TRANSITIONS");
-    console.log(menuWrapper.style.transform);
-    console.log(this.state.transformInitial);
-    if (menuWrapper.style.transform === this.state.transformInitial) {
-      var translate3d =
-        "translate3d(" + convertRemToPixels(4.5) + "px, 0px, 0px)";
-      console.log("rem size");
-      console.log(
-        parseFloat(getComputedStyle(document.documentElement).fontSize)
-      );
-      //menuWrapper.style.transform = translate3d;
-      console.log(menuWrapper.style.transform);
-    }
-  }
-
-  swipeLeft() {
-    var translate3d =
-      "translate3d(" + convertRemToPixels(4.5) + "px, 0px, 0px)";
-    var menuWrapper = document.querySelectorAll(".menu-wrapper--inner")[
-      this.props.count
-    ];
-    if (menuWrapper.style.transform === translate3d) {
-      //menuWrapper.style.transform = this.state.transformInitial;
-      console.log("updated transform");
-      console.log(menuWrapper.style.transform);
-    }
-    this.handleArrowClickRight();
-  }
-
   componentDidUpdate() {
-    console.log("STATE UPDATED");
-    console.log(this.state);
     // TODO: Figure out how to fix this lifecycle method
     if (this.containerRef.current !== null && this.menu.current !== null) {
       this.hammer = Hammer(this.containerRef.current);
       this.hammer.get("swipe").set({ threshold: 100, velocity: 0.7 });
       this.hammer.on("swiperight", () => this.swipeRight());
       this.hammer.on("swipeleft", () => this.swipeLeft());
-
-      //this.hammer.on("swiperight", () => this.menu.handleArrowClick());
-      //this.hammer.on("swipeleft", () => this.menu.handleArrowClickRight());
     }
-
-    //if(this.props.profile !== null && this.props.merchant.merchant.id === 0 && this.state.bubblemsg === null) {
-    //this.setState({"bubblemsg":"Hey " + this.props.profile.givenName + ", Welcome to ShopLoyal! Swipe to learn more!", "bubbleid":0});
-    //}
   }
 
   animationend() {
     console.log("Does this animate?");
     if (this.state.transformInitial === null) {
-      var menuWrapper = document.querySelectorAll(".menu-wrapper--inner")[
+      let menuWrapper = document.querySelectorAll(".menu-wrapper--inner")[
         this.props.count
       ];
       console.log("INITIAL MENU WRAPPER");
@@ -352,7 +220,7 @@ class CardRow extends Component {
     }
 
     const menu = this.state.list;
-    var translate = 0;
+    let translate = 0;
 
     if (this.state.bubblemsg && this.state.animationEnded) {
       translate = convertRemToPixels(4.5);

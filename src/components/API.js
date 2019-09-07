@@ -70,22 +70,22 @@ class SLAPI {
 
   get(API, params = this.defaultParams) {
     this.call = "GET";
-    var constructedURL = this.constructURL(API, params);
+    let constructedURL = this.constructURL(API, params);
     axiosRetry(axios, { retries: this.retry });
     return axios.get(constructedURL, this.config);
   }
 
   post(API, params = this.defaultParams) {
     this.call = "POST";
-    var constructedURL = this.constructURL(API, params);
-    var body = params["body"];
+    let constructedURL = this.constructURL(API, params);
+    let body = params["body"];
     axiosRetry(axios, { retries: this.retry });
     return axios.post(constructedURL, body, this.config);
   }
 
   constructURL(API, params) {
-    var constructedURL;
-    var endpoint;
+    let constructedURL;
+    let endpoint;
     if ("repl_str" in params) {
       endpoint = format(this[API], params.repl_str);
     } else {
@@ -112,8 +112,8 @@ class SLAPI {
   }
 
   queryProcess(constructedURL, params) {
-    var argumentStr = "?";
-    var count = 0;
+    let argumentStr = "?";
+    let count = 0;
     const keys = Object.keys(params["query"]);
     for (const key of keys) {
       if (count !== 0) {

@@ -38,9 +38,9 @@ class Cards extends Component {
 
   loadMerchants() {
 
-    var api = new API(this.props.keycloak);
+    let api = new API(this.props.keycloak);
     api.setRetry(10);
-    var query = {
+    let query = {
       lat: this.props.coordinates.coords.latitude,
       lng: this.props.coordinates.coords.longitude,
       radius: "10.0",
@@ -82,17 +82,15 @@ class Cards extends Component {
     if (data === undefined || data.length === 0) {
       data.push(introCard);
     } else {
-      var idArray = data.map(a => a.id);
+      let idArray = data.map(a => a.id);
       this.props.saveMessageNum(idArray);
     }
-    /*for (var merchant in data) {
-    }*/
     this.setState({ data, isLoading: false });
   }
 
   extractOneSignalIds(ids) {
-    var api = new API(this.props.keycloak);
-    var query = {
+    let api = new API(this.props.keycloak);
+    let query = {
       deviceId: ids.userId
     };
     api
@@ -101,7 +99,6 @@ class Cards extends Component {
       .catch(function (error) {
         console.log(error);
       });
-    //alert(JSON.stringify(ids));
   }
 
   scheduleNextUpdate() {
@@ -136,8 +133,8 @@ class Cards extends Component {
       }
 
       if (this.props.analytics.engagement === 1) {
-        var api = new API(this.props.keycloak);
-        var body = {
+        let api = new API(this.props.keycloak);
+        let body = {
           merchantId: 71,
           status: true
         };

@@ -23,8 +23,8 @@ function SlideUpChat(props) {
 }
 
 function generateMessage(message, index, additionalData) {
-  var idval;
-  var position;
+  let idval;
+  let position;
   if (message.recipient === "merchant") {
     idval = 1;
     position = "right";
@@ -68,7 +68,7 @@ class Chat extends Component {
 
   componentWillMount() {
     document.body.style.position = "fixed";
-    var userId = this.props.profile.id;
+    let userId = this.props.profile.id;
     this.createChannel(userId);
   }
 
@@ -78,16 +78,12 @@ class Chat extends Component {
 
   componentWillUnmount() {
     document.body.style.position = "static";
-    console.log("merchant data");
-    console.log(this.props);
-    // What is this for? Commented out for now.
-    //this.setState({ "merchantName": this.props.location.state.merchant.name });
     clearInterval(this.interval);
   }
 
   openChannel() {
-    var api = new API(this.props.keycloak);
-    var merchant_id = this.props.location.pathname.substr(
+    let api = new API(this.props.keycloak);
+    let merchant_id = this.props.location.pathname.substr(
       this.props.location.pathname.lastIndexOf("/") + 1
     );
     api
@@ -103,9 +99,9 @@ class Chat extends Component {
   }
 
   loadMessages(data) {
-    var count = 0;
+    let count = 0;
 
-    var messagevals = [];
+    let messagevals = [];
 
     data.reverse().forEach(function (obj) {
       messagevals.push(generateMessage(obj, count, {}));
@@ -118,8 +114,8 @@ class Chat extends Component {
   }
 
   pullMessages() {
-    var api = new API(this.props.keycloak);
-    var merchant_id = this.props.location.pathname.substr(
+    let api = new API(this.props.keycloak);
+    let merchant_id = this.props.location.pathname.substr(
       this.props.location.pathname.lastIndexOf("/") + 1
     );
     this.setState({ date: null });
@@ -136,7 +132,7 @@ class Chat extends Component {
   }
 
   pullChannels() {
-    var api = new API(this.props.keycloak);
+    let api = new API(this.props.keycloak);
     api
       .get("channels")
       .then(response => this.loadChannels(response.data))
@@ -146,14 +142,14 @@ class Chat extends Component {
   }
 
   createChannel(userId) {
-    var api = new API(this.props.keycloak);
-    var channelId =
+    let api = new API(this.props.keycloak);
+    let channelId =
       this.props.location.pathname
         .substr(this.props.location.pathname.lastIndexOf("/") + 1)
         .toString() +
       "-" +
       userId.toString();
-    var body = {
+    let body = {
       merchantId: this.props.location.pathname.substr(
         this.props.location.pathname.lastIndexOf("/") + 1
       ),
@@ -169,7 +165,7 @@ class Chat extends Component {
 
   componentDidMount() {
     this.openChannel();
-    var userId = this.props.profile.id;
+    let userId = this.props.profile.id;
     this.createChannel(userId);
 
     window.addEventListener("keyboardDidHide", () => {
@@ -191,7 +187,7 @@ class Chat extends Component {
       var merchant_id = this.props.location.pathname.substr(
         this.props.location.pathname.lastIndexOf("/") + 1
       );
-      var query = {
+      let query = {
         lat: this.props.coordinates.coords.latitude,
         lng: this.props.coordinates.coords.longitude,
         radius: "10.0",
@@ -200,7 +196,7 @@ class Chat extends Component {
         search: ""
       };
 
-      var api = new API(this.props.keycloak);
+      let api = new API(this.props.keycloak);
       api.setRetry(3);
       api
         .get("merchantDetailAPI", { repl_str: merchant_id, query: query })
@@ -224,12 +220,12 @@ class Chat extends Component {
 
   onSend() {
     if (this.state.text !== null || this.state.text !== "") {
-      var messages = [this.state.text];
+      let messages = [this.state.text];
       this.setState({ text: "" });
       this.openChannel();
       for (let message of messages) {
         this.saveMessage(message);
-        var messageHydrated = this.addMessageInfo(message);
+        let messageHydrated = this.addMessageInfo(message);
         this.setState({ messages: [...this.state.messages, messageHydrated] });
       }
       if (window.Keyboard) {
@@ -249,13 +245,13 @@ class Chat extends Component {
   }
 
   saveMessage(message) {
-    var body = {
+    let body = {
       message: message
     };
 
-    var api = new API(this.props.keycloak);
+    let api = new API(this.props.keycloak);
 
-    var merchant_id = this.props.location.pathname.substr(
+    let merchant_id = this.props.location.pathname.substr(
       this.props.location.pathname.lastIndexOf("/") + 1
     );
     api
@@ -287,7 +283,7 @@ class Chat extends Component {
     if (this.state.scrolled === false) {
       console.log("scrolls to bottom!");
       // TODO switch to react refs
-      var bottomele = document.getElementById("bottom-scroll");
+      let bottomele = document.getElementById("bottom-scroll");
       if (bottomele !== null) {
         console.log("scroll into view!");
         bottomele.scrollIntoView();
@@ -300,8 +296,8 @@ class Chat extends Component {
   showDate(timestamp) {
     if (this.oldDate !== null) {
       // Maybe add M calculation as well
-      var newDate = moment(timestamp).format("D");
-      var oldDate = moment(this.oldDate).format("D");
+      let newDate = moment(timestamp).format("D");
+      let oldDate = moment(this.oldDate).format("D");
       if (newDate === oldDate) {
         this.oldDate = timestamp;
         return false;

@@ -34,7 +34,7 @@ const mapStyles = {
 };
 
 function search(nameKey, myArray) {
-  for (var i = 0; i < myArray.length; i++) {
+  for (let i = 0; i < myArray.length; i++) {
     if (myArray[i].id === nameKey) {
       return myArray[i];
     }
@@ -81,8 +81,8 @@ export class MapContainer extends Component {
   }
 
   componentWillMount() {
-    var centerLat = this.props.coordinates.coords.latitude;
-    var centerLng = this.props.coordinates.coords.longitude;
+    let centerLat = this.props.coordinates.coords.latitude;
+    let centerLng = this.props.coordinates.coords.longitude;
 
     // This should be a good enough check for now about whether latitude and longitude are defined
     // Possibly make this more robust later
@@ -94,7 +94,7 @@ export class MapContainer extends Component {
   }
 
   onMarkerClick = (props, marker, e) => {
-    var selectedMerchant = search(
+    let selectedMerchant = search(
       parseInt(marker.title),
       this.state.data.merchants
     );
@@ -121,16 +121,17 @@ export class MapContainer extends Component {
   };
 
   mapIconLoad() {
-    var radius = 10.0;
-    var search = this.props.category.category;
+    // TODO - expand radius gradually if nothing is in the area
+    let radius = 10.0;
+    let search = this.props.category.category;
     if (this.props.search.search !== null && this.props.search.search !== "") {
       radius = 30.0;
       search = this.props.search.search;
     }
     if (this.props.keycloak.authenticated) {
-      var api = new API(this.props.keycloak);
+      let api = new API(this.props.keycloak);
       api.setRetry(3);
-      var query = {
+      let query = {
         lat: this.state.centerLat,
         lng: this.state.centerLng,
         radius: radius,

@@ -10,17 +10,14 @@ import { AnimatedSwitch } from "react-router-transition";
 import initReactFastclick from "react-fastclick";
 
 initReactFastclick();
-//import appsFlyer from 'cordova-plugin-appsflyer-sdk';
 
 // Import Components
-//import App from './App';
 import Layout from "./components/Layout";
 import configureStore, { history } from "./store";
 import Map from "./components/Map";
 import Cards from "./components/Cards";
 import CardRow from "./components/CardRow";
-import PrivateRoute from "./containers/PrivateRoute";
-//import NewChat from './components/NewChat';
+import PrivateRoute from "./routing/PrivateRoute";
 import Chat from "./components/Chat";
 import Detail from "./components/Detail";
 import Loading from "./components/Loading";
@@ -40,18 +37,13 @@ import "./index.css";
 import "./styles/main.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-//import 'bootstrap/dist/css/bootstrap.css';
 
 // Import Config
 
-//import { OidcProvider } from 'redux-oidc';
-//import userManager from './config/OIDC';
-
 // Redux
-//import { combineReducers } from 'redux'
 import { Provider, ReactReduxContext } from "react-redux";
 import { PersistGate } from "redux-persist/es/integration/react";
-//import createHistory from 'history/createBrowserHistory'
+
 // Keycloak
 import Keycloak from "keycloak-js";
 import { KeycloakProvider } from "react-keycloak";
@@ -64,39 +56,13 @@ import { addTokens } from "./actions/tokens";
 import getLocation from "./actions/location";
 import { engagementSave, openedFromPushSave } from "./actions/analytics";
 
-//var url = localStorage.getItem("url");
-
-//userManager.signinRedirect();
 const startApp = () => {
   // Initialize
-
-  //window.open = window.cordova.InAppBrowser.open;
-
-  //window.cordova.plugins.Keyboard.hideFormAccessoryBar(true);
-
-  const onEvent = (event, error) => {
-    //console.log('onKeycloakEvent', event, error);
-    if (typeof error !== undefined) {
-      switch (event) {
-        case "onAuthSuccess":
-          break;
-        case "onAuthLogout":
-          store.dispatch(push("/login"));
-          break;
-        case "onTokenExpired":
-          break;
-        case "onAuthError":
-        default:
-          break;
-      }
-    }
-  };
 
   if (window.plugins) {
     appsflyerInit();
     oneSignal();
   }
-  // Sets initial location state - possibly set as a watch event
 
   var tokens = store.getState().tokens;
 
@@ -123,7 +89,6 @@ const startApp = () => {
             <Layout>
               <Route
                 onUpdate={() => window.scrollTo(0, 0)}
-                onChange={pathChange}
                 render={({ location }) => {
                   const { pathname } = location;
                   return (
@@ -183,10 +148,6 @@ const startApp = () => {
   );
   registerServiceWorker();
 };
-
-function pathChange(previousRoute, nextRoute) {
-  //do your logic here
-}
 
 function appsflyerInit() {
   var options = {
