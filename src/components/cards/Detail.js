@@ -10,6 +10,7 @@ import Loading from "../main/Loading";
 import searchSave from "../../redux/actions/search";
 import { AboutText } from "../../config/strings";
 import { smallRadius, largeLimit } from "../../config/constants"
+import { getMerchantIDFromPath } from "../../utils/misc"
 
 /**
  * This is the "about" part of the detail page
@@ -32,31 +33,27 @@ class Detail extends Component {
   constructor() {
     super();
     this.state = {
-      data: {},
+      merchantDetailData: {},
       search: ""
     };
   }
 
-  configuration(data) {
-    this.setState({ data, isLoading: false });
+  merchantDetailConfiguration(merchantDetailData) {
+    this.setState({ merchantDetailData: merchantDetailData, isLoading: false });
   }
 
   componentWillMount() {
-    // Not in love with doing this in each component. Re-factor when time permits
     this.props.searchSave("");
   }
 
   componentDidMount() {
     if (this.props.keycloak.authenticated) {
-      var merchant_id = this.props.location.pathname.substr(
-        this.props.location.pathname.lastIndexOf("/") + 1
-      );
+      let merchant_id = getMerchantIDFromPath(this.props.location);
       let query = {
         lat: this.props.coordinates.coords.latitude,
         lng: this.props.coordinates.coords.longitude,
         radius: smallRadius,
         limit: largeLimit,
-        // TODO: Change this to be consistent with other search values
         search: this.state.search
       };
 
@@ -64,7 +61,7 @@ class Detail extends Component {
       api.setRetry(3);
       api
         .get("merchantDetailAPI", { repl_str: merchant_id, query: query })
-        .then(response => this.configuration(response.data))
+        .then(response => this.merchantDetailConfiguration(response.data))
         .catch(function (error) {
           console.log(error);
         });
@@ -76,14 +73,14 @@ class Detail extends Component {
   }
 
   render() {
-    if (Object.keys(this.state.data).length === 0) {
+    if (Object.keys(this.state.merchantDetailData).length === 0) {
       return <div />;
     }
 
     return (
       <div className="detail">
-        <Card merchant={this.state.data} />
-        <About desc={this.state.data.longDescription} />
+        <Card merchant={this.state.merchantDetailData} />
+        <About desc={this.state.merchantDetailData.longDescription} />
         <Promotions location={this.props.location} />
       </div>
     );

@@ -40,6 +40,9 @@ export const RGBAToHSLA = (r, g, b, a) => {
     s = +(s * 100).toFixed(1);
     l = +(l * 100).toFixed(1);
 
+    // Specific override to generate exactly the color that SL wants. I left the rest of this code generation in in case the algorithm
+    // needs to be tweaked, but currently all they need is hue.
+
     let hsla = "hsla(" + h + "," + "50" + "%," + "50" + "%," + .8 + ")";
     return hsla;
 }

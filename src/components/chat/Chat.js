@@ -8,7 +8,12 @@ import TextareaAutosize from "react-autosize-textarea";
 import { useSpring, animated } from "react-spring";
 import moment from "moment";
 import { smallRadius, largeLimit } from "../../config/constants"
+import { getMerchantIDFromPath, genChannelName } from "../../utils/misc"
 
+
+/**
+ * Configures chat message slide up. Should likely be reconfigured
+ */
 function SlideUpChat(props) {
   const animationProps = useSpring({
     from: { transform: "translate3d(0,30%,0)", opacity: 0.25 },
@@ -23,29 +28,6 @@ function SlideUpChat(props) {
   );
 }
 
-function generateMessage(message, index, additionalData) {
-  let idval;
-  let position;
-  if (message.recipient === "merchant") {
-    idval = 1;
-    position = "right";
-  } else if (message.recipient === "customer") {
-    idval = 2;
-    position = "left";
-  }
-  return {
-    id: message.id,
-    text: message.message,
-    createdAt: message.createdAt,
-    position: position,
-    user: {
-      id: idval,
-      name: "Generic"
-    },
-    ...additionalData
-  };
-}
-
 /**
  * This is the chat component
  */
@@ -54,15 +36,14 @@ class Chat extends Component {
     super();
     this.state = {
       messages: [{}],
-      merchant: { id: null },
       isLoading: true,
       text: "",
-      keyboardVal: 0,
-      merchantVal: "",
+      merchantData: {},
       scrolled: false,
       className: "default"
     };
     this.onSend = this.onSend.bind(this);
+    this.generateMessage = this.generateMessage.bind(this);
   }
 
   oldDate = null;
@@ -84,49 +65,62 @@ class Chat extends Component {
     clearInterval(this.interval);
   }
 
+  generateMessage(message, index) {
+    let position;
+    if (message.recipient === "merchant") {
+      position = "right";
+    } else if (message.recipient === "customer") {
+      position = "left";
+    }
+    let messageObj = {
+      id: message.id,
+      text: message.message,
+      createdAt: message.createdAt,
+      position: position,
+    };
+    return messageObj;
+  }
+
   openChannel() {
     let api = new API(this.props.keycloak);
-    let merchant_id = this.props.location.pathname.substr(
-      this.props.location.pathname.lastIndexOf("/") + 1
-    );
+    let merchantId = getMerchantIDFromPath(this.props.location);;
     api
-      .post("openChannel", { repl_str: merchant_id })
+      .post("openChannel", { repl_str: merchantId })
       .then(response => console.log(response.data))
       .catch(function (error) {
         console.log(error);
       });
   }
 
-  loadChannels(data) {
-    this.createChannel(data.userId);
+  loadChannels(channelData) {
+    this.createChannel(channelData.userId);
   }
 
-  loadMessages(data) {
+  loadMessages(messageData, self) {
     let count = 0;
 
     let messagevals = [];
 
-    data.reverse().forEach(function (obj) {
-      messagevals.push(generateMessage(obj, count, {}));
+    messageData.reverse().forEach(function (obj) {
+      messagevals.push(self.generateMessage(obj, count));
       count++;
     });
 
-    this.setState({ messages: messagevals });
+    self.setState({ messages: messagevals });
 
-    this.setState({ isLoading: false });
+    self.setState({ isLoading: false });
   }
 
   pullMessages() {
     let api = new API(this.props.keycloak);
-    let merchant_id = this.props.location.pathname.substr(
-      this.props.location.pathname.lastIndexOf("/") + 1
-    );
+    let merchantId = getMerchantIDFromPath(this.props.location);
     this.setState({ date: null });
     this.oldDate = null;
+    let self = this;
     api
-      .get("merchantMessages", { repl_str: merchant_id })
+      .get("merchantMessages", { repl_str: merchantId })
       .then(response => {
-        this.loadMessages(response.data);
+        this.loadMessages(response.data, self);
         this.scrollToBottom();
       })
       .catch(function (error) {
@@ -146,16 +140,10 @@ class Chat extends Component {
 
   createChannel(userId) {
     let api = new API(this.props.keycloak);
-    let channelId =
-      this.props.location.pathname
-        .substr(this.props.location.pathname.lastIndexOf("/") + 1)
-        .toString() +
-      "-" +
-      userId.toString();
+    let merchantId = getMerchantIDFromPath(this.props.location);
+    let channelId = genChannelName(merchantId, userId);
     let body = {
-      merchantId: this.props.location.pathname.substr(
-        this.props.location.pathname.lastIndexOf("/") + 1
-      ),
+      merchantId: merchantId,
       channelId: channelId
     };
     api
@@ -166,13 +154,8 @@ class Chat extends Component {
       });
   }
 
-  componentDidMount() {
-    this.openChannel();
-    let userId = this.props.profile.id;
-    this.createChannel(userId);
-
+  keyboardListeners() {
     window.addEventListener("keyboardDidHide", () => {
-      // Describe your logic which will be run each time keyboard is closed.
       this.setState({ className: "default" });
     });
 
@@ -181,38 +164,49 @@ class Chat extends Component {
         this.scrollToBottom();
       });
     });
+  }
 
+  /**
+   * Checks if the pathing sent the merchant correctly. If not, provides a failsafe to grab the merchant to prevent errors
+   */
+  checkMerchantAndSet() {
     if (this.props.location.state) {
-      this.setState({ merchantVal: this.props.location.state.merchant });
+      this.setState({ merchantData: this.props.location.state.merchant, merchantId: this.props.location.state.merchant.id });
     } else {
-      var merchant_id = this.props.location.pathname.substr(
-        this.props.location.pathname.lastIndexOf("/") + 1
-      );
+      let merchantId = getMerchantIDFromPath(this.props.location);
+      this.setState({ merchantId: merchantId });
       let query = {
         lat: this.props.coordinates.coords.latitude,
         lng: this.props.coordinates.coords.longitude,
         radius: smallRadius,
         limit: largeLimit,
-        // TODO: Change this to be consistent with other search values
         search: ""
       };
 
       let api = new API(this.props.keycloak);
       api.setRetry(3);
       api
-        .get("merchantDetailAPI", { repl_str: merchant_id, query: query })
+        .get("merchantDetailAPI", { repl_str: merchantId, query: query })
         .then(response => this.merchantConfiguration(response.data))
         .catch(function (error) {
           console.log(error);
         });
     }
+  }
 
+  componentDidMount() {
+    this.checkMerchantAndSet();
+    this.openChannel();
+    let userId = this.props.profile.id;
+    this.createChannel(userId);
+    this.keyboardListeners();
     this.pullMessages();
+    // TODO replace with web socket/pinger
     this.interval = setInterval(() => this.updateMessages(), 25000);
   }
 
-  merchantConfiguration(data) {
-    this.setState({ merchantVal: data });
+  merchantConfiguration(merchantData) {
+    this.setState({ merchantData: merchantData });
   }
 
   updateMessages() {
@@ -252,11 +246,9 @@ class Chat extends Component {
 
     let api = new API(this.props.keycloak);
 
-    let merchant_id = this.props.location.pathname.substr(
-      this.props.location.pathname.lastIndexOf("/") + 1
-    );
+    let merchantId = getMerchantIDFromPath(this.props.location);;
     api
-      .post("merchantSendMessage", { body: body, repl_str: merchant_id })
+      .post("merchantSendMessage", { body: body, repl_str: merchantId })
       .then(response => console.log(response.data))
       .catch(function (error) {
         console.log(error);
@@ -278,7 +270,7 @@ class Chat extends Component {
   scrollToBottom = () => {
     // Hack due to reference not working for some reason
     if (this.state.scrolled === false) {
-      // TODO switch to react refs
+      // TODO switch to react refs time permitting
       let bottomele = document.getElementById("bottom-scroll");
       if (bottomele !== null) {
         bottomele.scrollIntoView();
@@ -312,10 +304,10 @@ class Chat extends Component {
           <div
             className="chat-container"
             style={{
-              backgroundImage: `url(${this.state.merchantVal.coverPhoto})`
+              backgroundImage: `url(${this.state.merchantData.coverPhoto})`
             }}
           />
-          <div className="chat-title">{this.state.merchantVal.name}</div>
+          <div className="chat-title">{this.state.merchantData.name}</div>
           <div
             id="messages-container"
             onClick={() => this.chatClicked()}

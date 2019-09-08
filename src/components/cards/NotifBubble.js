@@ -8,6 +8,10 @@ class NotifBubble extends Component {
   constructor(props) {
     super(props);
 
+    /**
+     * Probably should refactor to be simpler, but need to have notification bubble example up to test
+     */
+
     const pathname =
       props.merchant.id === `/chat/${props.merchant.id}`;
 

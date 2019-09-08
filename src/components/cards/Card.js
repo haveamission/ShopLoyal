@@ -28,14 +28,10 @@ import { lightestColor } from "../../utils/color"
 class Card extends Component {
     constructor() {
         super();
-        this.state = {
-            data: {},
-        };
         this.routeChange = this.routeChange.bind(this);
         this.handleFavorite = this.handleFavorite.bind(this);
+        this.launchInsiderModal = this.launchInsiderModal.bind(this);
         this.launchErrorModal = this.launchErrorModal.bind(this);
-        this.handleMessageClick = this.handleMessageClick.bind(this);
-        this.handleCallClick = this.handleCallClick.bind(this);
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -45,21 +41,18 @@ class Card extends Component {
         return { merchant: merchant, bubblemsg: props.bubblemsg };
     }
 
-    routeChange = e => {
-        if (this.props.merchant.id === 0) {
-            e.preventDefault();
-            e.stopPropagation();
-            this.launchErrorModal(
-                { FavError }
-            );
-            return;
-        }
+    /**
+     * This code prevents event bubbling when clicking on internal links in the card
+     * @param {click event} event 
+     */
+    routeChange(event) {
+
         if (
-            e.target.className === "notif-bubble-link" ||
-            e.target.className === "notif-bubble slide-in-right"
+            event.target.className === "notif-bubble-link" ||
+            event.target.className === "notif-bubble slide-in-right"
         ) {
             return;
-        } else if (e.target.nodeName === "LI" || e.target.nodeName === "a") {
+        } else if (event.target.nodeName === "LI" || event.target.nodeName === "a") {
             return;
         }
 
@@ -67,7 +60,7 @@ class Card extends Component {
         this.props.dispatch(push(path));
     };
 
-    configuration(data) {
+    updateFavoriteStatus(data) {
         let merchant = this.state.merchant;
         merchant.isFavorite = !merchant.isFavorite;
         this.setState({ merchant: merchant });
@@ -95,41 +88,24 @@ class Card extends Component {
         });
     }
 
-    firstTimeFavoriteCheck() {
+    /**
+     * Vestigial method from when we did a more extensive favorite check. Possibly remove and simply - keeping for now in case
+     * SL team wants feature expansion
+     */
+    favoriteCheck() {
         this.launchInsiderModal();
     }
 
-    handleMessageClick(e) {
-        if (this.state.merchant.isFavorite === false) {
-            this.launchErrorModal(
-                { FavErrorMsg }
-            );
-            return;
-            e.preventDefault();
-            e.stopPropagation();
-            e.nativeEvent.stopImmediatePropagation();
-        }
-
-        let path = "/chat/" + this.state.merchant.id;
-
-        this.props.dispatch(push(path));
-    }
-
-    handleCallClick(e) {
-        if (this.state.merchant.isFavorite === false) {
-            e.preventDefault();
-            e.stopPropagation();
-            this.launchErrorModal(
-                { FavErrorCall }
-            );
-        }
-    }
-
-    handleFavorite(e) {
-        e.stopPropagation();
+    /**
+     * Handles favoriting and unfavoriting. Possible TODO - refactor into <CardRight />? This will have potential performance efficiency
+     * but also requires re-architecting state/props for child component more thoroughly.
+     * @param {the click event} event 
+     */
+    handleFavorite(event) {
+        event.stopPropagation();
         if (this.props.keycloak.authenticated) {
             if (this.state.merchant.isFavorite !== true) {
-                this.firstTimeFavoriteCheck();
+                this.favoriteCheck();
             }
             let api = new API(this.props.keycloak);
             let body = {
@@ -139,16 +115,11 @@ class Card extends Component {
             api.setRetry(3);
             api
                 .post("favoriteMerchantAPI", { body: body })
-                .then(response => this.configuration(response.data))
+                .then(response => this.updateFavoriteStatus(response.data))
                 .catch(function (error) {
                     console.log(error);
                 });
         }
-    }
-
-    if(error) {
-        console.log(error);
-        return <p>{error.message}</p>;
     }
 
     if(isLoading) {
@@ -174,10 +145,6 @@ class Card extends Component {
     }
 
     render() {
-        if (!this.state.data) {
-            return <div />;
-        }
-
         return (
             <div
                 className="card titlecard"
@@ -201,9 +168,7 @@ class Card extends Component {
                 <CardRight
                     merchant={this.state.merchant}
                     handleFavorite={this.handleFavorite}
-                    handleMessageClick={this.handleMessageClick}
-                    createCallLink={this.createCallLink}
-                    createMapLink={this.createMapLink}
+                    launchErrorModal={this.launchErrorModal}
                     {...this.props}
                 />
             </div>
@@ -281,6 +246,38 @@ class CardRight extends Component {
  * The primary card navigation - message, call and map.
  */
 class CardNav extends Component {
+    constructor() {
+        super();
+        this.handleCallClick = this.handleCallClick.bind(this);
+        this.handleMessageClick = this.handleMessageClick.bind(this);
+    }
+
+    handleCallClick(event) {
+        if (this.props.merchant.isFavorite === false) {
+            event.preventDefault();
+            event.stopPropagation();
+            this.props.launchErrorModal(
+                FavErrorCall
+            );
+        }
+    }
+
+    handleMessageClick(event) {
+        if (this.props.merchant.isFavorite === false) {
+            this.props.launchErrorModal(
+                FavErrorMsg
+            );
+            return;
+            event.preventDefault();
+            event.stopPropagation();
+            event.nativeEvent.stopImmediatePropagation();
+        }
+
+        let path = "/chat/" + this.props.merchant.id;
+
+        this.props.dispatch(push(path));
+    }
+
     render() {
         let Message = MessageWhite;
         let Call = CallWhite;
@@ -295,18 +292,18 @@ class CardNav extends Component {
             <div className="card-nav">
                 <ul>
                     <a onClick={e => e.preventDefault()}>
-                        <li onClick={this.props.handleMessageClick}>
+                        <li onClick={this.handleMessageClick}>
                             {MessageText}
                             <img src={Message} />
                         </li>
                     </a>
-                    <a onClick={this.props.handleCallClick} href={"tel:+" + this.props.merchant.phoneNumber}>
+                    <a onClick={this.handleCallClick} href={"tel:+" + this.props.merchant.phoneNumber}>
                         <li>
                             {CallText}
                             <img src={Call} />
                         </li>
                     </a>
-
+                    {/* TODO: Send user to precise geolocation of the pin - code is theoretically created but not functional */}
                     <Link
                         to={{
                             pathname: "/map",

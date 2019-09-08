@@ -50,7 +50,6 @@ class LoginPage extends Component {
       idpHint: "default",
       cordovaOptions: { zoom: "no", hardwareback: "yes" }
     });
-    //this.props.idprovider("google");
   }
 
   render() {

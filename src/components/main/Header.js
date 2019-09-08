@@ -12,6 +12,10 @@ import { openSideBar } from "../../redux/actions/sidebar";
 import { bindActionCreators } from "redux";
 import { Welcome } from "../../config/strings";
 
+/**
+ * Due to high number of header conditions, header had to be fairly complex. Will be simplified per Mick's instructions
+ */
+
 class FrontPage extends Component {
   state = {
     picture: ProfilePic,
@@ -119,9 +123,9 @@ class Header extends Component {
     headerLoc: false
   };
 
-  configuration(data) {
-    this.setState({ profile: data });
-    this.props.profileSave(data);
+  profileConfiguration(profile) {
+    this.setState({ profile: profile });
+    this.props.profileSave(profile);
   }
 
   setHeader() {
@@ -129,7 +133,7 @@ class Header extends Component {
       let api = new API(this.props.keycloak);
       api
         .get("userProfileAPI")
-        .then(response => this.configuration(response.data))
+        .then(response => this.profileConfiguration(response.data))
         .catch(function (error) {
           console.log(error);
         });

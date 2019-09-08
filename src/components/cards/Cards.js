@@ -16,7 +16,7 @@ class Cards extends Component {
   constructor() {
     super();
     this.state = {
-      data: [],
+      favoriteMerchantData: [],
       isLoading: true,
       position: {
         latitude: 0,
@@ -25,12 +25,13 @@ class Cards extends Component {
       renderedThings: [],
       itemsRendered: 0,
       search: "",
-      SLloaded: false,
     };
   }
 
+  /**
+   * Loads favorite merchants
+   */
   loadMerchants() {
-
     let api = new API(this.props.keycloak);
     api.setRetry(3);
     let query = {
@@ -38,17 +39,14 @@ class Cards extends Component {
       lng: this.props.coordinates.coords.longitude,
       radius: smallRadius,
       limit: smallLimit,
-      // TODO: Change this to be consistent with other search values
       search: this.state.search
     };
     api
       .get("favoriteMerchantAPI", { query: query })
-      .then(response => this.configuration(response.data))
+      .then(response => this.favoriteMerchantConfiguration(response.data))
       .catch(function (error) {
         console.log(error);
       });
-
-    this.setState({ SLloaded: true });
   }
 
   componentWillMount() {
@@ -56,23 +54,28 @@ class Cards extends Component {
   }
 
   componentWillUnmount() {
-    // indicate that the component has been unmounted
     window.scrollTo(0, 0);
     clearTimeout(this.timer);
   }
 
+  /**
+   * If favorite merchant data changes, schedule the next render update
+   */
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.data !== prevState.data) {
+    if (this.state.favoriteMerchantData !== prevState.favoriteMerchantData) {
       this.scheduleNextUpdate();
     }
   }
 
-  configuration(data) {
-    let idArray = data.map(a => a.id);
+  favoriteMerchantConfiguration(favoriteMerchantData) {
+    let idArray = favoriteMerchantData.map(a => a.id);
     this.props.saveMessageNum(idArray);
-    this.setState({ data, isLoading: false });
+    this.setState({ favoriteMerchantData: favoriteMerchantData, isLoading: false });
   }
 
+  /**
+   * TODO - move to initialization component
+   */
   extractOneSignalIds(ids) {
     let api = new API(this.props.keycloak);
     let query = {
@@ -87,48 +90,53 @@ class Cards extends Component {
   }
 
   scheduleNextUpdate() {
-    //this.timer = setTimeout(this.updateRenderedThings, 1000);
     setTimeout(() => {
       this.updateRenderedThings();
     }, 750);
   }
 
+  /**
+   * Updates the items that are rendered after .75 seconds. This is to emulate a "shuffling" motion
+   */
   updateRenderedThings() {
-    if (typeof this.state !== "undefined" && this.state.data.length) {
+    if (typeof this.state !== "undefined" && this.state.favoriteMerchantData.length) {
       const itemsRendered = this.state.itemsRendered;
       const updatedState = {
         renderedThings: this.state.renderedThings.concat(
-          this.state.data[this.state.itemsRendered]
+          this.state.favoriteMerchantData[this.state.itemsRendered]
         ),
         itemsRendered: itemsRendered + 1
       };
       this.setState(updatedState);
-      if (updatedState.itemsRendered < this.state.data.length) {
+      if (updatedState.itemsRendered < this.state.favoriteMerchantData.length) {
         this.scheduleNextUpdate();
       }
     }
   }
 
+  setSLDefaultFav() {
+    let api = new API(this.props.keycloak);
+    let body = {
+      merchantId: ShopLoyalMerID,
+      status: true
+    };
+    api
+      .post("favoriteMerchantAPI", { body: body })
+      .then(response => this.loadMerchants())
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
   componentDidMount() {
 
     if (this.props.keycloak.authenticated) {
-      // Likely replace for inside the BackgroundProcess.js/Init/AfterLogin?
       if (window.plugins) {
         window.plugins.OneSignal.getIds(this.extractOneSignalIds);
       }
 
       if (this.props.analytics.engagement === 1) {
-        let api = new API(this.props.keycloak);
-        let body = {
-          merchantId: ShopLoyalMerID,
-          status: true
-        };
-        api
-          .post("favoriteMerchantAPI", { body: body })
-          .then(response => this.loadMerchants())
-          .catch(function (error) {
-            console.log(error);
-          });
+        this.setSLDefaultFav();
       }
       else {
         this.loadMerchants();
@@ -137,12 +145,8 @@ class Cards extends Component {
     }
   }
 
-  if(error) {
-    return <p>{error.message}</p>;
-  }
-
   render() {
-    if (this.state.isLoading || this.state.renderedThings.length === 0 || this.state.SLloaded === false) {
+    if (this.state.isLoading || this.state.renderedThings.length === 0) {
       return <Loading />;
     }
     return (

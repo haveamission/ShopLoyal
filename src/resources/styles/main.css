@@ -1535,7 +1535,7 @@ html {
 /*
 * Loading
 */
-.sweet-loading {
+.loading-modal {
   margin: 0 auto;
   text-align: center;
   position: absolute;

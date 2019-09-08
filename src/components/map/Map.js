@@ -14,6 +14,7 @@ import { push } from "connected-react-router";
 import { toast } from "react-toastify";
 import { useSpring, animated } from "react-spring";
 import { NoResults } from '../../config/strings';
+import { mediumLimit, smallRadius, largeRadius } from "../../config/constants"
 
 function SlideLeft(props) {
   const animationProps = useSpring({
@@ -52,7 +53,7 @@ export class MapContainer extends Component {
       showingInfoWindow: false,
       activeMarker: {},
       selectedPlace: {},
-      data: { merchants: [] },
+      merchantData: { merchants: [] },
       selectedMerchant: null,
       rerendered: 0,
       marginTop: 0,
@@ -98,7 +99,7 @@ export class MapContainer extends Component {
   onMarkerClick = (props, marker, e) => {
     let selectedMerchant = search(
       parseInt(marker.title),
-      this.state.data.merchants
+      this.state.merchantData.merchants
     );
     this.setState({ selectedMerchant: selectedMerchant });
     this.setState({
@@ -124,10 +125,10 @@ export class MapContainer extends Component {
 
   mapIconLoad() {
     // TODO - expand radius gradually if nothing is in the area
-    let radius = 10.0;
+    let radius = smallRadius;
     let search = this.props.category.category;
     if (this.props.search.search !== null && this.props.search.search !== "") {
-      radius = 30.0;
+      radius = largeRadius;
       search = this.props.search.search;
     }
     if (this.props.keycloak.authenticated) {
@@ -137,12 +138,12 @@ export class MapContainer extends Component {
         lat: this.state.centerLat,
         lng: this.state.centerLng,
         radius: radius,
-        limit: "10",
+        limit: mediumLimit,
         search: search
       };
       api
         .get("merchantAPI", { query: query })
-        .then(response => this.configuration(response.data))
+        .then(response => this.merchantConfiguration(response.data))
         .catch(function (error) {
           console.log(error);
         });
@@ -168,8 +169,8 @@ export class MapContainer extends Component {
     this.mapIconLoad();
   }
 
-  configuration(data) {
-    let filteredMerchants = data.merchants.filter(function (returnableObjects) {
+  merchantConfiguration(merchantData) {
+    let filteredMerchants = merchantData.merchants.filter(function (returnableObjects) {
       if (
         returnableObjects.subscriptionStatus === "active" ||
         returnableObjects.subscriptionStatus === "trialing"
@@ -180,16 +181,16 @@ export class MapContainer extends Component {
     if (filteredMerchants.length === 0) {
       this.launchErrorModal();
     }
-    data.merchants = filteredMerchants;
+    merchantData.merchants = filteredMerchants;
     this.setState({
-      data: data,
+      merchantData: merchantData,
       updatedSearch: this.props.search.search,
       updatedCategories: this.props.category.category,
-      selectedMerchant: data.merchants[0]
+      selectedMerchant: merchantData.merchants[0]
     });
     // Separate logic for this, to allow for the animation to proceed
     if (this.state.businessMerchants.length < 2) {
-      this.setState({ businessMerchants: data.merchants.slice(0, 2) });
+      this.setState({ businessMerchants: merchantData.merchants.slice(0, 2) });
     }
   }
 
@@ -213,7 +214,7 @@ export class MapContainer extends Component {
   }
 
   handleBusinessPop() {
-    this.setState({ businessMerchants: this.state.data.merchants.slice(0, 2) });
+    this.setState({ businessMerchants: this.state.merchantData.merchants.slice(0, 2) });
     this.setState({ businessClass: "slide-in" });
   }
 
@@ -243,7 +244,7 @@ export class MapContainer extends Component {
             gestureHandling="greedy"
             onClick={() => this.onMapClicked()}
           >
-            {this.state.data.merchants.map(merchant => (
+            {this.state.merchantData.merchants.map(merchant => (
               <Marker
                 title={String(merchant.id)}
                 name={merchant.name}

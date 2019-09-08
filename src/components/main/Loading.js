@@ -10,7 +10,7 @@ class Loading extends React.Component {
   }
   render() {
     return (
-      <div className='sweet-loading'>
+      <div className='loading-modal'>
         <ClipLoader
           sizeUnit={"em"}
           size={2.5}
