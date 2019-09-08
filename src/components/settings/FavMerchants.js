@@ -106,8 +106,6 @@ class FavMerchants extends React.Component {
     this.setState({ favs: arr });
   }
   componentDidMount() {
-    // TODO REPLACE WITH REAL LOCATION
-
     let query = {
       lat: this.props.coordinates.coords.latitude,
       lng: this.props.coordinates.coords.longitude,

@@ -7,6 +7,8 @@ import { connect } from 'react-redux'
 class PromoCard extends Component {
 
     componentWillMount() {
+        // TODO get instructions for how promocards should have their headers colored - this is dependent on how we want to deal with
+        // them
         let colorArr = ["#536DFE", "#5C6BC0", "#969FA2", "#27295F", "#FFD138", "#DDDDDD"];
         this.rand = colorArr[Math.floor(Math.random() * colorArr.length)];
 
@@ -14,26 +16,26 @@ class PromoCard extends Component {
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (prevProps.color !== this.props.color) {
-            if (this.props.color[this.props.merchant_id] !== null) {
-                this.rand = this.props.color[this.props.merchant_id];
+            if (this.props.color[this.props.merchantId] !== null) {
+                this.rand = this.props.color[this.props.merchantId];
             }
         }
     }
 
     componentDidMount() {
 
-        if (this.props.color[this.props.merchant_id] !== null) {
-            this.rand = this.props.color[this.props.merchant_id];
+        if (this.props.color[this.props.merchantId] !== null) {
+            this.rand = this.props.color[this.props.merchantId];
         }
 
     }
     render() {
         return (
             <div className={"card promocard promocard-" + this.props.count}>
-                <div className="promo-name" style={{ backgroundColor: this.rand }}><img src={this.props.data.merchant.logo} />{this.props.data.merchant.name}</div>
-                <img className="promo-main-img" src={this.props.data.photo} />
-                <div className="promo-title">{this.props.data.title}</div>
-                <div className="promo-desc">{this.props.data.text}</div>
+                <div className="promo-name" style={{ backgroundColor: this.rand }}><img src={this.props.promo.merchant.logo} />{this.props.promo.merchant.name}</div>
+                <img className="promo-main-img" src={this.props.promo.photo} />
+                <div className="promo-title">{this.props.promo.title}</div>
+                <div className="promo-desc">{this.props.promo.text}</div>
                 <div className="promo-false-bottom"></div>
             </div>
         );

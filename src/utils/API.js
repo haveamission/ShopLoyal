@@ -9,7 +9,6 @@ class SLAPI {
       headers: {
         Authorization: "Bearer " + this.keycloak.idToken,
         "Content-Type": "application/json",
-        Origin: "Shoployal"
       }
     };
     this.env = "prod";

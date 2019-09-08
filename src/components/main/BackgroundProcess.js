@@ -12,17 +12,17 @@ import { saveMessageTotalNum } from "../../redux/actions/total_messages";
 
 class BackgroundProcess extends Component {
 
-  merchantMessageConfiguration(data) {
-    let message_count = data.length;
+  merchantMessageConfiguration(messageData) {
+    let message_count = messageData.length;
     this.props.saveMessageTotalNum(this.props.total_messages + message_count);
   }
 
   pullMessages(self) {
     if (self.props.keycloak.authenticated) {
       let api = new API(self.props.keycloak);
-      self.props.merchants.forEach(function (merchant_id) {
+      self.props.merchants.forEach(function (merchantId) {
         api
-          .get("merchantMessages", { repl_str: merchant_id })
+          .get("merchantMessages", { repl_str: merchantId })
           .then(response => self.merchantMessageConfiguration(response.data))
           .catch(function (error) {
             console.log(error);

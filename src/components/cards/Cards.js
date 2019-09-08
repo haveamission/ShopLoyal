@@ -153,7 +153,7 @@ class Cards extends Component {
       <div className="cards">
         {this.state.renderedThings.map((merchant, index) => (
           <CardRow
-            merchant={{ merchant }}
+            merchant={merchant}
             count={index}
             className={"card-color-" + index}
             key={index}

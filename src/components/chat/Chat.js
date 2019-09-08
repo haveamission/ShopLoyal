@@ -53,6 +53,8 @@ class Chat extends Component {
   componentWillMount() {
     document.body.style.position = "fixed";
     let userId = this.props.profile.id;
+    // TODO Replace getMerchantIDFromPath instances with this.state.merchantId when time permits
+    this.setState({ merchantId: getMerchantIDFromPath(this.props.location) });
     this.createChannel(userId);
   }
 

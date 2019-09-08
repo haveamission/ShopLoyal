@@ -16,7 +16,7 @@ import { useSpring, animated } from "react-spring";
 import { NoResults } from '../../config/strings';
 import { mediumLimit, smallRadius, largeRadius } from "../../config/constants"
 
-function SlideLeft(props) {
+const SlideLeft = props => {
   const animationProps = useSpring({
     from: { transform: "translate3d(100%,0,0)" },
     to: { transform: "translate3d(0%,0,0)" }
@@ -87,8 +87,7 @@ export class MapContainer extends Component {
     let centerLat = this.props.coordinates.coords.latitude;
     let centerLng = this.props.coordinates.coords.longitude;
 
-    // This should be a good enough check for now about whether latitude and longitude are defined
-    // Possibly make this more robust later
+    // if merchant-specific data is sent, set location to the merchant searched for
     if (typeof this.props.location.state !== "undefined") {
       centerLat = this.props.location.state.merchant_lat;
       centerLng = this.props.location.state.merchant_lng;
@@ -131,26 +130,25 @@ export class MapContainer extends Component {
       radius = largeRadius;
       search = this.props.search.search;
     }
-    if (this.props.keycloak.authenticated) {
-      let api = new API(this.props.keycloak);
-      api.setRetry(3);
-      let query = {
-        lat: this.state.centerLat,
-        lng: this.state.centerLng,
-        radius: radius,
-        limit: mediumLimit,
-        search: search
-      };
-      api
-        .get("merchantAPI", { query: query })
-        .then(response => this.merchantConfiguration(response.data))
-        .catch(function (error) {
-          console.log(error);
-        });
-    }
+    let api = new API(this.props.keycloak);
+    api.setRetry(3);
+    let query = {
+      lat: this.state.centerLat,
+      lng: this.state.centerLng,
+      radius: radius,
+      limit: mediumLimit,
+      search: search
+    };
+    api
+      .get("merchantAPI", { query: query })
+      .then(response => this.merchantConfiguration(response.data))
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   componentDidUpdate(prevProps, prevState) {
+    // TODO - clean up logic here from technical debt when integrating google merchants
     if (this.state.rerendered < 2) {
       this.setState({ rerendered: this.state.rerendered + 1 });
     }
@@ -194,13 +192,8 @@ export class MapContainer extends Component {
     }
   }
 
-  componentDidMount() {
-    window.scrollTo(0, 0);
-    this.mapIconLoad();
-    if (typeof window.Keyboard.show !== "undefined") {
-      window.Keyboard.show();
-    }
-
+  keyboardListener() {
+    // TODO clean up sizing here
     window.addEventListener("keyboardDidHide", event => {
       this.setState({ marginBottom: "6rem", bottom: "-50rem" });
     });
@@ -211,6 +204,15 @@ export class MapContainer extends Component {
         bottom: "-51rem"
       });
     });
+  }
+
+  componentDidMount() {
+    window.scrollTo(0, 0);
+    this.mapIconLoad();
+    if (typeof window.Keyboard.show !== "undefined") {
+      window.Keyboard.show();
+    }
+    this.keyboardListener();
   }
 
   handleBusinessPop() {

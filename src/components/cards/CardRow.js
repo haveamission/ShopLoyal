@@ -33,13 +33,15 @@ class CardRow extends Component {
   scrollRef = React.createRef();
 
   promoCardConfiguration(promoCardData) {
+    console.log("promocard props");
+    console.log(this.props);
     promoCardData = arrayNormalize(promoCardData);
     promoCardData.forEach(promo => {
       this.state.list.push(
         <PromoCard
-          data={promo}
+          promo={promo}
           key={promo.id}
-          merchant_id={this.props.merchant.merchant.id}
+          merchantId={this.props.merchant.id}
         />
       );
     });
@@ -74,13 +76,36 @@ class CardRow extends Component {
     return true;
   }
 
+  merchantNoticeLoading(self) {
+    let api = new API(self.props.keycloak);
+    let query = {
+      lat: self.props.coordinates.coords.latitude,
+      lng: self.props.coordinates.coords.longitude,
+      radius: smallRadius,
+      limit: largeLimit,
+      search: self.props.category.category,
+      value: self.props.search.search
+    };
+    api
+      .get("merchantNoticesAPI", {
+        repl_str: self.props.merchant.id,
+        query: query
+      })
+      .then(response => self.promoCardConfiguration(response.data))
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
   componentDidMount() {
-    let merchant_id = this.props.merchant.merchant.id;
+    console.log("DID MOUNT CARD ROW");
+    console.log(this.props);
+    let merchantId = this.props.merchant.id;
     let api = new API(this.props.keycloak);
     let self = this;
     api.setRetry(10);
     api
-      .get("merchantMessages", { repl_str: merchant_id })
+      .get("merchantMessages", { repl_str: merchantId })
       .then(response => this.merchantMessageConfiguration(response.data))
       .catch(function (error) {
         console.log(error);
@@ -88,31 +113,14 @@ class CardRow extends Component {
       .finally(function () {
         self.state.list.push(
           <Card
-            merchant={self.props.merchant.merchant}
-            key={self.props.merchant.merchant.id}
+            merchant={self.props.merchant}
+            key={self.props.merchant.id}
             bubblemsg={self.state.bubblemsg}
           />
         );
       })
       .finally(function () {
-        let api = new API(self.props.keycloak);
-        let query = {
-          lat: self.props.coordinates.coords.latitude,
-          lng: self.props.coordinates.coords.longitude,
-          radius: smallRadius,
-          limit: largeLimit,
-          search: self.props.category.category,
-          value: self.props.search.search
-        };
-        api
-          .get("merchantNoticesAPI", {
-            repl_str: self.props.merchant.merchant.id,
-            query: query
-          })
-          .then(response => self.promoCardConfiguration(response.data))
-          .catch(function (error) {
-            console.log(error);
-          });
+        self.merchantNoticeLoading(self);
       });
   }
 
@@ -122,7 +130,7 @@ class CardRow extends Component {
    */
   componentWillMount() {
     /*
-    if (this.props.merchant.merchant.id === 0) {
+    if (this.props.merchant.id === 0) {
       this.setState({
         bubblemsg:
           "Hey " +

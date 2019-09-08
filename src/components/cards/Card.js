@@ -60,7 +60,7 @@ class Card extends Component {
         this.props.dispatch(push(path));
     };
 
-    updateFavoriteStatus(data) {
+    updateFavoriteStatus(favoriteStatusData) {
         let merchant = this.state.merchant;
         merchant.isFavorite = !merchant.isFavorite;
         this.setState({ merchant: merchant });

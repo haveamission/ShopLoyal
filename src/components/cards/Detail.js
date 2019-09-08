@@ -48,7 +48,7 @@ class Detail extends Component {
 
   componentDidMount() {
     if (this.props.keycloak.authenticated) {
-      let merchant_id = getMerchantIDFromPath(this.props.location);
+      let merchantId = getMerchantIDFromPath(this.props.location);
       let query = {
         lat: this.props.coordinates.coords.latitude,
         lng: this.props.coordinates.coords.longitude,
@@ -60,7 +60,7 @@ class Detail extends Component {
       let api = new API(this.props.keycloak);
       api.setRetry(3);
       api
-        .get("merchantDetailAPI", { repl_str: merchant_id, query: query })
+        .get("merchantDetailAPI", { repl_str: merchantId, query: query })
         .then(response => this.merchantDetailConfiguration(response.data))
         .catch(function (error) {
           console.log(error);
