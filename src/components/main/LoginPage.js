@@ -13,6 +13,7 @@ import { saveMessageTotalNum } from "../../redux/actions/total_messages";
 
 class LoginPage extends Component {
   componentDidMount() {
+    // Processes potential deeplink upon arriving to login page - maybe better to put into a separate initialization component?
     this.props.saveMessageTotalNum(0);
     if (window.IonicDeeplink) {
       let self = this;
@@ -22,12 +23,11 @@ class LoginPage extends Component {
     }
   }
 
-  // Probably should be done differently, but this is the easiest way to do it right now
   processDeeplink(deeplink, self) {
     self.props.dispatch(push(deeplink.host + deeplink.path));
   }
 
-  // TODO: Replace this method of saving the information with JWT from Keycloak when you have time
+  // TODO: Replace this method of saving the information with JWT from Keycloak when time permits
 
   onFBLoginButtonClick() {
     this.props.keycloak.login({

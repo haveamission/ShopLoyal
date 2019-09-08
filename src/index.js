@@ -28,7 +28,7 @@ import Privacy from "./components/settings/Privacy";
 import FavMerchants from "./components/settings/FavMerchants";
 import Terms from "./components/settings/Terms";
 import Contact from "./components/settings/Contact";
-import BackgroundProcess from "./components/main/BackgroundProcess";
+//import BackgroundProcess from "./components/main/BackgroundProcess";
 
 // Import Styles
 import "./resources/styles/main.css";
@@ -41,8 +41,6 @@ import { Provider, ReactReduxContext } from "react-redux";
 import { PersistGate } from "redux-persist/es/integration/react";
 import configureStore, { history } from "./redux/store";
 import { addTokens } from "./redux/actions/tokens";
-import getLocation from "./redux/actions/location";
-import { engagementSave, openedFromPushSave } from "./redux/actions/analytics";
 
 // Keycloak
 import Keycloak from "keycloak-js";
@@ -86,7 +84,6 @@ const startApp = () => {
               <Route
                 onUpdate={() => window.scrollTo(0, 0)}
                 render={({ location }) => {
-                  const { pathname } = location;
                   return (
                     <Route
                       onUpdate={() => window.scrollTo(0, 0)}

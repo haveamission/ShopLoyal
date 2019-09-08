@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Header from "./Header";
-import BackgroundProcess from "./BackgroundProcess";
+//import BackgroundProcess from "./BackgroundProcess";
 
 class Layout extends Component {
   render() {

@@ -84,11 +84,11 @@ class MainSettings extends Component {
   };
 
   /*
-   * Is this very "react"? Possible refactor alongside FavMerchants.js
+   * TODO - Refactor in the future
    */
-  loadFavMerchants(data) {
+  loadFavMerchants(merchantData) {
     let arr = [];
-    data.map((item, index) => {
+    merchantData.map((item, index) => {
       if (index < 3) {
         arr.push(
           <FavMerchantsCircle {...this.props} merchant={item} key={item.id} />

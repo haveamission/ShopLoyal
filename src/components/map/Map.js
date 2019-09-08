@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Map, Marker, GoogleApiWrapper } from "google-maps-react";
 import Business from "../cards/Business";
-import SwipeToDismiss from "react-swipe-to-dismiss";
+//import SwipeToDismiss from "react-swipe-to-dismiss";
 import API from "../../utils/API";
 import { connect } from "react-redux";
 import searchSave from "../../redux/actions/search";

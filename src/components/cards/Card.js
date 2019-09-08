@@ -18,7 +18,7 @@ import { withKeycloak } from "react-keycloak";
 import { firstFavoriteSave } from "../../redux/actions/firstFavorite";
 import { toast } from "react-toastify";
 import NotifBubble from "./NotifBubble";
-import { FavError, FavSuccess1, FavSuccess2, FavErrorMsg, FavErrorCall, MapText, CallText, MessageText } from "../../config/strings";
+import { FavSuccess1, FavSuccess2, FavErrorMsg, FavErrorCall, MapText, CallText, MessageText } from "../../config/strings";
 import getColors from "get-image-colors";
 import { lightestColor } from "../../utils/color"
 
@@ -264,13 +264,13 @@ class CardNav extends Component {
 
     handleMessageClick(event) {
         if (this.props.merchant.isFavorite === false) {
+            event.preventDefault();
+            event.stopPropagation();
+            event.nativeEvent.stopImmediatePropagation();
             this.props.launchErrorModal(
                 FavErrorMsg
             );
             return;
-            event.preventDefault();
-            event.stopPropagation();
-            event.nativeEvent.stopImmediatePropagation();
         }
 
         let path = "/chat/" + this.props.merchant.id;
@@ -291,7 +291,7 @@ class CardNav extends Component {
         return (
             <div className="card-nav">
                 <ul>
-                    <a onClick={e => e.preventDefault()}>
+                    <a href="#" onClick={e => e.preventDefault()}>
                         <li onClick={this.handleMessageClick}>
                             {MessageText}
                             <img src={Message} />

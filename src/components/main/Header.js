@@ -174,16 +174,11 @@ class Header extends Component {
     if (!this.props.keycloak.authenticated) {
       return <div />;
     }
-    var navStyles = {
-      justifyContent: "left"
-    };
 
     const ComponentToRender = this.getHeaderComponent();
     return (
       <header>
         <ComponentToRender {...this.props} profile={this.state.profile} />
-
-        {/*<img className="profile" src={ProfileImg} />*/}
       </header>
     );
   }
