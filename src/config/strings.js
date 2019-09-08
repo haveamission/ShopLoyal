@@ -18,3 +18,4 @@ export const SearchInputText1 = "Search";
 export const SearchInputText2 = "to add your favorite merchants";
 export const Welcome = "Welcome";
 export const SignOut = "Sign Out";
+export const NoResults = "No Results";

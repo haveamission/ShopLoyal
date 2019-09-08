@@ -202,13 +202,10 @@ class CardRow extends Component {
   }
 
   animationend() {
-    console.log("Does this animate?");
     if (this.state.transformInitial === null) {
       let menuWrapper = document.querySelectorAll(".menu-wrapper--inner")[
         this.props.count
       ];
-      console.log("INITIAL MENU WRAPPER");
-      console.log(menuWrapper.style.transform);
       this.setState({ transformInitial: menuWrapper.style.transform });
     }
     this.setState({ animationEnded: true });

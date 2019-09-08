@@ -13,6 +13,7 @@ import { withKeycloak } from "react-keycloak";
 import { push } from "connected-react-router";
 import { toast } from "react-toastify";
 import { useSpring, animated } from "react-spring";
+import { NoResults } from '../../config/string';
 
 function SlideLeft(props) {
   const animationProps = useSpring({
@@ -62,11 +63,9 @@ export class MapContainer extends Component {
   toastId = "no-merchant";
 
   launchErrorModal() {
-    console.log("active toast?");
-    console.log(toast.isActive(this.toastId));
     if (!toast.isActive(this.toastId) && this.props.search.search !== "") {
       this.toastId = toast.error(
-        "No results",
+        { NoResults },
         {
           position: toast.POSITION.TOP_CENTER,
           autoClose: 3000,

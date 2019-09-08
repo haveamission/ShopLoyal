@@ -40,6 +40,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { Provider, ReactReduxContext } from "react-redux";
 import { PersistGate } from "redux-persist/es/integration/react";
 import configureStore, { history } from "./redux/store";
+import { addTokens } from "./redux/actions/tokens";
+import getLocation from "./redux/actions/location";
+import { engagementSave, openedFromPushSave } from "./redux/actions/analytics";
 
 // Keycloak
 import Keycloak from "keycloak-js";
@@ -48,13 +51,7 @@ import keycloak_config from "./config/keycloak.json";
 const { store, persistor } = configureStore(history);
 const keycloak = new Keycloak(keycloak_config);
 
-// Redux Actions
-import { addTokens } from "./redux/actions/tokens";
-import getLocation from "./redux/actions/location";
-import { engagementSave, openedFromPushSave } from "./redux/actions/analytics";
-
 const startApp = () => {
-  // Initialize
 
   if (window.plugins) {
     appsflyerInit();
@@ -160,11 +157,11 @@ function appsflyerInit() {
   }
 
   var onSuccess = function (result) {
-    //console.log(result);
+    console.log(result);
   };
 
-  function onError(err) {
-    console.log(err);
+  function onError(error) {
+    console.log(error);
   }
 
   window.plugins.appsFlyer.initSdk(options, onSuccess, onError);
@@ -176,7 +173,7 @@ function oneSignal() {
 
   var notificationOpenedCallback = function (jsonData) {
     window.plugins.appsFlyer.trackEvent("af_opened_from_push_notification", {});
-    console.log("notificationOpenedCallback: " + JSON.stringify(jsonData));
+    //console.log("notificationOpenedCallback: " + JSON.stringify(jsonData));
   };
 
   window.plugins.OneSignal.startInit("2f19cafc-d4ab-4b01-aecd-dd7961b3b8e3")

@@ -56,7 +56,6 @@ class MainSettings extends React.Component {
   handleNotification = event => {
     event.persist();
     if (window.plugins) {
-      console.log(event.target.checked);
       window.plugins.OneSignal.setSubscription(event.target.checked);
     }
     this.props.oneSignalSave(event.target.checked);
@@ -119,10 +118,6 @@ class MainSettings extends React.Component {
     this.props.openSideBar(false);
   }
 
-  test = e => {
-    console.log(e);
-  };
-
   render() {
     return (
       <ul className="main-settings">
@@ -156,7 +151,7 @@ class MainSettings extends React.Component {
         </div>
         <div className="fav-merchant-item">{this.state.favs}</div>
         <Link to="/favmerchants/" className="fav-merchant-link">
-          <div className="fav-merchants" onClick={this.test}>
+          <div className="fav-merchants">
             <span className="merchant-number">
               {this.props.data.profile.merchantCount}
             </span>

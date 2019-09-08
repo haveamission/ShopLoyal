@@ -59,10 +59,7 @@ class Cards extends Component {
   }
 
   componentWillMount() {
-    // Not in love with doing this in each component. Re-factor when time permits
-    console.log("before search save");
     this.props.searchSave("");
-
   }
 
   componentWillUnmount() {

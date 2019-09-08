@@ -27,8 +27,6 @@ class Search extends Component {
       this.props.search.search !== "" &&
       this.props.router.location.pathname === "/map"
     ) {
-      console.log("router value here");
-      console.log(this.props.router);
       this.setState({ value: this.props.search.search });
     }
   }
@@ -75,7 +73,6 @@ class Search extends Component {
   }
 
   render() {
-    console.log(this.state.value);
     return (
       <span className="search-wrapper">
         {this.state.value ? (

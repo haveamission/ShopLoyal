@@ -126,10 +126,6 @@ class Header extends Component {
 
   setHeader() {
     if (this.props.keycloak.authenticated && this.props.profile === null) {
-      // Combine the props and state things here, as well as elsewhere eventually
-
-      //console.log(this.props);
-
       let api = new API(this.props.keycloak);
       api
         .get("userProfileAPI")

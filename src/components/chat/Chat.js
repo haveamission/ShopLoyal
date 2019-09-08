@@ -88,7 +88,7 @@ class Chat extends Component {
     );
     api
       .post("openChannel", { repl_str: merchant_id })
-      .then(response => console.log(JSON.stringify(response.data)))
+      .then(response => console.log(response.data))
       .catch(function (error) {
         console.log(error);
       });
@@ -177,8 +177,6 @@ class Chat extends Component {
       this.setState({ className: "active", scrolled: false }, () => {
         this.scrollToBottom();
       });
-      // Describe your logic which will be run each time when keyboard is about to be shown.
-      console.log(event.keyboardHeight);
     });
 
     if (this.props.location.state) {
@@ -281,11 +279,9 @@ class Chat extends Component {
   scrollToBottom = () => {
     // Hack due to reference not working for some reason
     if (this.state.scrolled === false) {
-      console.log("scrolls to bottom!");
       // TODO switch to react refs
       let bottomele = document.getElementById("bottom-scroll");
       if (bottomele !== null) {
-        console.log("scroll into view!");
         bottomele.scrollIntoView();
         bottomele.focus();
         this.setState({ scrolled: true });

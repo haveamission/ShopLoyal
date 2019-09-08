@@ -5,6 +5,11 @@ import { bindActionCreators } from "redux";
 import API from "../../utils/API";
 import { saveMessageTotalNum } from "../../redux/actions/total_messages";
 
+
+/**
+ * Currently unused but may be used in the future
+ **/
+
 class BackgroundProcess extends Component {
 
   merchantMessageConfiguration(data) {
@@ -34,14 +39,10 @@ class BackgroundProcess extends Component {
   componentDidMount() {
     const self = this;
     let fetchCallback = function () {
-      console.log("[js] BackgroundFetch event received");
       // Required: Signal completion of your task to native code
       // If you fail to do this, the OS can terminate your app
       // or assign battery-blame for consuming too much background-time
-
-      console.log("before pull messages");
       self.pullMessages(self);
-
       window.BackgroundFetch.finish();
     };
 

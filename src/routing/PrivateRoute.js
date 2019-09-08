@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Route, Redirect } from "react-router";
 import { connect } from "react-redux";
 import { withKeycloak } from "react-keycloak";
-import searchSave from "../actions/search";
+import searchSave from "../redux/actions/search";
 import { bindActionCreators } from "redux";
 
 class PrivateRoute extends Component {
