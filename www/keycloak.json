@@ -1,0 +1,9 @@
+{
+  "realm": "shoployal",
+  "auth-server-url": "https://id.v2.shoployal.com/auth",
+  "ssl-required": "external",
+  "resource": "shoployal-app",
+  "public-client": true,
+  "confidential-port": 0,
+  "url": "https://id.v2.shoployal.com/auth"
+}
