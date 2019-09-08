@@ -8,32 +8,30 @@ import { push } from "connected-react-router";
 import "@babel/polyfill";
 import { AnimatedSwitch } from "react-router-transition";
 import initReactFastclick from "react-fastclick";
+import { ToastContainer } from "react-toastify";
 
 initReactFastclick();
 
 // Import Components
-import Layout from "./components/Layout";
-import configureStore, { history } from "./store";
-import Map from "./components/Map";
-import Cards from "./components/Cards";
-import CardRow from "./components/CardRow";
+import Layout from "./components/main/Layout";
+import Map from "./components/map/Map";
+import Cards from "./components/cards/Cards";
+import CardRow from "./components/cards/CardRow";
 import PrivateRoute from "./routing/PrivateRoute";
-import Chat from "./components/Chat";
-import Detail from "./components/Detail";
-import Loading from "./components/Loading";
-import LoginPage from "./components/LoginPage";
-import Settings from "./components/Settings";
-import Support from "./components/Support";
-import Privacy from "./components/Privacy";
-import Error from "./components/Error";
-import FavMerchants from "./components/FavMerchants";
-import Terms from "./components/Terms";
-import Contact from "./components/Contact";
-import BackgroundProcess from "./components/BackgroundProcess";
+import Chat from "./components/chat/Chat";
+import Detail from "./components/cards/Detail";
+import Loading from "./components/main/Loading";
+import LoginPage from "./components/main/LoginPage";
+import Settings from "./components/settings/Settings";
+import Support from "./components/settings/Support";
+import Privacy from "./components/settings/Privacy";
+import FavMerchants from "./components/favmerchants/FavMerchants";
+import Terms from "./components/settings/Terms";
+import Contact from "./components/settings/Contact";
+import BackgroundProcess from "./components/main/BackgroundProcess";
 
 // Import Styles
 import "./resources/styles/main.css";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // Import Config
@@ -41,18 +39,19 @@ import "react-toastify/dist/ReactToastify.css";
 // Redux
 import { Provider, ReactReduxContext } from "react-redux";
 import { PersistGate } from "redux-persist/es/integration/react";
+import configureStore, { history } from "./redux/store";
 
 // Keycloak
 import Keycloak from "keycloak-js";
 import { KeycloakProvider } from "react-keycloak";
-import keycloak_config from "./keycloak.json";
+import keycloak_config from "./config/keycloak.json";
 const { store, persistor } = configureStore(history);
 const keycloak = new Keycloak(keycloak_config);
 
 // Redux Actions
-import { addTokens } from "./actions/tokens";
-import getLocation from "./actions/location";
-import { engagementSave, openedFromPushSave } from "./actions/analytics";
+import { addTokens } from "./redux/actions/tokens";
+import getLocation from "./redux/actions/location";
+import { engagementSave, openedFromPushSave } from "./redux/actions/analytics";
 
 const startApp = () => {
   // Initialize
@@ -103,7 +102,6 @@ const startApp = () => {
                           className="switch-wrapper"
                         >
                           <Route exact path="/login" component={LoginPage} />
-                          <Route path="/error/" component={Error} />
                           <PrivateRoute
                             exact
                             path="/settings"
