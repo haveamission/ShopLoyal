@@ -7,17 +7,11 @@ import { withKeycloak } from "react-keycloak";
 import { saveMessageNum } from "../../redux/actions/messages";
 import { bindActionCreators } from "redux";
 import searchSave from "../../redux/actions/search";
+import { ShopLoyalMerID, smallRadius, smallLimit } from "../../config/constants"
 
-const introCard = {
-  address1: "",
-  address2: "",
-  coverPhoto:
-    "https://s3.us-east-2.amazonaws.com//wantify/merchants/36/cover-photo.jpg",
-  id: 0,
-  logo: "https://wantify-public.s3.us-east-2.amazonaws.com/ShopLoyalIcon.png",
-  name: "ShopLoyal"
-};
-
+/**
+ * All of the card rows are contained inside here
+ */
 class Cards extends Component {
   constructor() {
     super();
@@ -33,18 +27,17 @@ class Cards extends Component {
       search: "",
       SLloaded: false,
     };
-    this.unmounted = false;
   }
 
   loadMerchants() {
 
     let api = new API(this.props.keycloak);
-    api.setRetry(10);
+    api.setRetry(3);
     let query = {
       lat: this.props.coordinates.coords.latitude,
       lng: this.props.coordinates.coords.longitude,
-      radius: "10.0",
-      limit: "5",
+      radius: smallRadius,
+      limit: smallLimit,
       // TODO: Change this to be consistent with other search values
       search: this.state.search
     };
@@ -66,7 +59,6 @@ class Cards extends Component {
     // indicate that the component has been unmounted
     window.scrollTo(0, 0);
     clearTimeout(this.timer);
-    this.unmounted = true;
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -76,12 +68,8 @@ class Cards extends Component {
   }
 
   configuration(data) {
-    if (data === undefined || data.length === 0) {
-      data.push(introCard);
-    } else {
-      let idArray = data.map(a => a.id);
-      this.props.saveMessageNum(idArray);
-    }
+    let idArray = data.map(a => a.id);
+    this.props.saveMessageNum(idArray);
     this.setState({ data, isLoading: false });
   }
 
@@ -132,7 +120,7 @@ class Cards extends Component {
       if (this.props.analytics.engagement === 1) {
         let api = new API(this.props.keycloak);
         let body = {
-          merchantId: 71,
+          merchantId: ShopLoyalMerID,
           status: true
         };
         api

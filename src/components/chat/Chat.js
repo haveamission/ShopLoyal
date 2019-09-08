@@ -58,7 +58,6 @@ class Chat extends Component {
       scrolled: false,
       className: "default"
     };
-    this.goBack = this.goBack.bind(this);
     this.onSend = this.onSend.bind(this);
   }
 
@@ -258,10 +257,6 @@ class Chat extends Component {
       .catch(function (error) {
         console.log(error);
       });
-  }
-
-  goBack() {
-    this.props.history.goBack();
   }
 
   chatClicked = props => {

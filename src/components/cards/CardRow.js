@@ -16,12 +16,14 @@ function loadJSONIntoUI(data) {
   return data;
 }
 
+/**
+ * The card row - this structure contains the primary card, as well as the notice cards
+ */
 class CardRow extends Component {
   constructor() {
     super();
     this.state = {
       data: [],
-      search: "",
       list: [],
       isLoading: true,
       bubblemsg: null,
@@ -55,7 +57,6 @@ class CardRow extends Component {
   merchantMessageConfiguration(data) {
     let msg;
     let text_msg;
-    // Leaving the loop for now - can probably remove once we're certain Julie wants to keep last message
     for (let el of data) {
       if (el.recipient === "customer") {
         text_msg = el.message;

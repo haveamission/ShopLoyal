@@ -25,13 +25,9 @@
   <preference name="android-minSdkVersion" value="19" />
     <preference name="OpenAllWhitelistURLsInWebView" value="Yes"/>
     <access allows-arbitrary-loads-in-media="true" allows-arbitrary-loads-in-web-content="true" allows-local-networking="true" origin="*"/>
-    <access origin="*"/>
-    <allow-navigation href="*"/>
     <allow-navigation href="localhost://*/*"/>
     <allow-navigation href="shoployal://*/*"/>
     <allow-navigation href="fb://*/*"/>
-    <allow-navigation href="wantify://*/*"/>
-    <allow-intent href="*"/>
     <feature name="AppsFlyerPlugin">
       <param name="android-package" value="com.appsflyer.cordova.plugin.AppsFlyerPlugin"/>
     </feature>
@@ -44,12 +40,10 @@
     <preference name="KeyboardDisplayRequiresUserAction" value="false"/>
     <preference name="webviewbounce" value="true"/>
     <preference name="Allow3DTouchLinkPreview" value="false"/>
-    <preference name="AllowBackForwardNavigationGestures" value="true"/>
     <preference name="StatusBarOverlaysWebView" value="false"/>
     <preference name="StatusBarBackgroundColor" value="#353334"/>
   </platform>
   <platform name="ios">
-    <allow-intent href="*"/>
     <config-file parent="NSAppTransportSecurity" target="*-Info.plist">
       <dict>
         <key>NSAllowsArbitraryLoads</key>
@@ -58,13 +52,11 @@
     </config-file>
     <preference name="OpenAllWhitelistURLsInWebView" value="Yes"/>
     <access allows-arbitrary-loads-in-media="true" allows-arbitrary-loads-in-web-content="true" allows-local-networking="true" origin="*"/>
-    <access origin="*"/>
     <allow-navigation href="*"/>
     <allow-navigation href="localhost://*/*"/>
     <allow-navigation href="shoployal://*/*"/>
     <allow-navigation href="fb://*/*"/>
     <allow-navigation href="wantify://*/*"/>
-    <allow-intent href="*"/>
     <edit-config-file parent="LSApplicationQueriesSchemes" target="*-Info.plist">
       <array>
         <string>wantify</string>
@@ -144,6 +136,5 @@
   <allow-navigation href="*"/>
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
-  <allow-intent href="*"/>
   <preference name="OverrideUserAgent" value="Mozilla/5.0 Google"/>
 </widget>

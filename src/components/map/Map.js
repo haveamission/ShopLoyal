@@ -13,7 +13,7 @@ import { withKeycloak } from "react-keycloak";
 import { push } from "connected-react-router";
 import { toast } from "react-toastify";
 import { useSpring, animated } from "react-spring";
-import { NoResults } from '../../config/string';
+import { NoResults } from '../../config/strings';
 
 function SlideLeft(props) {
   const animationProps = useSpring({

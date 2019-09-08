@@ -9,7 +9,11 @@ import { withKeycloak } from "react-keycloak";
 import Loading from "../main/Loading";
 import searchSave from "../../redux/actions/search";
 import { AboutText } from "../../config/strings";
+import { smallRadius, largeLimit } from "../../config/constants"
 
+/**
+ * This is the "about" part of the detail page
+ */
 class About extends Component {
   render() {
     return (
@@ -21,18 +25,16 @@ class About extends Component {
   }
 }
 
+/**
+ * This is the main component for the detail page
+ */
 class Detail extends Component {
   constructor() {
     super();
-    this.goBack = this.goBack.bind(this);
     this.state = {
       data: {},
       search: ""
     };
-  }
-
-  goBack() {
-    this.props.history.goBack();
   }
 
   configuration(data) {
@@ -52,8 +54,8 @@ class Detail extends Component {
       let query = {
         lat: this.props.coordinates.coords.latitude,
         lng: this.props.coordinates.coords.longitude,
-        radius: "10.0",
-        limit: "30",
+        radius: smallRadius,
+        limit: largeLimit,
         // TODO: Change this to be consistent with other search values
         search: this.state.search
       };
@@ -84,7 +86,6 @@ class Detail extends Component {
 
     return (
       <div className="detail">
-        {/*<i onClick={this.goBack} className="ico-times"></i>*/}
         <Card merchant={this.state.data} />
         <About desc={this.state.data.longDescription} />
         <Promotions location={this.props.location} />

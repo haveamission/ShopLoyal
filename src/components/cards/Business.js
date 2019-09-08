@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import Card from "./Card";
 
+/**
+* Wrapper with map card specific styling
+**/
 class Business extends Component {
   constructor(props) {
     super(props);

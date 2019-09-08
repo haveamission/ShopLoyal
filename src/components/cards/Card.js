@@ -22,6 +22,9 @@ import { FavError, FavSuccess1, FavSuccess2, FavErrorMsg, FavErrorCall, MapText,
 import getColors from "get-image-colors";
 import { lightestColor } from "../../utils/color"
 
+/**
+ * Primary card component - represents each individual main card
+ */
 class Card extends Component {
     constructor() {
         super();
@@ -153,10 +156,6 @@ class Card extends Component {
     }
 
     componentDidMount() {
-        this.lightestColorGen();
-    }
-
-    lightestColorGen() {
         if (typeof this.props.merchant !== "undefined") {
             getColors(this.props.merchant.logo).then(colors => {
                 let colorsRGBA = colors.map(color => color.rgba());
@@ -230,6 +229,9 @@ export default connect(
     mapDispatchToProps
 )(withKeycloak(Card));
 
+/**
+ * Represents the left part of the primary card - right now, just the logo
+ */
 class CardLeft extends Component {
     render() {
         return (
@@ -242,6 +244,9 @@ class CardLeft extends Component {
     }
 }
 
+/**
+ * Represents the right part of the primary card - including the clickable favorite, the nav, address and merchant name
+ */
 class CardRight extends Component {
 
     render() {
@@ -272,6 +277,9 @@ class CardRight extends Component {
     }
 }
 
+/**
+ * The primary card navigation - message, call and map.
+ */
 class CardNav extends Component {
     render() {
         let Message = MessageWhite;
