@@ -42,6 +42,9 @@ function search(nameKey, myArray) {
   }
 }
 
+/**
+ * This is the main map container and contains the majority of the map logic
+ */
 export class MapContainer extends Component {
   constructor(props) {
     super(props);

@@ -7,6 +7,7 @@ import { withKeycloak } from "react-keycloak";
 import TextareaAutosize from "react-autosize-textarea";
 import { useSpring, animated } from "react-spring";
 import moment from "moment";
+import { smallRadius, largeLimit } from "../../config/constants"
 
 function SlideUpChat(props) {
   const animationProps = useSpring({
@@ -45,6 +46,9 @@ function generateMessage(message, index, additionalData) {
   };
 }
 
+/**
+ * This is the chat component
+ */
 class Chat extends Component {
   constructor() {
     super();
@@ -187,8 +191,8 @@ class Chat extends Component {
       let query = {
         lat: this.props.coordinates.coords.latitude,
         lng: this.props.coordinates.coords.longitude,
-        radius: "10.0",
-        limit: "30",
+        radius: smallRadius,
+        limit: largeLimit,
         // TODO: Change this to be consistent with other search values
         search: ""
       };

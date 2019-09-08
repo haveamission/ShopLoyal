@@ -2,13 +2,17 @@ import React, { Component } from "react";
 import categories from "../../redux/actions/categories";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
+import { All, Shop, Food, Fun, Salon, Tech, Health } from "../../config/strings";
 
+/**
+ * This is the category component
+ */
 class Categories extends Component {
   constructor() {
     super();
     // TODO switch over to strings.js for easier future localization
     this.state = {
-      cats: ["All", "Shop", "Food", "Fun", "Salon", "Tech", "Health"]
+      cats: [All, Shop, Food, Fun, Salon, Tech, Health]
     };
   }
 
@@ -16,7 +20,7 @@ class Categories extends Component {
     this.setState({ selectedCat: this.props.category.category });
   }
   rootClassNames(cat) {
-    if (this.state.selectedCat === "" && cat === "All") {
+    if (this.state.selectedCat === "" && cat === All) {
       return "selected";
     } else if (cat === this.state.selectedCat) {
       return "selected";
@@ -25,7 +29,7 @@ class Categories extends Component {
 
   handleClick = cat => {
     let value = cat;
-    if (value === "All") {
+    if (value === All) {
       value = "";
     }
     this.setState({ selectedCat: value });

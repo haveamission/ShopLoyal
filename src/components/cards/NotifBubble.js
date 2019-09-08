@@ -1,12 +1,15 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
+/**
+ * This is the notification bubble component
+ */
 class NotifBubble extends Component {
   constructor(props) {
     super(props);
 
     const pathname =
-      props.merchant.id === 0 ? "#" : `/chat/${props.merchant.id}`;
+      props.merchant.id === `/chat/${props.merchant.id}`;
 
     this.state = {
       pathname

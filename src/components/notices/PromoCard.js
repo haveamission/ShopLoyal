@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
 
-
+/**
+ * This is the component for the promo or notice cards
+ */
 class PromoCard extends Component {
 
     componentWillMount() {

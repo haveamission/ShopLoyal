@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { DOCS } from "../../config/strings";
 
+/**
+ * This is the support sidebar
+ */
 class Support extends Component {
     render() {
         return (

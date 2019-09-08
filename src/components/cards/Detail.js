@@ -71,10 +71,6 @@ class Detail extends Component {
     }
   }
 
-  if(error) {
-    return <p>{error.message}</p>;
-  }
-
   if(isLoading) {
     return <Loading />;
   }

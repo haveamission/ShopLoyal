@@ -12,6 +12,9 @@ function loadJSONIntoUI(data) {
   return data;
 }
 
+/**
+ * This is a container for several PromoCards - this is located on the detail page
+ */
 class Promotions extends Component {
 
   state = {

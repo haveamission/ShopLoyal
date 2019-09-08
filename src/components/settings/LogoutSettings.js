@@ -3,6 +3,10 @@ import Loading from '../main/Loading'
 import { withKeycloak } from 'react-keycloak';
 import { SignOut } from "../../config/strings";
 
+/**
+ * This is the logout button
+ * TODO - add API call to logout API
+ */
 class LogoutSettings extends Component {
 
   render() {

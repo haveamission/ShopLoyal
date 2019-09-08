@@ -25,7 +25,7 @@ import LoginPage from "./components/main/LoginPage";
 import Settings from "./components/settings/Settings";
 import Support from "./components/settings/Support";
 import Privacy from "./components/settings/Privacy";
-import FavMerchants from "./components/favmerchants/FavMerchants";
+import FavMerchants from "./components/settings/FavMerchants";
 import Terms from "./components/settings/Terms";
 import Contact from "./components/settings/Contact";
 import BackgroundProcess from "./components/main/BackgroundProcess";

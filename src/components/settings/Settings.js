@@ -4,6 +4,9 @@ import LogoutSettings from "./LogoutSettings";
 import MainSettings from "./MainSettings";
 import { withKeycloak } from "react-keycloak";
 
+/**
+ * This is the structure for the settings page
+ */
 class Settings extends Component {
   state = {
     profile: {},

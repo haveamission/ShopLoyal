@@ -8,7 +8,11 @@ import Favorite from "../../resources/img/full_heart_purple.png";
 import Map from "../../resources/img/map.png";
 import { push } from "connected-react-router";
 import { withKeycloak } from "react-keycloak";
+import { largeLimit } from "../../config/constants"
 
+/**
+ * This is each row of the favorite merchants
+ */
 class FavMerchantsItem extends Component {
   state = {
     merchant: this.props.merchant
@@ -80,8 +84,9 @@ class FavMerchantsItem extends Component {
   }
 }
 
-const FavMerchantsItemRedux = connect()(withKeycloak(FavMerchantsItem));
-
+/**
+ * Wrapper component for all the favorite merchant rows
+ */
 class FavMerchants extends React.Component {
   constructor() {
     super();
@@ -96,7 +101,7 @@ class FavMerchants extends React.Component {
   loadFavMerchants(data) {
     let arr = [];
     data.map((item, index) => {
-      arr.push(<FavMerchantsItemRedux merchant={item} key={index} />);
+      arr.push(<FavMerchantsItem merchant={item} key={index} {...this.props} />);
     });
     this.setState({ favs: arr });
   }
@@ -106,7 +111,7 @@ class FavMerchants extends React.Component {
     let query = {
       lat: this.props.coordinates.coords.latitude,
       lng: this.props.coordinates.coords.longitude,
-      limit: "30"
+      limit: largeLimit
     };
 
     let api = new API(this.props.keycloak);

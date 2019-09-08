@@ -13,6 +13,7 @@ import { oneSignalSave } from "../../redux/actions/onesignal";
 import { bindActionCreators } from "redux";
 import { push } from "connected-react-router";
 import { MostRecentMer, AllFavMer, NotificationText, EmailNotificationText, SupportText, TutorialText } from "../../config/strings";
+import { largeLimit } from "../../config/constants"
 
 /**
  * Merge into FavMerchantsItem? This is a little more duplication than I am comfortable with
@@ -42,7 +43,10 @@ class FavMerchantsCircle extends Component {
   }
 }
 
-class MainSettings extends React.Component {
+/**
+ * This is the main or core part of the settings page
+ */
+class MainSettings extends Component {
   constructor(props) {
     super(props);
     this.onSetOpen = this.onSetOpen.bind(this);
@@ -98,7 +102,7 @@ class MainSettings extends React.Component {
     let query = {
       lat: this.props.coordinates.coords.latitude,
       lng: this.props.coordinates.coords.longitude,
-      limit: "30"
+      limit: largeLimit
     };
 
     let api = new API(this.props.keycloak);
