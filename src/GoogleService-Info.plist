@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>630124357672-16a92o2f7o0sv9etoslq7kkg3qptmg64.apps.googleusercontent.com</string>
+	<string>957077341718-29ttm48pljqb7vtvmrujsm54i2lkf5th.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.630124357672-16a92o2f7o0sv9etoslq7kkg3qptmg64</string>
+	<string>com.googleusercontent.apps.957077341718-29ttm48pljqb7vtvmrujsm54i2lkf5th</string>
 	<key>API_KEY</key>
-	<string>AIzaSyB0f1fRM3L1XB1WjHQJR6-3Gm4V7GcAZp0</string>
+	<string>AIzaSyB7OV39m1H7fWgq6t3097m3A2Ek39N5aRQ</string>
 	<key>GCM_SENDER_ID</key>
-	<string>630124357672</string>
+	<string>957077341718</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.shoployal.shoployaldemo</string>
+	<string>com.shoployal.app</string>
 	<key>PROJECT_ID</key>
-	<string>shoployaldemo</string>
+	<string>shoployal-cf02d</string>
 	<key>STORAGE_BUCKET</key>
-	<string>shoployaldemo.appspot.com</string>
+	<string>shoployal-cf02d.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string></string>
+	<string>1:957077341718:ios:340c70c7b06f0ffd261737</string>
 	<key>DATABASE_URL</key>
-	<string>https://shoployaldemo.firebaseio.com</string>
+	<string>https://shoployal-cf02d.firebaseio.com</string>
 </dict>
 </plist>
