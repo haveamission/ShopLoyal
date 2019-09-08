@@ -157,10 +157,6 @@ class Cards extends Component {
   }
 
   render() {
-    console.log("rendered things");
-    console.log(this.state.renderedThings);
-    console.log("SLloaded");
-    console.log(this.state.SLloaded);
     if (this.state.isLoading || this.state.renderedThings.length === 0 || this.state.SLloaded === false) {
       return <Loading />;
     }

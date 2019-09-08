@@ -1,41 +1,35 @@
-import React from "react";
+import React, { Component } from "react";
 import { Route, Redirect } from "react-router";
 import { connect } from "react-redux";
 import { withKeycloak } from "react-keycloak";
 import searchSave from "../actions/search";
 import { bindActionCreators } from "redux";
 
-const PrivateRoute = ({ component: Component, ...rest }) => (
-  <Route
-    {...rest}
-    render={props =>
-      rest.keycloak.authenticated ? (
-        <Component {...props} />
-      ) : // TODO: This logic is tortured, and should be cleaned and refactored time permitting
-        rest.idprovider ? (
-          (rest.keycloak.login({
-            idpHint: rest.idprovider,
-            cordovaOptions: { zoom: "no", hardwareback: "yes" }
-          }),
-            (
-              <Redirect
-                to={{
-                  pathname: "/login",
-                  state: { from: props.location }
-                }}
-              />
-            ))
-        ) : (
-            <Redirect
-              to={{
-                pathname: "/login",
-                state: { from: props.location }
-              }}
-            />
-          )
+class PrivateRoute extends Component {
+  render() {
+    if (this.props.keycloak.authenticated) {
+      return (
+        <Route
+          {...this.props}
+          render={<this.props.component {...this.props} />}
+        />
+      );
+    } else if (this.props.idprovider) {
+      this.props.keycloak.login({
+        idpHint: this.props.idprovider,
+        cordovaOptions: { zoom: "no", hardwareback: "yes" },
+      });
     }
-  />
-);
+    return (
+      <Redirect
+        to={{
+          pathname: "/login",
+          state: { from: this.props.location }
+        }}
+      />
+    );
+  }
+}
 
 const mapStateToProps = state => {
   return {

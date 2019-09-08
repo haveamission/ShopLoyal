@@ -15,7 +15,6 @@ import Loading from "./Loading";
 import API from "./API";
 import { push } from "connected-react-router";
 import { withKeycloak } from "react-keycloak";
-import Skeleton from "react-loading-skeleton";
 import BackgroundImageOnLoad from "background-image-on-load";
 import { firstFavoriteSave } from "../actions/firstFavorite";
 import { toast } from "react-toastify";

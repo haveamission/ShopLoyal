@@ -32,7 +32,6 @@ import Contact from "./components/Contact";
 import BackgroundProcess from "./components/BackgroundProcess";
 
 // Import Styles
-//import "./bootstrap2-toggle.min.css";
 import "./resources/styles/main.css";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -78,7 +77,9 @@ const startApp = () => {
         onLoad: "check-sso",
         flow: "hybrid",
         ...tokens,
-        checkLoginIframe: true
+        // Has to be set for automatic SSO to work, however a high interval needs to be set due to bug in KC library
+        checkLoginIframe: true,
+        checkLoginIframeInterval: 86400
       }}
       onAuthSuccess={event => { }}
     >
